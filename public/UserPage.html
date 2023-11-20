@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin User Page</title>
+    <style>
+
+body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+   
+        }
+        header {
+           background-color: #007BFF;
+           color: #fff;
+          text-align: center;
+          padding: 5px ;
+        }
+        header a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+        .table-container {
+    width: 100%;
+    height: 200px;
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color: #fafafa;
+    border: 1px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        
+        <a href= "reservation.html">Reserve</a>
+        <a href="Amenity.html">Amenities</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+    <h1>Tubigan Garden Resort</h1>
+    <h3 id="homessage">Welcome, [USERNAME]!</h3>
+    <h2 id="beeglabel">Reservation Status</h2>
+    <div class="container">
+    <div id="cont" class="table-container">
+        <table id="StatusTable">
+            <thead>
+                <tr>
+                    <th>Booked Reservation Date</th>
+                    <th>Check-In Date</th>
+                    <th>Reservation ID</th>
+                    <th>Customer Name</th>
+                    <th>Chosen Amenity</th>
+                    <th>Party Size</th>
+                    <th>Tour Type</th>
+                    <th>Price</th>
+                    <th>Payment Method</th>
+                    <th>Approval Status</th>
+                </tr>
+            </thead>
+            <tbody id="reservation-table">
+                <!-- Reservation datum will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+    <p id="resAmount">You have X Amenities Reserved. Here is the breakdown of what you reserved:</p>
+        <div id="cont" class="table-container">
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Booked Reservation Date</th>
+                    <th>Check-In Date</th>
+                    <th>Reservation ID</th>
+                    <th>Chosen Amenity</th>
+                    <th>Party Size</th>
+                    <th>Price</th>
+                    <th>Payment Method</th>
+                    <th>Approval Status</th>
+                </tr>
+            </thead>
+            <tbody id="reservation-table2">
+                
+            </tbody>
+        </table>
+    </div>
+    <button id="buttResched" onclick="resched()">Reschedule</button>         <button id="buttReserv" onclick="rescheck()">Reserve Another</button>
+</div>
+
+    <script>
+        let u;
+fetch(`/current_reservation`).then(response=>{
+    if(response.ok){
+        return response.json()
+    }else if(response.status===404){
+        fetch(`/current_Mem`).then(response=>{
+    if(response.ok){
+        return response.json()
+    }else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data =>{
+    document.getElementById('homessage').textContent="Welcome, "+data.mID+"!";
+    const reservData=document.getElementById('StatusTable');
+reservData.style.display="none";
+document.getElementById('beeglabel').textContent=""
+document.getElementById('cont').style.display="none"
+document.getElementById('buttResched').hidden=true;
+document.getElementById('StatusTable').hidden=true;
+})
+
+    }else{
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data =>{
+    const reservData=document.getElementById('reservation-table');
+    let paymethod="";
+    reservData.innerHTML='';
+    if(data.resPayMeth=="GcashOL"){
+        paymethod="GCash Online"
+    }else if(data.resPayMeth=="GcashOS"){
+        paymethod="GCash Onsite"
+    }else if(data.resPayMeth=="Cash"){
+        paymethod="Cash"
+    }
+
+        const r=document.createElement('tr');
+        u=data.resID;
+    r.innerHTML=`
+    <td>${data.resBookeDate}</td>
+    <td>${data.resCheckinDate}</td>
+    <td>${data.resID}</td>
+    <td>${data.rescName}</td>
+    <td>${data.resAmeName}</td>
+    <td>${parseInt(data.resPax)+parseInt(data.resCax)}</td>
+    <td>${data.resTour}</td>
+    <td>${data.resPrice}</td>
+    <td>${paymethod}</td>
+    <td>${data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+    document.getElementById('homessage').textContent="Welcome, "+data.rescID+"!";
+})
+
+let num;
+fetch('/current_ResCount').then(response=>{
+    if(response.ok){
+        return response.json()
+    }else {
+      throw new Error('Error fetching data');
+    }
+}).then(data=>{
+    console.log(data)
+    num=parseInt(data.count);
+    document.getElementById('resAmount').textContent="You have "+num+" Amenities Reserved."
+    if(num>1){
+        num=num-1
+        document.getElementById('resAmount').textContent="You have "+num+" Amenities Reserved. Here is the breakdown of what your amenities and additional fees:"
+        fetch('/current_ReservationPlus').then(response =>{
+        if(response.ok){
+        return response.json()
+    }else{
+        throw new Error('Error fetching data');
+      }
+        }).then(data=>{
+            console.log(data)
+            const reservData=document.getElementById('reservation-table2');
+        let paymethod="";
+    reservData.innerHTML='';
+    data.forEach(item=>{
+        if(item.resPayMeth=="GcashOL"){
+        paymethod="GCash Online"
+    }else if(item.resPayMeth=="GcashOS"){
+        paymethod="GCash Onsite"
+    }else if(item.resPayMeth=="Cash"){
+        paymethod="Cash"
+    }
+        const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resBookeDate}</td>
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.resAmeName}</td>
+    <td>${parseInt(item.resPax)+parseInt(item.resCax)}</td>
+    <td>${item.resPrice}</td>
+    <td>${paymethod}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+    })
+    })
+}
+})
+
+    
+
+
+function resched(){
+    if(document.getElementById('StatusTable').style.display=="none"){
+        alert("You do not have a reservation yet.");
+    }else{
+        window.location.replace('reschedule.html')
+    }
+}
+
+async function rescheck(){
+    if (u === undefined) {
+        reserv();
+    } else {
+        try {
+            const signal = { updateReady: "buddy-go" };
+            const response = await fetch('/updateStandby', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(signal)
+            });
+
+            if (response.ok) {
+                await response.json(); 
+                return reserv()
+            } else {
+                throw new Error('Fetch request failed.');
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+            // Handle the error as needed
+        }
+    }
+}
+
+function reserv(){
+    window.location.replace("reservation.html")
+}
+
+    </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
