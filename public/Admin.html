@@ -5,7 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin User Page</title>
     <style>
-
+@media print{
+    header,button{display:none}
+    select{
+        border: none;
+        outline: none;
+    }
+}
 body {
             font-family: Arial, sans-serif;
             background-image: url('gif.gif');
@@ -48,8 +54,11 @@ h2{
         
         .table-container {
             width: 95%;
+            height: 500px;
             margin: 0 auto;  
             padding: 5px;
+            overflow-x: auto;
+            overflow-y: auto;
             border-radius: 10px;
             backdrop-filter: blur(100%);
             background-color: rgba(233, 230, 230, 0.8);
@@ -91,7 +100,7 @@ h2{
             width: 25%;
             padding: 10px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 0px solid #ccc;
             border-radius: 4px;
         }
     </style>
@@ -113,16 +122,16 @@ h2{
     <div class="container">
         <select id="FilterA">
             <option>NO FILTER</option>
-            <option>Payment Status</option>
-            <option>Reservation Status</option>
-            <option>Sales</option>
-            <option>Chosen Amenities</option>
+            <option value="Payment Status">Payment Status</option>
+            <option value="Reservation Status">Reservation Status</option>
+            <option value="Sales">Sales</option>
+            <option value="Chosen Amenities">Chosen Amenities</option>
         </select>
         <select id="FilterB">
             <option></option>
         </select>
         <div class="table-container">
-            <table>
+            <table id="datum">
                 <thead id="dataHead">
                     <th>Check In Date</th>
                     <th>Check Out Date</th>
@@ -140,8 +149,8 @@ h2{
                 </tbody>
             </table>
         </div>
+        <button onclick="printo()">Print</button>
     </div>
-<p id="text">a
     <footer>
         <p>&copy; (2014) Tubigan Garden Resort</p>
     </footer>
@@ -878,8 +887,28 @@ async function resDataR(){
             reservData.innerHTML=``
         }
 }
-
 }
 
+    function printo(){
+        const sectA=document.getElementById('FilterA').value
+        const sectB=document.getElementById('FilterB').value
+        const content=document.getElementById('datum').textContent
+        fetch('/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sectA,sectB, content }),
+      })
+      .then(response => response.text())
+      .then(message => {
+        console.log(message);
+        alert('PDF report generated successfully.');
+      })
+      .catch(error => {
+        console.error('Error generating PDF:', error);
+        alert('Error generating PDF. Please try again.');
+      });
+    }
     </script>
 </body>
