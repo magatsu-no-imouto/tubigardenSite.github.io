@@ -892,7 +892,7 @@ async function resDataR(){
     function printo(){
         const sectA=document.getElementById('FilterA').value
         const sectB=document.getElementById('FilterB').value
-        const content=document.getElementById('datum').textContent
+        const content=document.getElementById('datum').outerHTML
         fetch('/generate-pdf', {
         method: 'POST',
         headers: {
