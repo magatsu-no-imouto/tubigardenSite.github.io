@@ -20,20 +20,51 @@ async function connecto(){
 connecto();
 
 const exp=require('express');
-const sess=require('express-session');
+const cookieParser = require('cookie-parser');
 const train=exp();
 const port=8080;
 const cors=require('cors');
 train.use(exp.json());
 train.use(cors());
 train.use(exp.static('public'));
-train.use(
-  sess({
-    secret: `cS9'f%||g^>>E`, // Replace with a strong secret key
-    resave: false,
-    saveUninitialized: true,
-  })
-);
+train.use(cookieParser());
+const fs = require('fs');
+const PDFDocument = require('pdfkit');
+const bodyParser = require('body-parser');
+train.use(bodyParser.urlencoded({ extended: true }));
+train.use(bodyParser.json());
+
+train.post('/generate-pdf', (req, res) => {
+  const { sectA,sectB,content } = req.body;
+  const contentArray = content.split('\n');
+  const doc = new PDFDocument();
+  const output = fs.createWriteStream('report.pdf');
+  doc.pipe(output);
+
+  doc.fontSize(20).text('Business Report', { align: 'center' });
+  doc.moveDown();
+  doc.fontSize(14).text('Tubigan Garden Resort')
+  doc.moveDown();
+  doc.fontSize(14).text('343 Molino - Paliparan Rd.')
+  doc.moveDown();
+  doc.fontSize(14).text('Dasmariñas, 4114 Cavite')
+  doc.moveDown();
+
+  doc.fontSize(14).text('Report generated on: ' + new Date().toLocaleString());
+
+  doc.moveDown();
+  doc.fontSize(16).text(sectA+" "+sectB);
+  doc.moveDown();
+  contentArray.forEach((row) => {
+    doc.text(row);
+  });
+  doc.end();
+  output.on('finish', () => {
+    console.log('PDF report generated successfully.');
+    res.send('PDF report generated successfully.');
+  });
+});
+
 
 const nodemailer = require("nodemailer");
 
@@ -1256,7 +1287,7 @@ train.post('/login', async(req,res)=>{
       });
   
       if (client && client.rescPass === rescPass) { 
-        req.session.user=rescID;
+        res.cookie('user',rescID)
         res.json({ success: true, client });
       } else {
         res.json({ success: false, message: 'Invalid ID or password' });
@@ -1276,7 +1307,7 @@ train.post('/loginMem', async(req,res)=>{
       });
   
       if (client && client.mPass === mPass) { 
-        req.session.user=mID;
+        res.cookie('user',mID)
         res.json({ success: true, client });
       } else {
         res.json({ success: false, message: 'Invalid ID or password' });
@@ -1306,14 +1337,14 @@ train.post('/loginAdmin', async (req, res) => {
 });
 
 train.post('/updateStandby',async(req,res)=>{
-  req.session.updateReady=req.body
+  res.cookie("updateReady",req.body)
   console.log("Updating Reservation!")
   res.json({success:true});
 });
 
 train.get('/updateGo',async(req,res)=>{
   try{
-    if(req.session.updateReady){
+    if(req.cookies.updateReady){
       console.log("Updating Reservation With...")
       res.json({message: "Update is go", data: "yes"});
     }else{
@@ -1327,7 +1358,7 @@ train.get('/updateGo',async(req,res)=>{
 })
 
 train.get('/current_reservation', async(req,res)=>{
-  const rescID=req.session.user;
+  const rescID=req.cookies.user;
   if(rescID!=undefined){
     console.log('looking for: ', rescID);
     try{
@@ -1354,7 +1385,7 @@ train.get('/current_reservation', async(req,res)=>{
 })
 
 train.get("/current_ResCount",async(req,res)=>{
-  const rescID=req.session.user;
+  const rescID=req.cookies.user;
   if(rescID!=undefined){
     console.log('looking for: ', rescID);
     try{
@@ -1380,7 +1411,7 @@ train.get("/current_ResCount",async(req,res)=>{
 })
 
 train.get('/current_ReservationPlus', async(req,res)=>{
-  const rescID=req.session.user;
+  const rescID=req.cookies.user;
   if(rescID!=undefined){
     console.log('looking for: ', rescID);
     try{
@@ -1407,7 +1438,7 @@ train.get('/current_ReservationPlus', async(req,res)=>{
 })
 
 train.get('/current_Mem', async(req,res)=>{
-  const mID=req.session.user;
+  const mID=req.cookies.user;
   if(mID!=undefined){
     console.log('looking for: ',mID);
     try{
@@ -1434,14 +1465,15 @@ train.get('/current_Mem', async(req,res)=>{
 })
 
 train.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Error destroying session:', err);
-      res.status(500).send('Error logging out');
-    } else {
-      console.log("Session purged.");
-    }
+  const cookies = Object.keys(req.cookies);
+
+  cookies.forEach(cookie => {
+    res.clearCookie(cookie);
   });
+
+  res.send('All cookies cleared');
 });
+
+
 
 //#endregion
