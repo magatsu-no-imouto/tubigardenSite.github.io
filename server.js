@@ -29,42 +29,54 @@ train.use(cors());
 train.use(exp.static('public'));
 train.use(cookieParser());
 const fs = require('fs');
-const PDFDocument = require('pdfkit');
+const puppeteer = require('puppeteer');
 const bodyParser = require('body-parser');
 train.use(bodyParser.urlencoded({ extended: true }));
 train.use(bodyParser.json());
 
-train.post('/generate-pdf', (req, res) => {
-  const { sectA,sectB,content } = req.body;
-  const contentArray = content.split('\n');
-  const doc = new PDFDocument();
-  const output = fs.createWriteStream('report.pdf');
-  doc.pipe(output);
+train.post('/generate-pdf', async (req, res) => {
+  const { sectA,sectB,content} = req.body;
+  const browser = await puppeteer.launch({headless:false});
+  const page = await browser.newPage();
+  const combinedHTML=`
+  <html>
+      <head>
+        <style>
+        table {
+            border-collapse: collapse;
+            width: 50%;
+        }
+    
+        table, th, td {
+            border: 0;
+        }
+    
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+      </head>
+      <body>
+      <h1>Tubigan Garden Resort</h1>
+      <h2>Business Report</h2>
+      <p>Tubigan Garden Resort\n
+      343 Molino - Paliparan Rd.\n
+      Dasmariñas, 4114 Cavite
+      </p>
+        <div> ${sectA} ${sectB}</div>
+        ${content}
+      </body>
+    </html>`
+console.log(combinedHTML)
+await page.setContent(combinedHTML);
+  const pdfBuffer = await page.pdf();
+  const filePath = `./${Date.now()}_report.pdf`;
+  fs.writeFileSync(filePath, pdfBuffer);
+  await browser.close();
 
-  doc.fontSize(20).text('Business Report', { align: 'center' });
-  doc.moveDown();
-  doc.fontSize(14).text('Tubigan Garden Resort')
-  doc.moveDown();
-  doc.fontSize(14).text('343 Molino - Paliparan Rd.')
-  doc.moveDown();
-  doc.fontSize(14).text('Dasmariñas, 4114 Cavite')
-  doc.moveDown();
-
-  doc.fontSize(14).text('Report generated on: ' + new Date().toLocaleString());
-
-  doc.moveDown();
-  doc.fontSize(16).text(sectA+" "+sectB);
-  doc.moveDown();
-  contentArray.forEach((row) => {
-    doc.text(row);
-  });
-  doc.end();
-  output.on('finish', () => {
-    console.log('PDF report generated successfully.');
-    res.send('PDF report generated successfully.');
-  });
+  res.send('PDF generation successful.');
 });
-
 
 const nodemailer = require("nodemailer");
 
