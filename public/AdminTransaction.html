@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transactions Page Admin</title>
+    <style>
+         body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    }
+
+        header {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    }
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: -90%;
+}
+        header a {
+    display: inline-block;
+    background-color: #fff;
+    color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            background-image: url('tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+
+        h1{
+margin-top: 30px;
+color: #0a0a0a;
+}
+        form {
+            border: px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+
+        }
+        input,
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            width: 95%;
+            height: 200px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+
+
+</style>
+
+    
+</head>
+<body>
+    
+    <header>
+        <img src="5.png" alt="logo">
+        <div class="styleRyle"></div>
+        <a href= "Admin.html">Home</a>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminMembers.html">Member Accounts</a>
+        <a href="AdminSchedule.html">Schedule</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminPromos.html">Promos</a>
+        <a href= "AdminAmenities.html">Amenities</a>
+        <a href="checkin.html">Check-In A Customer</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+    
+    <h1>Reschedules</h1>
+    <div class="container">
+        
+        <div class="table-container">
+        <table align="center" border="1">
+            <thead>
+                <tr>
+                    <th>Date Posted</th>
+                    <th>Reschedule ID</th>
+                    <th>Reservation ID</th>
+                    <th>Customer ID</th>
+                    <th>Chosen Amenity</th>
+                    <th>Check In Date</th>
+                    <th>Booked Visit Date</th>
+                    <th>Moved Check In Date</th>
+                    <td>Moved Booked Visit Date</td>
+                    <th>Reschedule Status</th>
+                </tr>
+            </thead>
+            <tbody id="resched-data">
+                <!-- amenity data will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+        <form id="fomre">
+            <label>Reschedule ID:</label>
+            <input type="text" id="ID" name="reID">
+            <label>Reservation ID:</label> 
+            <select id="reservSelect" name="reresID">
+                <option value=""></option>
+            </select>
+            <button type="button" id="searchRes" onclick="searchR()">Select</button>
+            <button type="button" id="updateRes" onclick="updateR()">Update</button>
+            <label>Customer ID:</label>
+            <input type="text" id="user" name="recID" readonly>
+            <label>Chosen Amenity:</label>
+            <input type="text" id="resAme" name="reresAmeName" readonly>
+            <label>Date of Reservation</label>
+            <input type="date" id="checkin" name="reresCheckDate" readonly>
+            <input type="date" id="bookin" name="reresBookeDate" readonly>
+            <label>Changed Date of Reservation</label>
+            <input type="date" id="checkin-nu" name="renCheckDate">
+            <input type="date" id="bookin-nu" name="renBookeDate" readonly>
+            <input class="smol" type="number" id="daysaf" oninput="javascript: if (this.value < 3) this.value = this.value=3;" value="3"> Days after Check In Date
+            <label>Reschedule Status</label>
+            <select id="selReNewStat" name="reschedStat">
+                <option value=""></option>
+                <option value="Approved">Approved</option>
+                <option value="Pending">Pending</option>
+            </select>
+            <input type="date" id="dateposted"  name="reDatePost" hidden>
+            <button type="button" id="addReSched" onclick="insertReSched()">Add Reschedule</button>
+            <button type="button" id="searchReSched" onclick="searchResched()">Search Reschedule</button>
+            <button type="button" id="deleteReSched" onclick="deletResched()">Remove Amenity</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript code to handle button actions and update the table goes here
+ //#region Table Populators
+ fetch('/reschedule-data')
+  .then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data => {
+    const reData = document.getElementById('resched-data');
+    reData.innerHTML = '';
+
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.reDatePost}</td>
+        <td>${item.reID}</td>
+        <td>${item.reresID}</td>
+        <td>${item.recID}</td>
+        <td>${item.reresAmeName}</td>
+        <td>${item.reresCheckDate}</td>
+        <td>${item.reresBookeDate}</td>
+        <td>${item.renCheckDate}</td>
+        <td>${item.renBookeDate}</td>
+        <td>${item.reschedStat}</td>
+      `;
+      reData.appendChild(row);
+    });
+    
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+fetch('/reservation-data').then(response=>{
+    if (response.ok) {
+                    return response.json(); 
+                } else {
+                    throw new Error('Error fetching data');
+                }
+            })
+            .then(data => {
+                const selectElement = document.getElementById('reservSelect');
+                data.forEach(item => {
+                    let huh=item.resID
+                    if(huh.length<=8){
+                        const option = document.createElement('option');
+                    option.value = item.resID; 
+                    option.textContent = item.rescID;
+                    selectElement.appendChild(option);
+                    }
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+})
+
+//#endregion
+
+//#region days away from checkin to bookin
+document.getElementById('checkin-nu').addEventListener('change',function(){
+                var days=parseInt(document.getElementById('daysaf').value);
+                const checked=new Date(document.getElementById('checkin-nu').value)
+                checked.setDate(checked.getDate()+days)
+                document.getElementById('bookin-nu').valueAsDate = checked
+            })
+
+document.getElementById('daysaf').addEventListener('change',function(){
+                var days=parseInt(document.getElementById('daysaf').value);
+                const checked=new Date(document.getElementById('check-in').value)
+                checked.setDate(checked.getDate()+days)
+                if(document.getElementById('checkin-nu').value==""){
+                    
+                }else{
+                    document.getElementById('bookin-nu').valueAsDate = checked
+                }
+            })
+//#endregion
+
+
+//#region table functions
+
+let sameFlag,ameS,sameDateFlag,emptyFlag
+async function searchRA(){
+    const ameI = document.getElementById('resAme').value;
+    try {
+        const response = await fetch('/amenities-data');
+        const result = await response.json();
+        if (response.ok) {
+            for (const item of result) {
+                const ame = item.ameName;
+                const motoRes = await fetch(`/searchResAme?resAmeName=${ame}`);
+                const zuttoRes = await motoRes.json();
+
+                if (motoRes.ok && Array.isArray(zuttoRes.data)) {
+                    for (const res of zuttoRes.data) {
+                        const ameF = res.resAmeName;
+                        const bookF = res.resBookeDate;
+                        console.log(ame + " " + ameI + " " + ameF);
+                        if (ameF == ame && ame == ameI) {
+                            sameFlag = true;
+                            ameS = ameF;
+                            const bookI = document.getElementById('bookin-nu').value;
+                            if (bookF == bookI) {
+                                sameDateFlag = true;
+                            }
+                        }
+                    }
+                }
+                if(ameI==ame && item.ameLeft==0){
+                    emptyFlag=true
+                    ameE=ameI
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error:', err);
+    }
+    }
+
+async function insertReSched(){
+    await searchRA()
+    if(sameDateFlag==true){
+                conflict="there being a conflict with the Schedule"
+            }else if(emptyFlag){
+                conflict=`no more available instances of ${ameE}`
+            }
+            if(sameFlag==true && sameDateFlag==true || emptyFlag==true){
+                alert(`Unable to proceed due to ${conflict}.`)
+            }else{
+                const reID=document.getElementById("ID");
+        const reresID=document.getElementById("reservSelect")
+        const recID=document.getElementById("user");
+        const reresAmeName=document.getElementById("resAme");
+        const reresDate=document.getElementById("checkin");
+        const renewDate=document.getElementById("checkin-nu")
+        const reresBook=document.getElementById("bookin")
+        const renewBook=document.getElementById("bookin-nu")
+        const reDatePost=document.getElementById("dateposted");
+        const reschedStat=document.getElementById("selReNewStat")
+        if(reresID.value=="" || recID.value=="" || reresAmeName.value=="" || reresDate.value=="" ||renewDate.value=="" || reschedStat.value=="" || reresBook.value=="" || renewBook.value==""){
+            alert("Please fill up the entire field");
+        }else{
+                const dtPost = new Date()
+                reDatePost.value=`${dtPost.getFullYear()}-${String(dtPost.getMonth() + 1).padStart(2, '0')}-${String(dtPost.getDate()).padStart(2, '0')}`
+                const dtID=renewDate.valueAsDate.toLocaleDateString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\//g, '');
+                const rng=Math.floor(Math.random()*10);
+                const rng2=Math.floor(Math.random()*10);
+                const rng3=Math.floor(Math.random()*10);
+                const rng4=Math.floor(Math.random()*10);
+                reID.value=recID.value[0]+recID.value[1]+"-"+dtID+"-"+rng+rng2+rng3+rng4
+                const fomdat=new FormData(document.getElementById('fomre'));
+        const datum={
+            reDatePost:reDatePost.value,
+            reID:reID.value,
+            reresID:reresID.value,
+            recID:recID.value,
+            reresAmeName:reresAmeName.value,
+            reresCheckDate:reresDate.value,
+            reresBookeDate:reresBook.value,
+            renCheckDate:renewDate.value,
+            renBookeDate:renewBook.value,
+            reschedStat:reschedStat.value
+        }
+        try{
+            const response = await fetch('/insertResched',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                document.getElementById('fomre').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+            }
+    
+    }
+
+async function searchResched(){
+        const reID=document.getElementById('ID').value;
+        if(reID==""){
+            alert("Please input what to search.")
+        }else{
+        try{
+            const response=await fetch(`/searchResched?reID=${reID}`);
+            const result=await response.json();
+            if(response.ok){
+                document.getElementById("reservSelect").value=result.reresID;
+                document.getElementById("user").value=result.recID;
+                document.getElementById("resAme").value=result.reresAmeName;
+                document.getElementById("checkin").value=result.reresCheckDate;
+                document.getElementById("checkin-nu").value=result.renCheckDate;
+                document.getElementById("bookin").value=result.reresBookeDate;
+                document.getElementById("bookin-nu").value=result.renBookeDate
+                document.getElementById("selReNewStat").value=result.reschedStat;
+                document.getElementById("dateposted").value=result.reDatePost
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+    }    
+}
+    async function deletResched(){
+        if(document.getElementById('ID').value==""){
+            alert("Please input what to search.")
+        }else{
+        const fomdat=new FormData(document.getElementById('fomre'));
+        const datum=Object.fromEntries(fomdat.entries());
+        try{
+            const response = await fetch('/deletResched',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            document.getElementById('fomre').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While removing The Record.');
+        }
+    }
+    }
+
+    let multiID
+    async function searchR(){
+        if(document.getElementById("reservSelect").options[document.getElementById("reservSelect").selectedIndex].text ==""){
+            alert("Please select the reservation to pull.")
+        }else{
+        const resID=document.getElementById('reservSelect').value;
+        let rescIDf
+        try{
+            const response=await fetch(`/searchRes?resID=${resID}`);
+            const result=await response.json();
+            if(response.ok){
+               document.getElementById('user').value=result.rescID
+               rescIDf=result.rescID
+               document.getElementById('resAme').value=result.resAmeName;
+               document.getElementById('checkin').value=result.resCheckDate
+               document.getElementById('bookin').value=result.reresBookeDate
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        const motoRes=await fetch(`/searchResCust?rescID=${rescIDf}`)
+        if(motoRes.ok){
+            const reservData=document.getElementById('reservation-table');
+    reservData.innerHTML='';
+            const zuttoRes=await motoRes.json()
+            if(Array.isArray(zuttoRes)){
+                multiID="MULTI SET!"
+            }
+    }
+    }
+}
+    async function updateR(){
+        const resID=document.getElementById('reservSelect').value;
+        let rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,resphonof,resAmeNamef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf;
+        try{
+            const response=await fetch(`/searchRes?resID=${resID}`);
+            const result=await response.json();
+            if(response.ok){
+                rescIDf=result.rescID
+                rescNamef=result.rescName
+                resPaxf=result.resPax
+                resCaxf=result.resCax
+                rescEmailf=result.rescEmail
+                rescpassf=result.rescPass
+                rescphonof=result.rescphono
+                resAmeNamef=result.resAmeName
+                resCheckDatef=result.resCheckDate
+                resBookDatef=result.resBookeDate
+                resTourf=result.resTour
+                resPricef=result.resPrice;
+                resPayMethf=result.resPayMeth
+                resPayStatf=result.resPayStat
+                resAppStatf=result.resAppStat
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        const updoot={
+            resID:document.getElementById('reservSelect').value,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:resphonof,
+            resAmeName:resAmeNamef,
+            resCheckDate:document.getElementById("checkin-nu").value,
+            resBoookeDate:document.getElementById("bookin-nu").value,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                if(multiID!=undefined){
+                    alert(result.message+" Changing the dates of the other reservations!")
+                    return pierceUpdate(rescIDf)
+                }else{
+                    alert(result.message);
+            document.getElementById('fomre').reset();
+                }
+                
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+
+async function pierceUpdate(rescIDf){
+    const motoRes=await fetch(`/searchResCust?rescID=${rescIDf}`)
+        if(motoRes.ok){
+            const zuttoRes=await motoRes.json()
+            let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf;
+            zuttoRes.forEach(async(item)=>{
+                resIDf=item.resID
+                rescIDf=item.rescID
+                rescNamef=item.rescName
+                resPaxf=item.resPax
+                resCaxf=item.resCax
+                rescEmailf=item.rescEmail
+                rescpassf=item.rescPass
+                rescphonof=item.rescphono
+                resAmeNamef=item.resAmeName
+                resCheckDatef=document.getElementById("checkin-nu").value
+                resBookDatef=document.getElementById("bookin-nu").value
+                resTourf=item.resTour
+                resPricef=item.resPrice;
+                resPayMethf=item.resPayMeth
+                resPayStatf=item.resPayStat
+                resAppStatf=item.resAppStat
+                const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckDate:resCheckDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            });
+}
+}
+//#endregion
+
+    </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
+</html>

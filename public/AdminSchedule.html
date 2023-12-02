@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scheduled Reservation Page</title>
+    <style>
+         body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    }
+
+        header {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    }
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: -90%;
+}
+        header a {
+    display: inline-block;
+    background-color: #fff;
+    color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            background-image: url('tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+
+        h1{
+margin-top: 30px;
+color: #050505;
+}
+        form {
+            border: px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+
+        }
+        input,
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            width: 95%;
+            height: 200px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+
+</style>
+
+</head>
+<body>
+
+    <header>
+        <img src="5.png" alt="logo">
+        <div class="styleRyle"></div>
+         
+        <a href= "Admin.html">Home</a>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminMembers.html">Member Accounts</a>
+        <a href= "AdminTransaction.html">Transaction</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminPromos.html">Promos</a>
+        <a href="AdminAmenities.html">Amenities</a>
+        <a href="checkin.html">Check-In A Customer</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+
+    <h1>Tubigan Garden Resort Reservation Schedule</h1>
+    <div class="container">
+            <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Check In Date</th>
+                        <th>Booked Date</th>
+                        <th>Reservation ID</th>
+                        <th>Username</th>
+                        <th>Customer Name</th>
+                        <th>Phone Number</th>
+                        <th>Email</th>
+                        <th>Party Size</th>
+                        <th>Chosen Amenity</th>
+                        <th>Tour Type</th>
+                        <th>Price</th>
+                        <th>Availed Promo</th>
+                        <th>Payment Method</th>
+                        <th>Approval Status</th>
+                    </tr>
+                </thead>
+                <tbody id="reservation-table">
+                    <!-- Reservation datum will be displayed here -->
+                </tbody>
+            </table>
+        </div>
+            <form id="fomres">
+                <label>Reservation ID</label>
+                <input type="text" id="resID" name="resID">
+                <label>Username:</label>
+                <input type="text" id="username" name="rescID" required>
+                <label>Name:</label>
+                <input type="text" id="fullname" name="rescName" required>
+                <label>Email:</label>
+                <input type="email" id="email" name="rescEmail" required>
+                <label>Phone Number:</label>
+                <input type="number" id="phono" name="rescphono" required oninput="javascript: if (this.value.length > 11) this.value = this.value.slice(0, 11);">
+                <label>Password</label>
+                <input type="text" id="pass" name="rescPass">
+                <label>Number of People:</label>
+                <input type="number" id="pax" name="resPax" required>
+                <label>Number of Children:</label>
+                <input type="number" id="cax" name="resCax" required>
+                <label>Chosen Amenity:</label>
+                <select id="selAmeR" name="resAmeName" required>
+                    <option id="default" value=0>Loading. . .</option>
+                </select>
+                <label>Booked Visit Date:</label>
+                <input type="date" id="book-in" name="resBookeDate" required>
+                <label>Check-In Date:</label>
+                <input type="date" id="check-in" name="resCheckDate" required>
+                <label>Check-Out Date:</label>
+                <input type="date" id="check-out" name="resCheckDate2" required>
+                <label>Tour Type:</label>
+                <select id="selTour" name="resTour" required>
+                    <option></option>
+                    <option>Day Tour</option>
+                    <option>Night Tour</option>
+                    <option>Overnight</option>
+                </select>
+                <label>Price</label>
+                <input id="price" name="resPrice" value="300" readonly><!--this is supposed to dynamically change as selAme is manipulated-->
+                <label>Availed Promo:</label>
+                <select id="selPromo">
+                    <option id="default-Promo" value=""></option>
+                    <!--Oh boy, another one of these-->
+                </select>
+                <label>Payment Methodoloy:</label>
+                <select id="selPayMeth" name="resPayMeth" required>
+                    <option value=""></option>
+                    <option value="GcashOL">Gcash - Online</option>
+                    <option value="GcashOS">Gcash - Onsite</option>
+                    <option value="Cash">Cash </option>
+                </select>
+                <label>Payment Status</label>
+                <select id="selPayStat" name="resPayStat" required>
+                    <option value=""></option>
+                    <option value="Paid">Paid</option>
+                    <option value="Unpaid">Pending</option>
+                </select>
+                <label>Reservation Status</label>
+                <select id="selAppStat" name="resAppStat" required>
+                    <option value=""></option>
+                    <option value="Approved">Approved</option>
+                    <option value="Pending">Pending Approval</option>
+                    <option value="Cancel">Cancelled</option>
+                </select>
+                <button type="button" id="addRes" onclick="insertRes()">Add Reservation</button>
+                <button type="button" id="updateRes" onclick="updateR()">Update Reservation</button>
+                <button type="button" id="searchRes" onclick="searchR()">Search Reservation</button>
+                <button type="button" id="deleteRes" onclick="deletR()">Cancel Reservation</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+    fetch('/reservation-data').then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data =>{
+    const reservData=document.getElementById('reservation-table');
+    let wha=0
+    data.forEach(item=>{
+        let huh=item.resID
+        if (huh.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.rescphono}</td>
+    <td>${item.rescEmail}</td>
+    <td>${item.resPax}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPromo}</td>
+    <td>${item.resPayMeth}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }
+    })
+  }) 
+
+  fetch('/amenities-data')
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); 
+                } else {
+                    throw new Error('Error fetching data');
+                }
+            })
+            .then(data => {
+                const selectElement = document.getElementById('selAmeR');
+                document.getElementById('default').textContent = "";
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = item.ameCost; 
+                    option.textContent = item.ameName; 
+                    selectElement.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+fetch('/promo-data').then(response=>{
+        if (response.ok){
+            return response.json()
+        }else{
+            throw new Error('Error fetching data');
+        }
+    }).then(data=>{
+        const selectE=document.getElementById('selPromo')
+        document.getElementById("default-Promo")
+        data.forEach(item=>{
+            const option=document.createElement('option')
+            option.value=item.proName
+            option.textContent=item.proName
+            selectE.appendChild(option)
+        })
+    }).catch(error => {
+    console.error('Error fetching data:', error);
+  });         
+
+  //#region Event Listeners
+
+  let searchFlag=false;
+  
+  if(!searchFlag){
+    document.getElementById('selAmeR').addEventListener('change', function() {
+        if(!searchFlag){
+            const selectedOption = parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           const price=document.getElementById('price');
+           var x,y;
+           if(document.getElementById('pax').value=="" && document.getElementById('cax').value==""){
+            x=0;
+            y=0;
+           } else if(document.getElementById('pax').value!="" && document.getElementById('cax').value==""){
+            x=300*parseFloat(document.getElementById('pax').value)
+            y=0
+           } else if(document.getElementById('pax').value=="" && document.getElementById('cax').value!=""){
+            x=300
+            y=300*parseFloat(document.getElementById('cax').value)
+           }
+           else {
+            x=300*parseFloat(document.getElementById('pax').value)
+            y=300*parseFloat(document.getElementById('cax').value)
+           } 
+           var nuPrice=(x+selectedOption)-y;
+           price.value=nuPrice.toFixed(2);
+           if (document.getElementById('selAmeR').value==""){
+            price.value="300"
+           }
+        }
+        
+        });
+
+        document.getElementById('pax').addEventListener('change',function(){
+            if(!searchFlag){
+                if(document.getElementById('pax').value <=0){
+                document.getElementById('pax').value=1
+            }
+            const priceText=document.getElementById('price');
+            var x,y,z;
+           if(document.getElementById('pax').value=="" && document.getElementById('cax').value==""){
+            x=300;
+            y=0;
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           } else if(document.getElementById('pax').value!="" && document.getElementById('cax').value==""){
+            x=300*parseFloat(document.getElementById('pax').value)
+            y=0
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           } else if(document.getElementById('pax').value=="" && document.getElementById('cax').value!=""){
+            x=300
+            y=300*parseFloat(document.getElementById('cax').value)
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           }
+           else {
+            x=300*parseFloat(document.getElementById('pax').value)
+            y=300*parseFloat(document.getElementById('cax').value)
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           } 
+           if(x<y){
+            document.getElementById('cax').value=document.getElementById('pax').value
+           }else if(x==y){
+            document.getElementById('cax').value=document.getElementById('cax').value-1
+            if( document.getElementById('cax').value <=0){
+                document.getElementById('cax').value=0
+            }
+           }else{
+            var nuPrice=(x-y)+z;
+           price.value=nuPrice.toFixed(2);
+           }
+            }
+        });
+
+        document.getElementById('cax').addEventListener('change',function(){
+            if(!searchFlag){
+                if( document.getElementById('cax').value <=0){
+                document.getElementById('cax').value=0
+            }
+            const priceText=document.getElementById('price');
+            var x,y,z;
+           if(document.getElementById('pax').value=="" && document.getElementById('cax').value==""){
+            x=300;
+            y=0;
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           } else if(document.getElementById('pax').value!="" && document.getElementById('cax').value==""){
+            x=300*parseFloat(document.getElementById('pax').value)
+            y=0
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           } else if(document.getElementById('pax').value=="" && document.getElementById('cax').value!=""){
+            x=300
+            y=300*parseFloat(document.getElementById('cax').value)
+           }
+           else {
+            x=300*parseFloat(document.getElementById('pax').value)
+            y=300*parseFloat(document.getElementById('cax').value)
+            z=parseFloat(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value);
+           } 
+           if(x<y){
+            document.getElementById('cax').value=document.getElementById('pax').value
+           }else if(x==y){
+            document.getElementById('cax').value=document.getElementById('cax').value-1
+            if( document.getElementById('cax').value <=0){
+                document.getElementById('cax').value=0
+            }
+           }else{
+            var nuPrice=(x-y)+z;
+           price.value=nuPrice.toFixed(2);
+           }
+            }
+        });
+  }else{
+    const lock=document.getElementById('price')
+    lock.readOnly=false
+  }
+
+//#endregion
+
+
+//#region reservation control functions
+async function updateAme(){
+        const ameName=document.getElementById('selAmeR').options[selAme.selectedIndex].text;
+        if(ameName !=""){
+            let ameCostf,ameSizef,ameReservdf,ameLeftf
+        try{
+            const response=await fetch(`/searchAme?ameName=${ameName}`);
+            const result=await response.json();
+            if(response.ok){
+                ameCostf=result.ameCost
+                ameSizef=result.ameSize
+                ameReservdf=result.ameReservd
+                ameLeftf=result.ameLeft
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        const ameLeftI=ameLeftf-1
+        if(ameLeftI==0){
+            const ameSizeI="Unavailable"
+        }
+        if(ameLeftI>=0){
+            const up={
+            ameName:ameName,
+            ameSize:ameSizef,
+            ameCost:ameCostf,
+            ameReservd:ameReservdf,
+            ameLeft:ameLeftI
+        }
+        try{
+            const response = await fetch('/updateAme',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(up),
+            });
+            const result=await response.json();
+            if (response.ok){
+                console.log("success")
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+        }else{
+            alert("Please input what to update.");
+        }
+    }
+
+
+let conflict
+async function insertRes(){
+    await searchRA()
+            if(sameDateFlag==true){
+                conflict="there being a conflict with the Schedule"
+            }else if(emptyFlag){
+                conflict=`no more available instances of ${ameE}`
+            }
+            if(sameFlag==true && sameDateFlag==true || emptyFlag==true){
+                alert(`Unable to proceed due to ${conflict}.`)
+            }else{
+    const ID=document.getElementById('resID');
+            const rescID = document.getElementById('username');
+            const rescName = document.getElementById('fullname');
+            const resPax=document.getElementById('pax');
+            const resCax=document.getElementById('cax');
+            const resAmeName=document.getElementById('selAmeR');
+            const resCheckinDate=document.getElementById('check-in');
+            const resCheckoutDate=document.getElementById('check-out')
+            const resBookeDate=document.getElementById('book-in')
+            const resTour=document.getElementById('selTour');
+            const resPayMeth=document.getElementById('selPayMeth');
+            const rescEmail=document.getElementById('email');
+            const rescphono=document.getElementById('phono');
+            const rescPass=document.getElementById('pass');
+            const resPayStat=document.getElementById('selPayStat');
+            const resAppStat=document.getElementById('selAppStat');
+            const resPrice=document.getElementById('price')
+            const resPromo=document.getElementById('selPromo')
+            if(rescID.value==""||rescName.value==""||resPax.value==""||resCax.value==""||resAmeName.value==""||resCheckDate.value=="" || resBookeDate.value==""||resTour.value==""||resPayMeth.value==""||rescphono.value==""||rescPass.value==""||rescEmail.value=="" || resPayStat.value=="" || resAppStat.value=="" || resPrice.value==""){
+                alert("Please fill all the transaction details fields.");
+            }else{
+                        const dt = resCheckDate.valueAsDate.toLocaleDateString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\//g, '');
+        ID.value=rescID.value[0]+rescName.value[0]+dt
+        const datum={
+            resID:ID.value,
+            rescID:rescID.value,
+            rescName:rescName.value,
+            rescEmail:rescEmail.value,
+            rescphono:rescphono.value,
+            rescPass:rescPass.value,
+            resPax:resPax.value,
+            resCax:resCax.value,
+            resAmeName:resAmeName.options[resAmeName.selectedIndex].text,
+            resCheckDate:resCheckDate.value,
+            resBookeDate:resBookeDate.value,
+            resTour:resTour.value,
+            resPrice:resPrice.value,
+            resPromo:resPromo.value,
+            resPayMeth:resPayMeth.value,
+            resPayStat:resPayStat.value,
+            resAppStat:resAppStat.value
+        }
+        try{
+            const response = await fetch('/insertRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                document.getElementById('fomres').reset();
+                location.reload();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+
+                    }
+                }
+    }
+
+let sameFlag,ameS,sameDateFlag,emptyFlag
+async function searchRA(){
+    const ameI = document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].text;
+    try {
+        const response = await fetch('/amenities-data');
+        const result = await response.json();
+
+        if (response.ok) {
+            for (const item of result) {
+                const ame = item.ameName;
+                
+                const motoRes = await fetch(`/searchResAme?resAmeName=${ame}`);
+                const zuttoRes = await motoRes.json();
+                alert(zuttoRes.count)
+                if (motoRes.ok && Array.isArray(zuttoRes.data)) {
+                    for (const res of zuttoRes.data) {
+                        const ameF = res.resAmeName;
+                        const bookF = res.resBookeDate;
+                        console.log(ame + " " + ameI + " " + ameF);
+                        if (ameF == ame && ame == ameI) {
+                            sameFlag = true;
+                            ameS = ameF;
+                            const bookI = document.getElementById('book-in').value;
+                            if (bookF == bookI) {
+                                sameDateFlag = true;
+                            }
+                        }
+                    }
+                }
+                if(ameI==ame && item.ameLeft==0){
+                    emptyFlag=true
+                    ameE=ameI
+                }
+            }
+        }
+    } catch (err) {
+        console.error('Error:', err);
+    }
+    }
+    
+
+    let multiID,subFlag;
+    async function searchR(){
+        const resID=document.getElementById('resID');
+        if(resID.value==""){
+            alert("Please input what you want to search")
+        }else{
+            const resIDf=document.getElementById('resID').value;
+            let rescIDf
+        try{
+            const response=await fetch(`/searchRes?resID=${resIDf}`);
+            const result=await response.json();
+            if(response.ok){
+               document.getElementById('username').value=result.rescID
+               rescIDf=result.rescID
+               document.getElementById('fullname').value=result.rescName
+               document.getElementById('email').value=result.rescEmail
+               document.getElementById('phono').value=result.rescphono
+               document.getElementById('pass').value=result.rescPass
+               document.getElementById('pax').value=result.resPax
+               document.getElementById('cax').value=result.resCax
+               const selA=document.getElementById('selAmeR');
+               const resA=result.resAmeName;
+               for(let i=0; i<selA.options.length; i++){
+                if(selA.options[i].text===resA){
+                    selA.selectedIndex=i
+                    break;
+                }
+               }
+               document.getElementById('default').textContent=result.resAmeName
+               document.getElementById('check-in').value=result.resCheckinDate
+               document.getElementById('check-out').value=result.resCheckoutDate
+               document.getElementById('book-in').value=result.resBookeDate
+               document.getElementById('selTour').value=result.resTour
+               document.getElementById('price').value=result.resPrice
+               document.getElementById('selPromo').value=result.resPromo
+               document.getElementById('selPayMeth').value=result.resPayMeth
+               document.getElementById('selPayStat').value=result.resPayStat
+               document.getElementById('selAppStat').value=result.resAppStat
+               searchFlag=true;
+               const lock=document.getElementById('price')
+               lock.readOnly=false;
+               if(resIDf.length>8){
+                subFlag="Sub Set!";
+               }
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        console.log(rescIDf)
+        const motoRes=await fetch(`/searchResCust?rescID=${rescIDf}`)
+        if(motoRes.ok){
+            const reservData=document.getElementById('reservation-table');
+    reservData.innerHTML='';
+            const zuttoRes=await motoRes.json()
+            if(Array.isArray(zuttoRes)){
+                zuttoRes.forEach(async(item)=>{
+                const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckDate}</td>
+    <td>${item.resBookeDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.rescphono}</td>
+    <td>${item.rescEmail}</td>
+    <td>${item.resPax}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPromo}</td>
+    <td>${item.resPayMeth}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+    multiID="MULTI SET!";
+            })
+            }else{
+                const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${zuttoRes.resCheckDate}</td>
+    <td>${zuttoRes.resBookeDate}</td>
+    <td>${zuttoRes.resID}</td>
+    <td>${zuttoRes.rescID}</td>
+    <td>${zuttoRes.rescName}</td>
+    <td>${zuttoRes.rescphono}</td>
+    <td>${zuttoRes.rescEmail}</td>
+    <td>${zuttoRes.resPax}</td>
+    <td>${zuttoRes.resAmeName}</td>
+    <td>${zuttoRes.resTour}</td>
+    <td>${zuttoRes.resPrice}</td>
+    <td>${zuttoRes.resPromo}</td>
+    <td>${zuttoRes.resPayMeth}</td>
+    <td>${zuttoRes.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+            }
+        }
+        console.log(multiID)
+        console.log(searchFlag)
+        console.log(subFlag)
+        }
+    }
+
+    let appFlag,payFlagS,payFlagM,priceChangeFlag;
+    let appToken,pFSToken,pFMToken,pCFToken,operandToken;
+    let resIdee;
+    async function updateR(){
+        const resID=document.getElementById('resID');
+        if(resID.value==""){
+            alert("Please input what you want to search")
+        }else{
+            const resIDf=document.getElementById('resID').value;
+            let rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckinDatef,resCheckoutDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf,resPromof
+        try{
+            const response=await fetch(`/searchRes?resID=${resIDf}`);
+            const result=await response.json();
+            if(response.ok){
+                rescIDf=result.rescID
+                rescNamef=result.rescName
+                resPaxf=result.resPax
+                resCaxf=result.resCax
+                rescEmailf=result.rescEmail
+                rescpassf=result.rescPass
+                rescphonof=result.rescphono
+                resAmeNamef=result.resAmeName
+                resCheckinDatef=result.resCheckinDate
+                resCheckoutDatef=result.resCheckoutDate
+                resBookDatef=result.resBookeDate
+                resTourf=result.resTour
+                resPricef=result.resPrice;
+                resPromof=result.resPromo
+                resPayMethf=result.resPayMeth
+                resPayStatf=result.resPayStat
+                resAppStatf=result.resAppStat
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        if(document.getElementById('username').value!="" && document.getElementById('username').value!=rescIDf){
+            rescIDf=document.getElementById('username').value
+        }
+        if(document.getElementById('fullname').value!="" && document.getElementById('fullname').value!=rescNamef){
+            rescNamef=document.getElementById('fullname').value
+        }
+        if(document.getElementById('email').value!="" && document.getElementById('email').value!=rescEmailf){
+            rescEmailf=document.getElementById('email').value   
+        }
+        if(document.getElementById('phono').value!="" && document.getElementById('phono').value!=rescphonof){
+            rescphonof=document.getElementById('phono').value
+        }
+        if(document.getElementById('pass').value!="" && document.getElementById('pass').value!=rescpassf){
+            rescpassf=document.getElementById('pass').value
+        }
+        if(document.getElementById('pax').value!="" && document.getElementById('pax').value!=resPaxf){
+            resPaxf=document.getElementById('pax').value
+        }
+        if(document.getElementById('cax').value!="" && document.getElementById('cax').value!=resCaxf){
+            resCaxf=document.getElementById('cax').value
+        }
+        if(document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value!="" && document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].value!=resAmeNamef){
+            resAmeNamef=document.getElementById('selAmeR').options[document.getElementById('selAmeR').selectedIndex].textContent
+        }
+        if(document.getElementById("check-in").value!="" && document.getElementById('check-in').value!=resCheckomDatef){
+            resCheckinDatef=document.getElementById("check-in").value
+        }
+        if(document.getElementById("check-out").value!="" && document.getElementById('check-out').value!=resCheckoutDatef){
+            resCheckoutDatef=document.getElementById("check-out").value
+        }
+        if(document.getElementById('book-in').value!="" && document.getElementById('book-in').value!=resBookDatef){
+            resBookDatef=document.getElementById('book-in').value
+        }
+        if(document.getElementById('selTour').options[document.getElementById('selTour').selectedIndex].text!="" && document.getElementById('selTour').options[document.getElementById('selTour').selectedIndex].text!=resTourf){
+            resTourf=document.getElementById('selTour').options[document.getElementById('selTour').selectedIndex].value
+        }
+        if(document.getElementById('price').value!="" && document.getElementById('price').value!=resPricef){
+            if(multiID!=undefined && subFlag!=undefined){
+            priceChangeFlag=1;
+            if(document.getElementById('price').value>resPricef){
+                operandToken="addition"
+                pCFToken=parseInt(document.getElementById('price').value)-parseInt(resPricef)
+            }else if(document.getElementById('price').value<resPricef){
+                operandToken="subtraction"
+                pCFToken=parseInt(document.getElementById('price').value)-parseInt(resPricef)
+            }
+           } 
+           resPricef=document.getElementById('price').value 
+        }
+
+        if(document.getElementById('selPromo').options[document.getElementById('selPromo').selectedIndex].value!=resPromof){
+            resPromof=document.getElementById('selPromo').options[document.getElementById('selPromo').selectedIndex].value
+        }
+
+        if(document.getElementById('selPayMeth').options[document.getElementById('selPayMeth').selectedIndex].value!="" && document.getElementById('selPayMeth').options[document.getElementById('selPayMeth').selectedIndex].value!=resPayMethf){
+            resPayMethf=document.getElementById('selPayMeth').options[document.getElementById('selPayMeth').selectedIndex].value
+            if(multiID!=undefined){
+                payFlagM=1;
+           }  
+            
+        }
+        if(document.getElementById('selPayStat').options[document.getElementById('selPayStat').selectedIndex].value!="" && document.getElementById('selPayStat').options[document.getElementById('selPayStat').selectedIndex].value!=resPayStatf){
+            resPayStatf=document.getElementById('selPayStat').options[document.getElementById('selPayStat').selectedIndex].value
+            if(multiID!=undefined){
+                payFlagS=1;
+           }  
+            
+        }
+        if(document.getElementById('selAppStat').options[document.getElementById('selAppStat').selectedIndex].value!="" && document.getElementById('selAppStat').options[document.getElementById('selAppStat').selectedIndex].value!=resAppStatf){
+            resAppStatf=document.getElementById('selAppStat').options[document.getElementById('selAppStat').selectedIndex].value
+            if(multiID!=undefined){
+                appFlag=1;
+           }  
+            
+        }
+        const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        console.log(updoot)
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                if(appFlag!=undefined || payFlagM!=undefined || payFlagS!=undefined || priceChangeFlag!=undefined){
+                    const selectAll=confirm(result.message+" would you like the other reservations to be affected?");
+                    if(selectAll){
+                        if(appFlag!=undefined){
+                            appToken=resAppStatf
+                        }else if(payFlagM!=undefined){
+                            pFMToken=resPayMethf
+                        }else if(payFlagS!=undefined){
+                            pFSToken=resPayStatf
+                        }else if(priceChangeFlag!=undefined){
+                            console.log(pCFToken)
+                        }
+                        let raw=document.getElementById('resID').value;
+                        resIdee=raw.slice(0,8)
+                        console.log(resIdee)
+                        return pierceUpdate(rescIDf)
+                    }else{
+                        document.getElementById('fomres')
+                        location.reload();
+                    }
+                }else{
+                alert(result.message);
+                document.getElementById('fomres')
+                location.reload();
+                }
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+    }
+    
+    async function pierceUpdate(rescIDf){
+        if(appFlag!=undefined){
+                            const motoRes=await fetch(`/searchResCust?rescID=${rescIDf}`)
+                            const zuttoRes=await motoRes.json()
+        if(motoRes.ok){
+            let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf,resPromof;
+            zuttoRes.forEach(async(item)=>{
+                resIDf=item.resID
+                rescIDf=item.rescID
+                rescNamef=item.rescName
+                resPaxf=item.resPax
+                resCaxf=item.resCax
+                rescEmailf=item.rescEmail
+                rescpassf=item.rescPass
+                rescphonof=item.rescphono
+                resAmeNamef=item.resAmeName
+                resCheckinDatef=item.resCheckinDate
+                resCheckoutDatef=item.resCheckoutDate
+                resBookDatef=item.resBookeDate
+                resTourf=item.resTour
+                resPricef=item.resPrice;
+                resPromof=item.resPromo;
+                resPayMethf=item.resPayMeth
+                resPayStatf=item.resPayStat
+                resAppStatf=appToken
+                const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            });
+        }
+        }else if(payFlagM!=undefined){
+            let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckinDatef,resCheckoutDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf;
+            const motoRes=await fetch(`/searchResCust?rescID=${rescIDf}`)
+            const zuttoRes=await motoRes.json()
+        if(motoRes.ok){
+            let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf,resPromof;
+            zuttoRes.forEach(async(item)=>{
+                resIDf=item.resID
+                rescIDf=item.rescID
+                rescNamef=item.rescName
+                resPaxf=item.resPax
+                resCaxf=item.resCax
+                rescEmailf=item.rescEmail
+                rescpassf=item.rescPass
+                rescphonof=item.rescphono
+                resAmeNamef=item.resAmeName
+                resCheckinDatef=item.resCheckinDate
+                resCheckoutDatef=item.resCheckoutDate
+                resBookDatef=item.resBookeDate
+                resTourf=item.resTour
+                resPricef=item.resPrice;
+                resPromof=item.resPromo;
+                resPayMethf=item.resPayMeth
+                resPayStatf=item.resPayStat
+                resAppStatf=appToken
+                const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            })
+        }
+        }else if(payFlagS!=undefined){
+            let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckinDatef,resCheckoutDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf,resPromof
+            const motoRes=await fetch(`/searchResCust?rescID=${rescIDf}`)
+            const zuttoRes=await motoRes.json()
+        if(motoRes.ok){
+            zuttoRes.forEach(async(item)=>{
+                resIDf=item.resID
+                rescIDf=item.rescID
+                rescNamef=item.rescName
+                resPaxf=item.resPax
+                resCaxf=item.resCax
+                rescEmailf=item.rescEmail
+                rescpassf=item.rescPass
+                rescphonof=item.rescphono
+                resAmeNamef=item.resAmeName
+                resCheckinDatef=item.resCheckinDate
+                resCheckoutDatef=item.resCheckoutDate
+                resBookDatef=item.resBookeDate
+                resTourf=item.resTour
+                resPricef=item.resPrice;
+                resPromof=item.resPromo
+                resPayMethf=item.resPayMeth
+                resPayStatf=pFSToken
+                resAppStatf=item.resAppStat
+                const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromo,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            })
+        }
+         }else if(priceChangeFlag!=undefined){
+            let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckinDatef,resCheckoutDatef,resBookDatef,resTourf,resPricef,resPayMethf,resPayStatf,newprice,resAppStatf,resPromof;
+            const motoRes=await fetch(`/searchRes?resID=${resIdee}`)
+            const zuttoRes=await motoRes.json()
+        if(motoRes.ok){
+                resIDf=zuttoRes.resID
+                rescIDf=zuttoRes.rescID
+                rescNamef=zuttoRes.rescName
+                resPaxf=zuttoRes.resPax
+                resCaxf=zuttoRes.resCax
+                rescEmailf=zuttoRes.rescEmail
+                rescpassf=zuttoRes.rescPass
+                rescphonof=zuttoRes.rescphono
+                resAmeNamef=zuttoRes.resAmeName
+                resCheckinDatef=zuttoRes.resCheckinDate
+                resCheckoutDatef=zuttoRes.resCheckoutDate
+                resBookDatef=zuttoRes.resBookeDate
+                resTourf=zuttoRes.resTour
+                resPricef=zuttoRes.resPrice
+                resPromof=zuttoRes.resPromo
+                resPayMethf=zuttoRes.resPayMeth
+                resPayStatf=zuttoRes.resPayStat
+                resAppStatf=zuttoRes.resAppStat
+        }
+        newprice=parseInt(resPricef)+parseInt(pCFToken)
+        console.log(newprice)
+                const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckDate:resCheckDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:newprice,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+                        }
+    }
+
+    async function deletR(){
+        if(multiID!=undefined || subFlag==undefined){
+                    const selectAll = confirm("Would you like to cancel everything related to that reservation?");
+                    if(selectAll){
+                        return pierceDelete()
+                    }else{
+                        const fomdat=new FormData(document.getElementById('fomres'));
+        const datum=Object.fromEntries(fomdat.entries());
+        try{
+            const response = await fetch('/deletRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                    document.getElementById('fomres').reset();
+            location.reload();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While removing The Record.');
+        }
+                    }
+                }
+                else{
+                    const fomdat=new FormData(document.getElementById('fomres'));
+        const datum=Object.fromEntries(fomdat.entries());
+        try{
+            const response = await fetch('/deletRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                    document.getElementById('fomres').reset();
+            location.reload();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While removing The Record.');
+        }    
+                }
+        
+    }
+
+    async function pierceDelete(){
+        await searchR()
+        const cust=document.getElementById('username').value
+        try{
+            const motoRes=await fetch(`/searchResCust?rescID=${cust}`)
+            const zuttoRes=await motoRes.json()
+            if(motoRes.ok){
+                let resIDf
+                zuttoRes.forEach(async(item)=>{
+                    resIDf=item.resID
+                    const delet={
+                        resID:resIDf
+                    }
+                    try{
+            const response = await fetch('/deletRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(delet),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                    document.getElementById('fomres').reset();
+            location.reload();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While removing The Record.');
+        }    
+                })
+            }
+        }catch(err){
+
+        }
+    } 
+
+//#endregion
+
+    </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
+</html>

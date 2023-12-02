@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home Page</title>
+    <style>
+@media print{
+    header,button{display:none}
+    select{
+        border: none;
+        outline: none;
+    }
+}
+body {
+    font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            background-image: url('tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+           
+   
+        }
+        h1{
+margin-top: 30px;
+color: #0a0a0a;
+}
+h2{
+    color: #080808;
+}
+        header {
+           background-color: #007BFF;
+           color: #fff;
+          text-align: center;
+          padding: 5px ;
+        }
+        header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: -90%;
+}
+
+        header a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        
+        .table-container {
+            width: 95%;
+            height: 500px;
+            margin: 0 auto;  
+            padding: 5px;
+            overflow-x: auto;
+            overflow-y: auto;
+            border-radius: 10px;
+            backdrop-filter: blur(100%);
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+
+        table {
+            width:90%;
+            margin: 0 auto; 
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: justify;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+        select {
+            width: 25%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 0px solid #ccc;
+            border-radius: 4px;
+        }
+        .btn {
+            padding: 10px 30px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="5.png" alt="logo">
+        <div class="styleRyle">
+            </div>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminMembers.html">Member Accounts</a>
+        <a href= "AdminTransaction.html">Transaction</a>
+        <a href="AdminSchedule.html">Schedule</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminPromos.html">Promos</a>
+        <a href="AdminAmenities.html">Amenities</a>
+        <a href="checkin.html">Check-In A Customer</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+    <h1>Tubigan Garden Resort</h1>
+    <h2>Business Report</h2>
+    <div class="container">
+        <select id="FilterA">
+            <option>NO FILTER</option>
+            <option value="Payment Status">Payment Status</option>
+            <option value="Reservation Status">Reservation Status</option>
+            <option value="Sales">Sales</option>
+            <option value="Chosen Amenities">Chosen Amenities</option>
+        </select>
+        <select id="FilterB">
+            <option></option>
+        </select>
+        <div class="table-container">
+            <table id="datum">
+                <thead id="dataHead">
+                    <th>Check In Date</th>
+                    <th>Check Out Date</th>
+                    <th>Reservation ID</th>
+                    <th>Customer Name</th>
+                    <th>Chosen Amenities</th>
+                    <th>Touring Package</th>
+                    <th>Total Price</th>
+                    <th>Running Balance</th>
+                    <th>Payment Status</th>
+                    <th>Reservation Status</th>
+                </thead>
+                <tbody id="dataBody">
+                    <!--We both know how this goes.-->
+                </tbody>
+            </table>
+        </div>
+        <button class="btn" onclick="printo()">Print</button>
+    </div>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+    <script>
+        const dt=new Date
+        var monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+
+//#region Data-Fillers Native
+fetch('/reservation-data').then(async response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(async data =>{
+    const reservData=document.getElementById('dataBody');
+    let wha=0
+    for (const item of data) {
+        let huh=item.resID
+        let runBal=0
+        if (huh.length<=8){
+            try{
+                const RunBalCheck=await fetch(`/searchRun?runresID=${huh}`)
+            const RunBalDat=await RunBalCheck.json()
+            if(RunBalCheck.ok){
+                console.log(RunBalDat.runresBal)
+                runBal=runBal+parseInt(RunBalDat.runresBal)
+                const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${runBal}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+            }else{
+                const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${runBal}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+            }
+            
+}catch(err){
+    console.error('Error fetching RunBalCheck data:', err);
+            }
+        }
+    }
+  })
+
+  fetch('/reservation-data-r').then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data =>{
+    const reservData=document.getElementById('dataBody');
+    let wha=0
+    data.data.forEach(item=>{
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${0}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        
+    })
+  })
+//#endregion
+//#region Data-Fillers CallFunctions
+async function resData(){
+    const response=await fetch('/reservation-data')
+    const result=await response.json()
+    if(response.ok){
+        const reservData=document.getElementById('dataBody');
+    let wha=0
+    console.log(result)
+    if(Array.isArray(result)){
+        console.log("is array")
+        for(const item of result){
+            console.log(item.resID)
+        let huh=item.resID
+        let runBal=0
+        if (huh.length<=8){
+            try{
+                const RunBalCheck=await fetch(`/searchRun?runresID=${huh}`)
+            const RunBalDat=await RunBalCheck.json()
+            if(RunBalCheck.ok){
+                console.log(RunBalDat.runresBal)
+                runBal=runBal+parseInt(RunBalDat.runresBal)
+                const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${runBal}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+            }else{
+                const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${runBal}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+            }
+            
+}catch(err){
+    console.error('Error fetching RunBalCheck data:', error);
+            }
+        }
+    }
+    }
+    
+    }
+} 
+
+async function resDataR(){
+    fetch('/reservation-data-r').then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data =>{
+    const reservData=document.getElementById('dataBody');
+    let wha=0
+    data.data.forEach(item=>{
+        let huh=item.resID
+        if (huh.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${0}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }else{
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${0}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }
+    })
+  })
+} 
+
+//#endregion
+    document.getElementById('FilterA').addEventListener('change',function(){
+        const filterA=document.getElementById('FilterA')
+        const head=document.getElementById('dataHead')
+        if(filterA.options[filterA.selectedIndex].textContent=="NO FILTER"){
+            const reservData=document.getElementById('dataBody');
+            reservData.innerHTML=``
+            document.getElementById('FilterB').innerHTML=''
+            head.innerHTML=''
+            const rh=document.createElement('tr')
+            rh.innerHTML=`
+            <th>Check In Date</th>
+            <th>Check Out Date</th>
+            <th>Reservation ID</th>
+            <th>Customer Name</th>
+            <th>Chosen Amenities</th>
+            <th>Touring Package</th>
+            <th>Total Price</th>
+            <th>Running Balance</th>
+            <th>Payment Status</th>
+            <th>Reservation Status</th>
+            `
+            const opE=document.createElement('option')
+            opE.textContent=""
+            opE.value=""
+            document.getElementById('FilterB').appendChild(opE)
+            head.appendChild(rh)
+            resData()
+            resDataR()
+        }else if(filterA.options[filterA.selectedIndex].textContent=="Payment Status"){
+            document.getElementById('FilterB').innerHTML=''
+            head.innerHTML=''
+            const rh=document.createElement('tr')
+            rh.innerHTML=`
+            <th>Check In Date</th>
+            <th>Check Out Date</th>
+            <th>Reservation ID</th>
+            <th>Customer Name</th>
+            <th>Chosen Amenities</th>
+            <th>Touring Package</th>
+            <th>Total Price</th>
+            <th>Running Balance</th>
+            <th>Payment Status</th>
+            <th>Reservation Status</th>
+            `
+            const opA=document.createElement('option')
+            opA.textContent="Paid"
+            opA.value="Paid"
+            const opC=document.createElement('option')
+            opC.textContent="Unpaid"
+            opC.value="Unpaid"
+            const opB=document.createElement('option')
+            opB.textContent="Fully Paid"
+            opB.value="Fully Paid"
+            const opE=document.createElement('option')
+            opE.textContent=""
+            opE.value=""
+            document.getElementById('FilterB').appendChild(opE)
+            document.getElementById('FilterB').appendChild(opA)
+            document.getElementById('FilterB').appendChild(opB)
+            document.getElementById('FilterB').appendChild(opC)
+            head.appendChild(rh)
+        }else if(filterA.options[filterA.selectedIndex].textContent=="Reservation Status"){
+            document.getElementById('FilterB').innerHTML=''
+            head.innerHTML=''
+            const rh=document.createElement('tr')
+            rh.innerHTML=`
+            <th>Check In Date</th>
+            <th>Check Out Date</th>
+            <th>Reservation ID</th>
+            <th>Customer Name</th>
+            <th>Chosen Amenities</th>
+            <th>Touring Package</th>
+            <th>Total Price</th>
+            <th>Running Balance</th>
+            <th>Payment Status</th>
+            <th>Reservation Status</th>
+            `
+            const opA=document.createElement('option')
+            opA.textContent="Checked In"
+            opA.value="Checked In"
+            const opB=document.createElement('option')
+            opB.textContent="Pending"
+            opB.value="Pending"
+            const opC=document.createElement('option')
+            opC.textContent="Checked Out"
+            opC.value="Checked Out"
+            const opE=document.createElement('option')
+            opE.textContent=""
+            opE.value=""
+            const opD=document.createElement('option')
+            opD.textContent="Approved"
+            opD.value="Approved"
+            document.getElementById('FilterB').appendChild(opE)
+            document.getElementById('FilterB').appendChild(opA)
+            document.getElementById('FilterB').appendChild(opC)
+            document.getElementById('FilterB').appendChild(opB)
+            head.appendChild(rh)
+        }else if(filterA.options[filterA.selectedIndex].textContent=="Sales"){
+            document.getElementById('FilterB').innerHTML=''
+            head.innerHTML=''
+            const rh=document.createElement('tr')
+            rh.innerHTML=`
+            <th>From</th>
+            <th>To</th>
+            <th>Total Price</th>
+            <th>Total Reservations</th>
+            `
+            const opA=document.createElement('option')
+            opA.textContent="Daily"
+            opA.value="Daily"
+            const opB=document.createElement('option')
+            opB.textContent="Weekly"
+            opB.value="Weekly"
+            const opC=document.createElement('option')
+            opC.textContent="Monthly"
+            opC.value="Monthly"
+            const opD=document.createElement('option')
+            opD.textContent="Yearly"
+            opD.value="Yearly"
+            const opE=document.createElement('option')
+            opE.textContent=""
+            opE.value=""
+            document.getElementById('FilterB').appendChild(opE)
+            document.getElementById('FilterB').appendChild(opA)
+            document.getElementById('FilterB').appendChild(opB)
+            document.getElementById('FilterB').appendChild(opC)
+            document.getElementById('FilterB').appendChild(opD)
+            head.appendChild(rh)
+        }else if(filterA.options[filterA.selectedIndex].textContent=="Chosen Amenities"){
+            document.getElementById('FilterB').innerHTML=''
+            document.getElementById('FilterB').innerHTML=''
+            head.innerHTML=''
+            const rh=document.createElement('tr')
+            rh.innerHTML=`
+            <th>Check In Date</th>
+            <th>Check Out Date</th>
+            <th>Reservation ID</th>
+            <th>Customer Name</th>
+            <th>Chosen Amenities</th>
+            <th>Touring Package</th>
+            <th>Total Price</th>
+            <th>Running Balance</th>
+            <th>Payment Status</th>
+            <th>Reservation Status</th>
+            `
+            head.appendChild(rh)
+            document.getElementById('FilterB').innerHTML=''
+            const opE=document.createElement('option')
+            opE.textContent=""
+            opE.value=""
+            document.getElementById('FilterB').appendChild(opE)
+            fetch('/amenities-data')
+            .then(response => {
+                if (response.ok) {
+                    return response.json(); 
+                } else {
+                    throw new Error('Error fetching data');
+                }
+            })
+            .then(data => {
+                data.forEach(item => {
+                    const option = document.createElement('option');
+                    option.value = "amenityFilter" 
+                    option.textContent = item.ameName; 
+                    document.getElementById('FilterB').appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        }
+    })
+
+    document.getElementById('FilterB').addEventListener('change',function(){
+            searchFilter()
+        })
+
+    async function searchFilter(){
+        const what=document.getElementById('FilterB').options[document.getElementById('FilterB').selectedIndex].value
+        const huh=document.getElementById('FilterB').options[document.getElementById('FilterB').selectedIndex].textContent
+        const reservData=document.getElementById('dataBody');
+        if(what=="Paid" || what=="Fully Paid" || what=="Unpaid"){
+            const datum={
+                resHuh:what,
+                resPayStat:what
+            }
+            const look=new URLSearchParams(datum)
+            const response=await fetch(`/searchRes-Filter?${look}`)
+            const result=await response.json()
+            if(response.ok){
+                console.log(result)
+                reservData.innerHTML=``
+                let BFlag=result.transB
+                let id=result.data.resID
+                console.log(BFlag)
+                console.log(id)
+                if(Array.isArray(result.data)){
+                    result.data.forEach(item=>{
+                    let id=item.resID
+                    let BFlag=result.transB
+                    console.log(BFlag)
+                    if (id.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }else if(BFlag){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }
+                })
+                }else{
+                    if (id.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.data.resCheckinDate}</td>
+    <td>${result.data.resCheckoutDate}</td>
+    <td>${result.data.resID}</td>
+    <td>${result.data.rescName}</td>
+    <td>${result.data.resAmeName}</td>
+    <td>${result.data.resTour}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPayStat}</td>
+    <td>${result.data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+                }else if(BFlag){
+                    const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.data.resCheckinDate}</td>
+    <td>${result.data.resCheckoutDate}</td>
+    <td>${result.data.resID}</td>
+    <td>${result.data.rescName}</td>
+    <td>${result.data.resAmeName}</td>
+    <td>${result.data.resTour}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPayStat}</td>
+    <td>${result.data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+                }
+            }
+        }else{
+            reservData.innerHTML=``
+        }
+        }else if(what=="Approved"||what=="Pending"||what=="Checked In" || what=="Checked Out"){
+            const datum={
+                resHuh:what,
+                resAppStat:what
+            }
+            const look=new URLSearchParams(datum)
+            const response=await fetch(`/searchRes-Filter?${look}`)
+            const result=await response.json()
+            if(response.ok){
+                console.log(result)
+                reservData.innerHTML=``
+                let BFlag=result.transB
+                let id=result.data.resID
+                console.log(BFlag)
+                console.log(id)
+                if(Array.isArray(result.data)){
+                    result.data.forEach(item=>{
+                    let id=item.resID
+                    let BFlag=result.transB
+                    console.log(BFlag)
+                    if (id.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }else if(BFlag){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }
+                })
+                }else{
+                    if (id.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.data.resCheckinDate}</td>
+    <td>${result.data.resCheckoutDate}</td>
+    <td>${result.data.resID}</td>
+    <td>${result.data.rescName}</td>
+    <td>${result.data.resAmeName}</td>
+    <td>${result.data.resTour}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPayStat}</td>
+    <td>${result.data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+                }else if(BFlag){
+                    const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.data.resCheckinDate}</td>
+    <td>${result.data.resCheckoutDate}</td>
+    <td>${result.data.resID}</td>
+    <td>${result.data.rescName}</td>
+    <td>${result.data.resAmeName}</td>
+    <td>${result.data.resTour}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPayStat}</td>
+    <td>${result.data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+                }
+            }
+        }else{
+            reservData.innerHTML=``
+        }
+        }else if(what=="amenityFilter"){
+            const datum={
+                resHuh:huh,
+                resAmeName:huh
+            }
+            const look=new URLSearchParams(datum)
+            const response=await fetch(`/searchRes-Filter?${look}`)
+            const result=await response.json()
+            if(response.ok){
+                console.log(result)
+                reservData.innerHTML=``
+                let BFlag=result.transB
+                let id=result.data.resID
+                console.log(BFlag)
+                console.log(id)
+                if(Array.isArray(result.data)){
+                    result.data.forEach(item=>{
+                    let id=item.resID
+                    let BFlag=result.transB
+                    console.log(BFlag)
+                    if (id.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }else if(BFlag){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPrice}</td>
+    <td>${item.resPayStat}</td>
+    <td>${item.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+        }
+                })
+                }else{
+                    if (id.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.data.resCheckinDate}</td>
+    <td>${result.data.resCheckoutDate}</td>
+    <td>${result.data.resID}</td>
+    <td>${result.data.rescName}</td>
+    <td>${result.data.resAmeName}</td>
+    <td>${result.data.resTour}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPayStat}</td>
+    <td>${result.data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+                }else if(BFlag){
+                    const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.data.resCheckinDate}</td>
+    <td>${result.data.resCheckoutDate}</td>
+    <td>${result.data.resID}</td>
+    <td>${result.data.rescName}</td>
+    <td>${result.data.resAmeName}</td>
+    <td>${result.data.resTour}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPrice}</td>
+    <td>${result.data.resPayStat}</td>
+    <td>${result.data.resAppStat}</td>
+    `;
+    reservData.appendChild(r);
+                }
+            }
+        }else{
+            reservData.innerHTML=``
+        }
+    }else if (what == "Daily" || what == "Weekly" || what == "Monthly" || what == "Yearly") {
+  const currentDate = new Date();
+  let startDate, endDate;
+
+  if (what === "Daily") {
+    startDate = new Date(currentDate);
+    endDate = new Date(currentDate);
+    endDate.setDate(endDate.getDate() + 1);
+  } else if (what === "Weekly") {
+    startDate = new Date(currentDate);
+    endDate = new Date(currentDate);
+    endDate.setDate(endDate.getDate() + 7);
+  } else if (what === "Monthly") {
+    startDate = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
+    endDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 0);
+  } else if (what === "Yearly") {
+    startDate = new Date(currentDate.getFullYear(), 0, 1);
+    endDate = new Date(currentDate.getFullYear(), 11, 31);
+  }
+
+  const datum = {
+    resHuh: what,
+    resTime: what,
+    startDate: startDate.toISOString(),
+    endDate: endDate.toISOString(),
+  };
+
+  const look = new URLSearchParams(datum);
+  const response = await fetch(`/searchRes-Filter?${look}`);
+  const result=await response.json()
+  reservData.innerHTML=``
+  if(response.ok){
+                console.log(result)
+                reservData.innerHTML=``
+                let BFlag=result.transB
+                let id=result.data.resID
+                let totalIncome=0
+                let totalNum=0
+                console.log(BFlag)
+                console.log(id)
+                if(Array.isArray(result.data)){
+                    result.data.forEach(item=>{
+                    let id=item.resID
+                    let BFlag=result.transB
+                    console.log(BFlag)
+                    if (id.length<=8){
+                        totalIncome=totalIncome+parseInt(item.resPrice)
+                        totalNum=totalNum+1
+                    }else if(BFlag){
+                        totalIncome=totalIncome+parseInt(item.resPrice)
+                        totalNum=totalNum+1
+                    }
+                })
+                const r=document.createElement('tr');
+                r.innerHTML=`
+                <td>${result.startDate}</td>
+                <td>${result.endDate}</td>
+                <td>${totalIncome}</td>
+                <td>${totalNum}</td>
+                `;
+                    reservData.appendChild(r);
+                }else{
+                    if (id.length<=8){
+                        totalIncome=totalIncome+parseInt(item.resPrice)
+                        totalNum=totalNum+1
+    reservData.appendChild(r);
+                }else if(BFlag){
+                        totalIncome=totalIncome+parseInt(item.resPrice)
+                        totalNum=totalNum+1
+                }
+                const r=document.createElement('tr');
+                r.innerHTML=`
+                <td>${result.startDate}</td>
+                <td>${result.endDate}</td>
+                <td>${totalIncome}</td>
+                <td>${totalNum}</td>
+                `;
+                    reservData.appendChild(r);
+            }
+        }else{
+            reservData.innerHTML=``
+        }
+}
+}
+
+    function printo(){
+        const sectA=document.getElementById('FilterA').value
+        const sectB=document.getElementById('FilterB').value
+        const content=document.getElementById('datum').outerHTML
+        fetch('/generate-pdf', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ sectA,sectB, content }),
+      })
+      .then(response => response.text())
+      .then(message => {
+        console.log(message);
+        alert('PDF report generated successfully.');
+      })
+      .catch(error => {
+        console.error('Error generating PDF:', error);
+        alert('Error generating PDF. Please try again.');
+      });
+    }
+    </script>
+</body>

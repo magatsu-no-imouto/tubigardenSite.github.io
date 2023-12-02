@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Members Page</title>
+    <style>
+
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    }
+
+        header {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    }
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: -90%;
+}
+        header a {
+    display: inline-block;
+    background-color: #fff;
+    color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            background-image: url('tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+
+        h1{
+margin-top: 30px;
+color: #080808;
+}
+        form {
+            border: px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+
+        }
+        input,
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            width: 95%;
+            height: 200px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <img src="5.png" alt="logo">
+        <div class="styleRyle"></div>
+        <a href= "Admin.html">Home</a>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminTransaction.html">Transaction</a>
+        <a href="AdminSchedule.html">Schedule</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminPromos.html">Promos</a>
+        <a href="AdminAmenities.html">Amenities</a>
+        <a href="checkin.html">Check-In A Customer</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+    <h1>Tubigan Garden Resort</h1>
+    <h2>Admin Accounts</h2>
+    <div class="container">
+    <div class="table-container">
+    <table>
+        <thead>
+        <tr>
+            <th>User ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Account Status</th>
+        </tr>
+    </thead>
+    <tbody id="memba-data">
+        <!--Admin Users will be displayed here-->
+    </tbody>
+    </table>
+</div>
+</div>
+<form id="fomadmin">
+    <div class="container">
+    <label>User ID</label>
+    <input type="text" id="username">
+    <label>FullName</label>
+    <input type="text" id="fullName">
+    <label>Email</label>
+    <input type="text" id="email">
+    <label>Phone Number</label>
+    <input type="number" id="phono" oninput="javascript: if (this.value.length > 11) this.value = this.value.slice(0, 11);">
+    <label>Password</label>
+    <input type="text" id="pass">
+    <label>Account Status</label>
+    <select id="AccApp">
+        <option>Active</option>
+        <option>Deactive</option>
+    </select>
+    <label style="color: transparent; user-select: none;">admin controllll</label>
+    <button type="button" id="update" onclick="updateMem()">Update</button>
+    <button type="button" id="search" onclick="searchMem()">Search</button>
+    <button type="button" id="delete" onclick="deletU()">Delete</button>
+        </form>
+    </div>
+<script>
+    fetch('/member-data').then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  }).then(data => {
+    const aData = document.getElementById('memba-data');
+    aData.innerHTML = '';
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.mID}</td>
+        <td>${item.mName}</td>
+        <td>${item.mPhoNo}</td>
+        <td>${item.mAccApp}</td>
+      `;
+      aData.appendChild(row);
+    });
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+  async function searchMem(){
+    const mID=document.getElementById('username');
+        if(mID.value==""){
+            alert("Please input what you want to search")
+        }else{
+            const mIDf=document.getElementById('username').value;
+        try{
+            const response=await fetch(`/searchMem?mID=${mIDf}`);
+            const result=await response.json();
+            if(response.ok){
+               document.getElementById('fullName').value=result.mName
+               document.getElementById('email').value=result.mEmail
+               document.getElementById('phono').value=result.mPhoNo
+               document.getElementById('pass').value=result.mPass
+               document.getElementById("AccApp").value=result.mAccApp
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        }
+  }
+
+  async function updateMem(){
+    const mID=document.getElementById('username');
+    let mNamef,mPhoNof,mEmailf,mPassf,mAccApp
+        if(mID.value==""){
+            alert("Please input what you want to update")
+        }else{
+            const mIDf=document.getElementById('username').value;
+        try{
+            const response=await fetch(`/searchMem?mID=${mIDf}`);
+            const result=await response.json();
+            if(response.ok){
+               mNamef=result.mName
+               mEmailf=result.mEmail
+               mPhoNof=result.mPhoNo
+               mPassf=result.mPass
+               mAccAppf=result.mAccApp
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        if(document.getElementById('fullName').value!=""){
+            mNamef=document.getElementById('fullName').value
+        }
+        if(document.getElementById('phono').value!=""){
+            mPhoNof=document.getElementById('phono').value
+        }
+        if(document.getElementById('email').value!=""){
+            mEmailf=document.getElementById('email').value
+        }
+        if(document.getElementById('pass').value!=""){
+            mPassf=document.getElementById('pass').value
+        }
+        if(document.getElementById('AccApp').value!=""){
+            mAccAppf=document.getElementById('AccApp').value
+        }
+        const datum={
+            mID:mID.value,
+            mName:mNamef,
+            mEmail:mEmailf,
+            mPass:mPassf,
+            mPhoNo:mPhoNof,
+            mAccApp:mAccAppf
+        }
+        try{
+            const response = await fetch('/updateMem',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            document.getElementById('fomadmin').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+  }
+  async function deletU(){
+    const mID=document.getElementById('username').value;
+        const datum={mID:mID}
+        try{
+            const response = await fetch('/deletMem',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            document.getElementById('fomadmin').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR!', err);
+            alert('An Error Occured While removing The Record.');
+        }
+    }
+        </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>

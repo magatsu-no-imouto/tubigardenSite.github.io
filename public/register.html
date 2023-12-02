@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <style>
+         body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    background-image: url('Tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+    }
+
+    header.style1 {
+          display: flex;
+          background-color: #007BFF;
+          color: #fff;
+          text-align: center;
+          padding: 5px ;
+        }
+         
+        div.styleRyle {
+        padding: 75px 0px 0px 355px;
+    }
+
+        header > img {
+            height: 200px;
+            width: 250px; 
+        margin-right: 50px;}
+
+        header.style1 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        header.style2 {
+           background-color: #7cafc9;
+           color: #fff;
+          text-align: center;
+          padding: 5px ;
+        }
+        header.style2 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        
+	    header.style2 nav{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        header.style2 nav a{
+            display: inline-block;
+          padding: 10px 20px;
+          text-decoration: none;
+          color: #ff0202;
+          background-color: rgb(226, 226, 83);
+          border-radius: 35px;
+          margin: 0 10px;
+          transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+        header.style2 nav a:hover{
+          background-color: #007BFF;
+
+        }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 175px;
+        }
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: auto;
+            margin-right: auto;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            width: 350px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input.input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        p{
+            margin-top: 10px ;
+            margin-right:20px;
+        }
+       
+</style>
+
+    
+</head>
+<body>
+    <header class="style1">
+       <img src="5.png" alt="logo">
+       <div class="styleRyle">
+       
+    </div>
+
+    </header>
+    
+    <header class="style2">
+       <nav>
+     
+        <a href= "Tubigan Garden Resort.html">Home</a>
+        <a href= "Amenity.html">Amenities</a>
+        <a href= "contacts.html">Contact Us</a>
+    </nav>
+</header>
+
+
+    <div class="register-container">
+        <h2>Create an Account</h2>
+       <form id="fomMem">
+        <label id="l1">Username:</label>
+            <input class="input" type="text" id="username" name="mID" required>
+            <label id="l2">Name:</label>
+            <input class="input" type="text" id="fullname" name="rescName" required>
+            <label id="l3">Email:</label>
+            <input class="input" type="email" id="email" name="rescEmail" required>
+            <label id="l4">Phone Number:</label>
+            <input class="input" type="number" id="phono" name="rescphono" required oninput="javascript: if (this.value.length > 11) this.value = this.value.slice(0, 11);">
+            <label id="l5">Password</label>
+            <input class="input" type="password" id="pass" name="rescPass">
+            <label id="l6">Confirm Password</label>
+            <input class="input" type="password" id="passConf">
+<p>
+  <input type="checkbox" id="myCheckbox" value="1">
+  Proceeding, you agree to Tubigan Garden Resort
+  <a href="contacts.html">Terms of Service</a> and
+  <a href="contacts.html">Privacy Policy</a>
+</p>
+            <button type="button" onclick="insertMem()">Create an account</button>
+            <p>Already have an account? <a href= "LogIn.html">LogIn</a></p>
+            
+        </form>
+    </div>
+    <script>
+async function insertMem(){
+            const ID=document.getElementById('username')
+            const Name=document.getElementById('fullname')
+            const Email=document.getElementById('email')
+            const PhoNo=document.getElementById('phono')
+            const Pass=document.getElementById('pass')
+            const confPass=document.getElementById('passConf').value
+            const check=document.getElementById('myCheckbox')
+            if(ID.value!=""&&Name.value!=""&&Email.value!=""&&PhoNo.value!=""&&Pass.value==confPass&&check.checked){
+                const datum={
+            mID:ID.value,
+            mName:Name.value,
+            mEmail:Email.value,
+            mPass:Pass.value,
+            mPhoNo:PhoNo.value,
+            mAccApp:"Active"
+        }
+        try{
+            const response = await fetch('/insertMem',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                document.getElementById('fomMem').reset();
+                window.location.replace('logIn.html')
+            }else{
+                alert(result.error);
+            }
+            
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            }else{
+                alert("Please fill in all fields!")
+            }
+        
+    }
+    </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
+</html>

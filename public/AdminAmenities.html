@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amenities Page - Admin </title>
+    <style>
+    
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    }
+
+        header {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    }
+
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: -90%;
+}
+
+        header a {
+    display: inline-block;
+    background-color: #fff;
+    color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            background-image: url('tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+
+        h1{
+margin-top: 30px;
+color: #050505;
+}
+        form {
+            border: px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+
+        }
+        input,
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            width: 95%;
+            height: 200px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+
+</style>
+
+    
+</head>
+<body>
+    
+    <header>
+        
+ <img src="5.png" alt="logo">
+ <div class="styleRyle">
+    </div>
+        <a href= "Admin.html">Home</a>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminMembers.html">Member Accounts</a>
+        <a href="AdminSchedule.html">Schedule</a>
+        <a href= "AdminTransaction.html">Transactions</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminPromos.html">Promos</a>
+        <a href="checkin.html">Check-In A Customer</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+    <h1> Amenities</h1>
+    <div class="container">
+        <div class="table-container">
+        <table align="center" border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Cost</th>
+                    <th>Reservation Status</th>
+                </tr>
+            </thead>
+            <tbody id="amenity-data">
+                <!-- amenity data will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+        <form id="fomame">
+            <label for="AmeName">Amenity Name:</label>
+            <input type="text" id="txtAmeName" name="ameName" required>
+            <label for="size">Capacity</label>
+            <input type="number" id="numAmeSize" name="ameSize" required>
+            <label for="cost">Cost:</label>
+            <input type="number" id="numAmeCost" name="ameCost" required>
+            <label for="ame">Availability</label>
+            <select id="selAmeRes" name="ameReservd" required>
+                <option value=""></option>
+                <option value="Unavailable">Unavailable</option>
+                <option value="Available">Available</option>
+            </select>
+            <label>Cottages Left</label>
+            <input type="number" id="numAmeLef" name="ameLeft" required>
+            <button type="button" id="addAme" onclick="insertAme()">Add Amenity</button>
+            <button type="button" id="updootAme" onclick="updateAme()">Update Amenity</button>
+            <button type="button" id="findAme" onclick="searchAme()">Search Amenity</button>
+            <button type="button" id="deleteAme" onclick="deletAme()">Remove Amenity</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript code to handle button actions and update the table goes here
+ //#region Table Populators
+ fetch('/amenities-data')
+  .then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data => {
+    const ameData = document.getElementById('amenity-data');
+    ameData.innerHTML = '';
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${item.ameName}</td>
+        <td>${item.ameSize}</td>
+        <td>${item.ameCost}</td>
+        <td>${item.ameReservd}</td>
+      `;
+      ameData.appendChild(row);
+    });
+    
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+//#endregion        
+
+//#region table functions
+
+async function insertAme(){
+    const ameName=document.getElementById('txtAmeName')
+        const ameCost=document.getElementById('numAmeCost')
+        const ameSize=document.getElementById('numAmeSize')
+        const ameRes=document.getElementById('selAmeRes')
+        const ameLeft=document.getElementById('numAmeLef')
+        if(ameName.value=="" || ameCost.value=="" || ameSize.value=="" || ameRes.value=="" || ameLeft.value==""){
+            alert("Please fill up the entire field");
+        }else{
+                alert("Validated for Add!")
+                const fomdat=new FormData(document.getElementById('fomame'));
+        const datum=Object.fromEntries(fomdat.entries());
+        try{
+            const response = await fetch('/insertAme',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                document.getElementById('fomame').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+    }
+
+async function searchAme(){
+    const ameName=document.getElementById('txtAmeName');
+        if(ameName.value !=""){
+        const ameName=document.getElementById('txtAmeName').value;
+        try{
+            const response=await fetch(`/searchAme?ameName=${ameName}`);
+            const result=await response.json();
+            if(response.ok){
+                document.getElementById('numAmeCost').value=result.ameCost
+                document.getElementById('numAmeSize').value=result.ameSize
+                document.getElementById('selAmeRes').value=result.ameReservd
+                document.getElementById('numAmeLef').value=result.ameLeft
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+    }else{
+            alert("Please input what to search.");
+        }    
+}
+    async function updateAme(){
+        const ameName=document.getElementById('txtAmeName');
+        if(ameName.value !=""){
+            const ameNamef=ameName.value;
+            let ameCostf,ameSizef,ameReservdf,ameLeftf
+        try{
+            const response=await fetch(`/searchAme?ameName=${ameNamef}`);
+            const result=await response.json();
+            if(response.ok){
+                ameCostf=result.ameCost
+                ameSizef=result.ameSize
+                ameReservdf=result.ameReservd
+                ameLeftf=result.ameLeft
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        if(document.getElementById("numAmeSize").value!=""){
+            ameSizef=document.getElementById("numAmeSize").value
+        }
+        if(document.getElementById("numAmeCost").value!=""){
+            ameCostf=document.getElementById("numAmeCost").value
+        }
+        if(document.getElementById('selAmeRes').options[document.getElementById('selAmeRes').selectedIndex].value=""){
+            ameReservdf=document.getElementById('selAmeRes').options[document.getElementById('selAmeRes').selectedIndex].text
+        }
+        if(document.getElementById('numAmeLef').value=""){
+            ameLeftf=document.getElementById('numAmeLef').value
+        }
+        const up={
+            ameName:document.getElementById('txtAmeName').value,
+            ameSize:ameSizef,
+            ameCost:ameCostf,
+            ameReservd:ameReservdf,
+            ameLeft:ameLeftf
+        }
+        try{
+            const response = await fetch('/updateAme',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(up),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            document.getElementById('fomame').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }else{
+            alert("Please input what to update.");
+        }
+    }
+    
+    async function deletAme(){
+        const ameName=document.getElementById('txtAmeName');
+        if(ameName.value !=""){
+        const fomdat=new FormData(document.getElementById('fomame'));
+        const datum=Object.fromEntries(fomdat.entries());
+        try{
+            const response = await fetch('/deletAme',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            document.getElementById('fomame').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While removing The Record.');
+        }
+    }
+        else{
+            alert("Please input what to remove.");
+        }
+    }
+
+//#endregion
+
+    </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
+</html>

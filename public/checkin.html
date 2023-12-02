@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check In</title>
+    <style>
+         body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    }
+
+        header {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    }
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: -90%;
+}
+
+        header a {
+    display: inline-block;
+    background-color: #fff;
+    color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+    background-image: url('Tubigan.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+
+        h1{
+margin-top: 30px;
+color: #080808;
+}
+        form {
+            border: px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+
+        }
+        input,
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            width: 95%;
+            height: 200px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+
+    </style>
+</head>
+<body>
+    <header>
+        <img src="5.png" alt="logo">
+        <div class="styleRyle"></div>
+        <a href="Admin.html">Home</a>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminMembers.html">Member Accounts</a>
+        <a href= "AdminTransaction.html">Transaction</a>
+        <a href="AdminSchedule.html">Schedule</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminAmenities.html">Amenities</a>
+        <a href= "LogIn.html">Log Out</a>
+    </header>
+
+    <div class="container">
+        <h1>Tubigan Garden Resort Reservation Schedule</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Check In Date</th>
+                        <th>Check out Date</th>
+                        <th>Reservation ID</th>
+                        <th>Username</th>
+                        <th>Full Name</th>
+                        <th>Party Size</th>
+                        <th>Reserved Amenity(ies)</th>
+                        <th>Tour Package</th>
+                        <th>Reservation Status</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                    </tr>
+                </thead>
+                <tbody id="reservation-table">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+<script>
+    const dt=new Date
+let resIDf,rescIDf, rescNamef,resPaxf,resCaxf,rescEmailf,rescphonof,rescpassf,resCheckinDatef,resCheckoutDatef,resTourf,resPricef,resPayMethf,resPayStatf,resAppStatf,resPromof,resAmeNamef
+let resDelID
+let pierceFlag
+let checkToken,payToken
+
+fetch('/reservation-data').then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data =>{
+    const reservData=document.getElementById('reservation-table');
+    let wha=0
+    if(Array.isArray(data)){
+        data.forEach(item=>{
+        let huh=item.resID
+        if (huh.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${item.resCheckinDate}</td>
+    <td>${item.resCheckoutDate}</td>
+    <td>${item.resID}</td>
+    <td>${item.rescID}</td>
+    <td>${item.rescName}</td>
+    <td>${item.resPax}</td>
+    <td>${item.resAmeName}</td>
+    <td>${item.resTour}</td>
+    <td>${item.resAppStat}</td>
+    <td><button onclick="checkIn('${item.rescID}','${item.resCheckinDate}')">Check In</button></td>
+    <td><button onclick="checkOut('${item.rescID}')">Check Out</button></td>
+    `;
+    reservData.appendChild(r);
+        }
+    })
+    }else{
+        let huh=result.resID
+        if (huh.length<=8){
+            const r=document.createElement('tr');
+    r.innerHTML=`
+    <td>${result.resCheckinDate}</td>
+    <td>${result.resCheckoutDate}</td>
+    <td>${result.resID}</td>
+    <td>${result.rescID}</td>
+    <td>${result.rescName}</td>
+    <td>${result.resPax}</td>
+    <td>${result.resAmeName}</td>
+    <td>${result.resTour}</td>
+    <td>${result.resAppStat}</td>
+    <td><button onclick="checkIn('${result.rescID}','${result.resCheckinDate}')">Check In</button></td>
+    <td><button onclick="checkOut('${result.rescID}')">Check Out</button></td>
+    `;
+    }
+  }
+}) 
+
+
+    async function checkIn(rescIDf,resCheckDate){
+        if(resCheckDate==dt.getDate()){
+            const IDee=rescIDf
+        searchRC(IDee)
+        updateIn(IDee)
+        }else{
+            alert("Check the dates, please.")
+        }
+    }
+
+    async function checkOut(rescIDf){
+        const IDee=rescIDf
+        searchRC(IDee)
+        updateOut(IDee)
+}
+
+    async function searchRC(IDee){
+        try{
+            const result=await fetch(`/searchResCust?rescID=${IDee}`)
+            const motoRes=await result.json()
+        if(result.ok){
+           if(Array.isArray(motoRes)){
+            pierceFlag=true
+            console.log(pierceFlag)
+           }
+        }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        
+    }
+
+    
+    async function updateIn(cust){
+    checkToken="Checked In"
+    payToken="Fully Paid"
+        try{
+            const response=await fetch(`/searchResCustLite?rescID=${cust}`);
+            const result=await response.json();
+            if(response.ok){
+                resIDf=result.resID
+                rescIDf=result.rescID
+                rescNamef=result.rescName
+                resPaxf=result.resPax
+                resCaxf=result.resCax
+                rescEmailf=result.rescEmail
+                rescphonof=result.rescphono
+                rescpassf=result.rescPass
+                resAmeNamef=result.resAmeName
+                resCheckinDatef=result.resCheckinDate
+                resCheckoutDatef=result.resCheckoutDate
+                resBookDatef=result.resBookeDate
+                resTourf=result.resTour
+                resPricef=result.resPrice
+                resPromof=result.resPromo
+                resPayMethf=result.resPayMeth
+                resPayStatf=payToken
+                resAppStatf=checkToken
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescphono:rescphonof,
+            rescPass:rescpassf,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                console.log(pierceFlag)
+                if(pierceFlag==true){
+                    pierceUpdate()
+                }
+                location.reload()
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+
+    
+    
+
+    async function updateOut(cust){
+        checkToken="Checked Out"
+        try{
+            const response=await fetch(`/searchResCustLite?rescID=${cust}`);
+            const result=await response.json();
+            if(response.ok){
+                resIDf=result.resID
+                rescIDf=result.rescID
+                rescNamef=result.rescName
+                resPaxf=result.resPax
+                resCaxf=result.resCax
+                rescEmailf=result.rescEmail
+                rescpassf=result.rescPass
+                rescphonof=result.rescphono
+                resAmeNamef=result.resAmeName
+                resCheckinDatef=result.resCheckinDate
+                resCheckoutDatef=result.resCheckoutDate
+                resBookDatef=result.resBookeDate
+                resTourf=result.resTour
+                resPricef=result.resPrice
+                resPromof=result.resPromo
+                resPayMethf=result.resPayMeth
+                resPayStatf=result.resPayStat
+                resAppStatf=checkToken
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        resDelID=resIDf
+        const updoot={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            rescEmail:rescEmailf,
+            rescPass:rescpassf,
+            rescphono:rescphonof,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                if(pierceFlag==true){
+                    await pierceUpdate()
+                }
+                insertRes()
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+
+    async function pierceUpdate(){
+        const response=await fetch(`/searchResCust?rescID=${rescIDf}`)
+        const result=await response.json()
+        if(response.ok){
+            let resIDf2,rescIDf2, rescNamef2,resPaxf2,resCaxf2,rescEmailf2,rescphonof2,rescpassf2,resCheckinDatef2,resCheckoutDatef2,resBookDatef2,resTourf2,resPricef2,resPayMethf2,resPayStatf2,resAppStatf2,resPromof2;
+            const process=result.map(async(zuttoRes)=>{
+                resIDf2=zuttoRes.resID
+                rescIDf2=zuttoRes.rescID
+                rescNamef2=zuttoRes.rescName
+                resPaxf2=zuttoRes.resPax
+                resCaxf2=zuttoRes.resCax
+                rescEmailf2=zuttoRes.rescEmail
+                rescpassf2=zuttoRes.rescPass
+                rescphonof2=zuttoRes.rescphono
+                resAmeNamef2=zuttoRes.resAmeName
+                resCheckinDatef2=zuttoRes.resCheckinDate
+                resCheckoutDatef2=zuttoRes.resCheckoutDate
+                resBookDatef2=zuttoRes.resBookeDate
+                resTourf2=zuttoRes.resTour
+                resPricef2=zuttoRes.resPrice
+                resPromof2=zuttoRes.resPromo
+                resPayMethf2=zuttoRes.resPayMeth
+                resPayStatf2=zuttoRes.resPayStat
+                resAppStatf2=checkToken
+                const updoot={
+            resID:resIDf2,
+            rescID:rescIDf2,
+            rescName:rescNamef2,
+            resPax:resPaxf2,
+            resCax:resCaxf2,
+            rescEmail:rescEmailf2,
+            rescPass:rescpassf2,
+            rescphono:rescphonof2,
+            resAmeName:resAmeNamef2,
+            resCheckinDate:resCheckinDatef2,
+            resCheckoutDate:resCheckoutDatef2,
+            resBookeDate:resBookDatef2,
+            resTour:resTourf2,
+            resPrice:resPricef2,
+            resPromo:resPromof2,
+            resPayMeth:resPayMethf2,
+            resPayStat:resPayStatf2,
+            resAppStat:resAppStatf2
+            }
+            console.log(updoot)
+            try{
+            const response = await fetch('/updateRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                
+            }else{
+                alert(result.error);
+            }
+           
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        })
+        }
+    }
+    
+    async function deletR(){
+        const datum={
+            resID:resDelID
+        }
+        try{
+            const response = await fetch('/deletRes',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                if(pierceFlag==true){
+                    pierceDelete()
+                    return
+                }
+                location.reload()
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+        }
+    }
+
+    async function pierceDelete() {
+    try {
+        const response = await fetch(`/searchResCustAll?rescID=${rescIDf}`);
+        const result = await response.json();
+
+        if (response.ok) {
+            if (Array.isArray(result)) {
+                for (const zuttoRes of result) {
+                    const resIDf = zuttoRes.resID;
+                    const delet = {
+                        resID: resIDf
+                    };
+
+                    try {
+                        const response = await fetch('/deletRes', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(delet),
+                        });
+
+                        if (response.ok) {
+                            console.log(resIDf);
+                            location.reload()
+                        } else {
+                            console.log(result.error);
+                        }
+                    } catch (err) {
+                        console.error('E-E-ERROR! ', err);
+                        alert('An Error Occurred While removing The Record.');
+                    }
+                }
+            } else {
+                const resIDf = result.resID;
+                const delet = {
+                    resID: resIDf
+                };
+
+                try {
+                    const response = await fetch('/deletRes', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(delet),
+                    });
+
+                    if (response.ok) {
+                        console.log(resIDf);
+                        location.reload()
+                    } else {
+                        alert(result.error);
+                    }
+                } catch (err) {
+                    console.error('E-E-ERROR! ', err);
+                    alert('An Error Occurred While removing The Record.');
+                }
+            }
+        } else {
+            alert("E-E-ERROR! " + result.error);
+        }
+    } catch (err) {
+        console.error('E-E-ERROR! ', err);
+        alert('An Error Occurred While fetching data.');
+    }
+}
+
+    async function insertRes(){
+        const datum={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            rescEmail:rescEmailf,
+            rescphono:rescphonof,
+            rescPass:rescpassf,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        let ameCostf,ameSizef,ameReservdf,ameLeftf
+        if(resAmeNamef.includes(',')){
+            if(pierceFlag==true){
+                    pierceInsert()
+                    return
+                }
+        }else{
+            try{
+            const motoRes=await fetch(`/searchAme?ameName=${resAmeNamef}`)
+            const zutoRes=await motoRes.json()
+            if(motoRes.ok){
+                ameCostf=zutoRes.ameCost
+                ameSizef=zutoRes.ameSize
+                ameReservdf=zutoRes.ameReservd
+                ameLeftf=zutoRes.ameLeft
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        const ameLeftI=parseInt(ameLeftf)+1
+        let ameResI=ameReservdf
+        if(ameLeftI>0){
+            ameResI="Available"
+        }
+        const upAme={
+            ameName:resAmeNamef,
+            ameSize:ameSizef,
+            ameCost:ameCostf,
+            ameReservd:ameResI,
+            ameLeft:ameLeftI
+        }
+        try{
+            const response = await fetch('/updateAme',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(upAme),
+            });
+            const result=await response.json();
+            if (response.ok){
+                console.log("success")
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+        try{
+            const response = await fetch('/insertRep',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                if(pierceFlag==true){
+                    pierceInsert()
+                }else{
+                    deletR()
+                }
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+
+    async function pierceInsert(){
+        const response=await fetch(`/searchResCust?rescID=${rescIDf}`)
+        const result=await response.json()
+        if(response.ok){
+            for (const zuttoRes of result){
+                let resIDf=zuttoRes.resID
+                const existingRes = await checkExistingReservation(resIDf);
+                if (existingRes) {
+                console.log(`Reservation with resID ${resIDf} already exists.`);
+            }else{
+                rescIDf=zuttoRes.rescID
+                rescNamef=zuttoRes.rescName
+                resPaxf=zuttoRes.resPax
+                resCaxf=zuttoRes.resCax
+                rescEmailf=zuttoRes.rescEmail
+                rescpassf=zuttoRes.rescPass
+                rescphonof=zuttoRes.rescphono
+                resAmeNamef=zuttoRes.resAmeName
+                resCheckinDatef=zuttoRes.resCheckinDate
+                resCheckoutDatef=zuttoRes.resCheckoutDate
+                resBookDatef=zuttoRes.resBookeDate
+                resTourf=zuttoRes.resTour
+                resPricef=zuttoRes.resPrice
+                resPromof=zuttoRes.resPromo
+                resPayMethf=zuttoRes.resPayMeth
+                resPayStatf=payToken
+                resAppStatf=checkToken
+                let ameCostf,ameSizef,ameReservdf,ameLeftf
+                try{
+            const motoRes=await fetch(`/searchAme?ameName=${resAmeNamef}`)
+            const zutoRes=await motoRes.json()
+            if(motoRes.ok){
+                ameCostf=zutoRes.ameCost
+                ameSizef=zutoRes.ameSize
+                ameReservdf=zutoRes.ameReservd
+                ameLeftf=zutoRes.ameLeft
+                const ameLeftI=parseInt(ameLeftf)+1
+        let ameResI=ameReservdf
+        if(ameLeftI>0){
+            ameResI="Available"
+        }
+        const upAme={
+            ameName:resAmeNamef,
+            ameSize:ameSizef,
+            ameCost:ameCostf,
+            ameReservd:ameResI,
+            ameLeft:ameLeftI
+        }
+        try{
+            const response = await fetch('/updateAme',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(upAme),
+            });
+            const result=await response.json();
+            if (response.ok){
+                console.log("success")
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            }else{
+                alert("E-E-ERROR! " + result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+                const datum={
+            resID:resIDf,
+            rescID:rescIDf,
+            rescName:rescNamef,
+            rescEmail:rescEmailf,
+            rescphono:rescphonof,
+            rescPass:rescpassf,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            resAmeName:resAmeNamef,
+            resCheckinDate:resCheckinDatef,
+            resCheckoutDate:resCheckoutDatef,
+            resBookeDate:resBookDatef,
+            resTour:resTourf,
+            resPrice:resPricef,
+            resPromo:resPromof,
+            resPayMeth:resPayMethf,
+            resPayStat:resPayStatf,
+            resAppStat:resAppStatf
+        }
+        try{
+            const response = await fetch('/insertRep',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                console.log("success")
+                deletR()
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+            }
+               
+            }
+        }
+        
+    }
+
+    async function checkExistingReservation(resID) {
+    try {
+        const response = await fetch(`/checkRes?resID=${resID}`);
+        const result = await response.json();
+
+        return result.exists; // Assuming your server response indicates whether the reservation exists
+    } catch (err) {
+        console.error('Error checking existing reservation: ', err);
+        return false;
+    }
+    }
+
+    </script>
+
+
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
+</html>
