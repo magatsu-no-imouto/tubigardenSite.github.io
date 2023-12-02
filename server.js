@@ -60,9 +60,9 @@ train.post('/generate-pdf', async (req, res) => {
       <body>
       <h1>Tubigan Garden Resort</h1>
       <h2>Business Report</h2>
-      <p>Tubigan Garden Resort\n
-      343 Molino - Paliparan Rd.\n
-      Dasmariñas, 4114 Cavite
+      <p>Tubigan Garden Resort</p>
+      <p>343 Molino - Paliparan Rd.</p>
+      <p>Dasmariñas, 4114 Cavite
       </p>
         <div> ${sectA} ${sectB}</div>
         ${content}
@@ -98,9 +98,13 @@ train.post('/send-notification',async(req,res)=>{
     const info = await transporter.sendMail({
         from: '"REBOTT THE TUBIGAN GARDEN BOT" <notificationbot001@gmail.com>',
         to: "kyle.ticman@gmail.com",
-        subject: "testing",
+        subject: "Tubigan Garden Resort Reservation Notification",
         text: paymentGate,
-        html: `<em>${paymentGate}</em>`
+        html: `
+        <h1>Tubigan Garden Resort</h1>
+        <h2>--------------------------------</h2>
+        <em>${paymentGate}</em>
+        `
     });
 
     console.log("Message sent: %s", info.messageId);
@@ -117,8 +121,8 @@ train.post('/send-notificationCust',async(req,res)=>{
   try {
     const info = await transporter.sendMail({
         from: '"BOTT THE BOT" <notificationbot001@gmail.com>',
-        to: customer,
-        subject: "testing",
+        to: "kyle.ticman@gmail.com",
+        subject: "Tubigan Garden Resort Reservation Notification",
         text: paymentGate,
         html: `<em>${paymentGate}</em>`
     });
