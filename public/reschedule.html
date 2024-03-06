@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Page</title>
+    <style>
+         body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+        body {
+    font-family: Arial, sans-serif;
+    }
+
+        header {
+    background-color: #007BFF;
+    color: #fff;
+    text-align: center;
+    padding: 5px ;
+    }
+
+        header a {
+    display: inline-block;
+    background-color: #fff;
+    color: #007BFF;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    font-weight: bold;
+    }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        form {
+            border: 1px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input, 
+        select{
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        header.style1 {
+          display: flex;
+          background-color: #007BFF;
+          color: #fff;
+          text-align: center;
+          padding: 5px ;
+        }
+         
+        div.styleRyle {
+        padding: 75px 0px 0px 355px;
+    }
+
+        header > img {
+            height: 200px;
+            width: 250px; 
+        margin-right: 50px;}
+
+        header.style1 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        header.style2 {
+           background-color: #7cafc9;
+           color: #fff;
+          text-align: center;
+          padding: 5px ;
+        }
+        header.style2 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        
+	    header.style2 nav{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        header.style2 nav a{
+            display: inline-block;
+          padding: 10px 20px;
+          text-decoration: none;
+          color: #ff0202;
+          background-color: rgb(226, 226, 83);
+          border-radius: 35px;
+          margin: 0 10px;
+          transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+        header.style2 nav a:hover{
+          background-color: #007BFF;
+
+        }
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+}
+
+.fade-element {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    opacity: 0; /* Start with fully transparent */
+    transition: opacity 1s ease-in-out; /* Duration, timing function, and fill-mode */
+}
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.fade-out{
+    animation: fadeOut 0.5s ease-in-out forwards;
+}
+
+.smol{
+            width: 6.05%;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+</style>
+</head>
+<body>
+    <header class="style1">
+        <img src="media/5.png" alt="logo">
+        <div class="styleRyle">
+        
+    </div>
+        
+    </header>
+    <header class="style2">
+       
+         
+        <a id="lnk1" href= "UserPage.html">Home</a>
+        <a id="lnk2" href= "LogIn.html">LogIn</a>
+        <a href= "Room.html">Rooms and Roomnities</a>
+        <a href= "contacts.html">Contact Us</a>
+    </header>
+
+    <div class="container">
+    <form id="fomre">
+        <input type="text" id="ID" name="reID" hidden>
+        <label>Reservation ID:</label> 
+        <input type="text" id="reservID" name="reresID" readonly>
+        <label>Customer ID:</label>
+        <input type="text" id="user" name="recID" readonly>
+        <label id="l3">Chosen Room:</label>
+        <input type="text" id="resRoom" name="reresRoomName" readonly>
+        <label>Tour Type</label>
+        <input type="text" id="resTour" readonly>
+        <button id="buttonTR" type="button" onclick="appearTR()">Change</button><span id="newTour"></span>
+        <select class="fade-element" id="selrenewTour" hidden>
+            <option value="n/a"></option>
+            <option value="Day Tour">Day Tour</option>
+            <option value="Night Tour">Night Tour</option>
+            <option value="Overnight">Overnight</option>
+        </select>
+        <label>Payment Method</label>
+        <input type="text" id="resPayMeth" readonly>
+        <button id="buttonPM" type="button" onclick="appearPM()">Change</button><span id="newPMeth"></span>
+        <select class="fade-element" id="selrenewPayMeth" hidden>
+            <option value="n/a"></option>
+            <option value="GcashOL">GCash - Online</option>
+            <option value="GcashOS">GCash - Onsite</option>
+            <option value="Cash">Cash </option>
+            <option value="WalkIn">Walk In</option>
+        </select>
+        <label>Original Date of Booking</label>
+        <input type="date" id="bookin" name="reresBookeDate" readonly>
+        <label>Original Date of Reservation</label>
+        <input type="date" id="checkin" name="reresDate" readonly>
+        <label>Original Day of Check Out</label>
+        <input type="date" id="checkout" name="reresCheckoutDate" readonly>
+        <label>Adjusted Date of Booking</label>
+        <input type="date" id="bookin-nu" name="renBookeDate">
+        <label>Adjusted Date of Reservation</label>
+        <input type="date" id="checkin-nu" name="renewDate">
+        <label>Adjusted Day of Check Out</label>
+        <input type="date" id="checkout-nu" name="renCheckout">
+        <input class="smol" type="number" id="daysaf" value=0 min=0> <span id="daysText">Nights</span>
+        <label style="color:transparent; user-select: none;">a</label>
+        <input type="date" id="dateposted"  name="reDatePost" hidden>
+        <button type="button" id="addReSched" onclick="insertReSched()">Request Reschedule</button>
+        <button type="button" onclick="window.location.replace('UserPage.html')">Cancel</button>
+        <span hidden id="inProgInd" hidden>Processing. Please wait. . .</span>
+    </form>
+    </div>
+</body>
+
+<script>
+console.log(sessionStorage)
+const dt=new Date
+
+var hideTR = false;
+var hidePM = false;
+
+function appearTR() {
+    document.getElementById('selrenewTour').hidden = false;
+    document.getElementById('selrenewTour').classList.add('fade-in');
+    document.getElementById('selrenewTour').classList.remove('fade-out');
+    if(document.getElementById('selrenewTour').options[document.getElementById('selrenewTour').selectedIndex].text=="" || document.getElementById('selrenewTour').value==document.getElementById('resTour').value){
+        document.getElementById('buttonTR').innerHTML = "Cancel";
+    }else{
+        document.getElementById('buttonTR').innerHTML = "Done";
+    }
+    document.getElementById('buttonTR').onclick = function() {
+        hideTR = true;
+        disappearTR();
+    };
+}
+
+function disappearTR() {
+    document.getElementById('selrenewTour').classList.add('fade-out');
+    document.getElementById('selrenewTour').classList.remove('fade-in');
+    document.getElementById('selrenewTour').addEventListener('animationend', function() {
+        if (hideTR) {
+            if(document.getElementById('selrenewTour').value!="n/a"){
+                if(document.getElementById('selrenewTour').value==document.getElementById('resTour').value){
+                document.getElementById('newTour').innerHTML=""
+            }else{
+                document.getElementById('newTour').innerHTML=`To ${document.getElementById('selrenewTour').value}`
+                }
+            }else{
+                alert(document.getElementById('resTour').value)
+                document.getElementById('newTour').innerHTML=""
+            }
+            document.getElementById('selrenewTour').hidden = true;
+            hideTR = false;
+        }
+    }, { once: true });
+    document.getElementById('buttonTR').innerHTML = "Change";
+    document.getElementById('buttonTR').onclick = appearTR;
+}
+
+
+function appearPM(){
+    document.getElementById('selrenewPayMeth').hidden=false
+    document.getElementById('selrenewPayMeth').classList.add('fade-in')
+    document.getElementById('selrenewPayMeth').classList.remove('fade-out')
+    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==document.getElementById('resPayMeth').value ||document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==""){
+        document.getElementById('buttonPM').innerHTML="Cancel"
+    }else{
+        document.getElementById('buttonPM').innerHTML="Done"
+    }
+    document.getElementById('buttonPM').onclick=function(){
+        hidePM=true
+        disappearPM()
+    }
+}
+
+function disappearPM(){
+    document.getElementById('selrenewPayMeth').classList.add('fade-out')
+    document.getElementById('selrenewPayMeth').classList.remove('fade-in')
+    document.getElementById('selrenewPayMeth').addEventListener('animationend',function(){
+        if(hidePM){
+            if(document.getElementById('selrenewPayMeth').value!="n/a"){
+                if(document.getElementById('selrenewPayMeth').value=="GcashOL"){
+                    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==document.getElementById('resPayMeth').value){
+                document.getElementById('newPMeth').innerHTML=""
+                }else{
+                    document.getElementById('newPMeth').innerHTML=`To GCash, Online Payment`
+                }
+                }else if(document.getElementById('selrenewPayMeth').value=="GcashOS"){
+                    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==document.getElementById('resPayMeth').value){
+                document.getElementById('newPMeth').innerHTML=""
+                }else{
+                    document.getElementById('newPMeth').innerHTML=`To GCash, Onsite Payment`
+                }
+                }else if(document.getElementById('selrenewPayMeth').value=="Cash"){
+                    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==document.getElementById('resPayMeth').value){
+                document.getElementById('newPMeth').innerHTML=""
+                }else{
+                    document.getElementById('newPMeth').innerHTML=`To Onsite with Cash Payment`
+                }
+                }else if(document.getElementById('selrenewPayMeth').value=="WalkIn"){
+                    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==document.getElementById('resPayMeth').value){
+                document.getElementById('newPMeth').innerHTML=""
+                }else{
+                    document.getElementById('newPMeth').innerHTML=`To Walk In Payment`
+                }
+                }
+            }else{
+                document.getElementById('newPMeth').innerHTML=""
+            }
+            document.getElementById('selrenewPayMeth').hidden=true
+            hidePM=false
+        }
+    })
+    document.getElementById('buttonPM').innerHTML="Change"
+    document.getElementById('buttonPM').onclick=appearPM
+}
+
+const arrayR=[]
+fetch(`/current_reservation`).then(response=>{
+    if(response.ok){
+        return response.json()
+    }else {
+        return window.location.replace('LogIn.html')
+    }
+  })
+  .then(data =>{
+    const r1=document.getElementById('reservID')
+    r1.value=data.resID;
+    const r2=document.getElementById('user')
+    r2.value=data.resmID
+    const r3=document.getElementById('resRoom')
+    r3.value=data.resRoomName
+    if(Array.isArray(data.resRoomName)){
+        for(let i=0; i<data.resRoomName.length;i++){
+            arrayR.push(data.resRoomName[i])
+        }
+        document.getElementById('l3').innerHTML="Chosen Rooms"
+    }
+    const r4=document.getElementById('resTour')
+    r4.value=data.resTour
+    const r4n2=document.getElementById('selrenewTour')
+    r4n2.value=data.resTour
+    const r4n3=document.getElementById('newTour')
+    r4n3.innerHTML=""
+    const r5=document.getElementById('resPayMeth')
+    if(data.resPayMeth=="GcashOL"){
+        r5.value="GCash - Online"
+    }else if(data.resPayMeth=="GcashOS"){
+        r5.value="GCash - Onsite"
+    }else if(data.resPayMeth=="Cash"){
+        r5.value="Cash"
+    }else if(data.resPayMeth=="WalkIn"){
+        r5.value="Walk In"
+    }
+    const r5n2=document.getElementById('selrenewPayMeth')
+    r5n2.value=data.resPayMeth
+    const r5n3=document.getElementById('newPMeth')
+    r5n3.innerHTML=""
+    const r6=document.getElementById('checkin')
+    r6.value=data.resCheckinDate
+    const r7=document.getElementById('checkout')
+    r7.value=data.resCheckoutDate
+    const r8=document.getElementById('bookin')
+    r8.value=data.resBookeDate
+    const checkDA=new Date(r6.value)
+    const checkDB=new Date(r7.value)
+    const checkDC=Math.floor((checkDB-checkDA) / (1000 * 60 * 60 * 24))
+    const daysf=document.getElementById('daysaf')
+    if(data.resTour=="Day Tour"){
+        daysf.value=0
+        daysf.readOnly=true
+    }else if(data.resTour=="Night Tour"){
+        daysf.value=1
+        daysf.readOnly=true
+    }else if(data.resTour=="Overnight"){
+        daysf.value=checkDC
+        daysf.readOnly=false
+    }
+    document.getElementById('lnk1').href="UserPage.html"
+    document.getElementById('lnk2').textContent="Log Out"
+
+})
+
+
+/**/
+
+
+//#region days away from checkin to bookin
+document.getElementById('bookin-nu').addEventListener('change',function(){
+
+const tour=document.getElementById('selrenewTour')
+var days=parseInt(document.getElementById('daysaf').value);
+const checkedA=new Date(document.getElementById('bookin-nu').value)
+            
+if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+                checkedA.setDate(checkedA.getDate()+days)
+}else{
+                checkedA.setDate(checkedA.getDate()+1+days)
+            }
+const checkedB=new Date(document.getElementById('bookin-nu').value)
+
+if(document.getElementById('checkin-nu').valueAsDate<document.getElementById('bookin-nu').valueAsDate){
+                document.getElementById('checkin-nu').valueAsDate=document.getElementById('bookin-nu').valueAsDate
+                document.getElementById('checkout-nu').valueAsDate=document.getElementById('bookin-nu').valueAsDate
+                if(tour.options[tour.selectedIndex].textContent!==""){
+    document.getElementById('checkout-nu').valueAsDate=checkedA
+    document.getElementById('checkin-nu').valueAsDate=checkedB
+}
+}else if(document.getElementById('checkin-nu').valueAsDate>document.getElementById('bookin-nu').valueAsDate){
+    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+        document.getElementById('checkin-nu').valueAsDate=document.getElementById('bookin-nu').valueAsDate
+                document.getElementById('checkout-nu').valueAsDate=document.getElementById('bookin-nu').valueAsDate
+    }else{
+        return
+    }
+}
+
+if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+                checkedB.setDate(checkedB.getDate())
+}else{
+                checkedB.setDate(checkedB.getDate()+1)
+}
+
+if(tour.options[tour.selectedIndex].textContent!==""){
+    document.getElementById('checkout-nu').valueAsDate=checkedA
+    document.getElementById('checkin-nu').valueAsDate=checkedB
+}
+})
+//post bookin-nu
+
+
+document.getElementById('checkin-nu').addEventListener('change',function(){
+            var days=parseInt(document.getElementById('daysaf').value);
+            const checkedA=new Date(document.getElementById('checkin-nu').value)
+            const checkedB=new Date(document.getElementById('checkin-nu').value)
+            
+            if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+                checkedB.setDate(checkedB.getDate())
+                checkedA.setDate(checkedA.getDate()+days)
+            }else{
+                checkedA.setDate(checkedA.getDate()+days)
+                checkedB.setDate(checkedB.getDate()-1)
+            }
+
+            document.getElementById('checkout-nu').valueAsDate=checkedA
+            document.getElementById('bookin-nu').valueAsDate = checkedB
+        })
+//post checkin-nu
+
+document.getElementById('checkout-nu').addEventListener('change',function(){
+    const tour=document.getElementById('selrenewTour')
+    const payM=document.getElementById('selrenewPayMeth')
+    var days=parseInt(document.getElementById('daysaf').value);
+    const checkedA=new Date(document.getElementById('checkout-nu').value)
+    checkedA.setDate(checkedA.getDate()-days)
+    const checkedB=new Date(document.getElementById('checkout-nu').value)
+    checkedB.setDate(checkedB.getDate()-days-1)
+    const checkedAB=new Date(document.getElementById('checkin-nu').value)
+    const checkedAC=checkedA.getDate()-checkedAB.getDate()
+    console.log(checkedA)
+    console.log(checkedAB)
+    console.log(checkedAC)
+
+    if(tour.options[tour.selectedIndex].text=="Overnight"){
+            console.log(days)
+            if(checkedAC>days){
+            days=checkedAC+days
+            console.log(days)
+            document.getElementById('daysaf').value=days
+            console.log(checkedA)
+            const checkedC=new Date(document.getElementById('checkout-nu').value)
+            checkedA.setDate(checkedC.getDate()-days)
+            console.log(checkedA)
+            checkedB.setDate(checkedC.getDate()-days-1)   
+            console.log(checkedB)
+            }else{
+                console.log(days)
+                document.getElementById('daysaf').value=days
+            }
+            
+    }else if(tour.options[tour.selectedIndex].text=="Night Tour"){
+        checkedA.setDate(checkedA.getDate()-days)
+            console.log(checkedA)
+    }
+    if(payM.options[payM.selectedIndex].text=="Walk In"){
+        const checkedC=document.getElementById('checkin-nu').valueAsDate
+        checkedB.setDate(checkedC.getDate())
+    }
+    document.getElementById('checkin-nu').valueAsDate=checkedA
+    document.getElementById('bookin-nu').valueAsDate=checkedB
+})
+//post checkout-nu
+
+document.getElementById('daysaf').addEventListener('change',function(){
+            var days=parseInt(document.getElementById('daysaf').value);
+            const checkedA=new Date(document.getElementById('checkin-nu').value)
+            checkedA.setDate(checkedA.getDate()+days)
+
+            const checkedB=new Date(document.getElementById('checkin-nu').value)
+            if(document.getElementById('checkin-nu').valueAsDate<document.getElementById('bookin-nu').valueAsDate){
+                checkedB.setDate(document.getElementById('bookin-nu').valueAsDate.getDate())
+            }
+            
+            if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+                checkedB.setDate(checkedB.getDate())
+            }else{
+                checkedB.setDate(checkedB.getDate()-1)
+            }
+            if(document.getElementById('checkin-nu').value==""){
+
+            }else{
+                document.getElementById('checkout-nu').valueAsDate=checkedA
+                document.getElementById('bookin-nu').valueAsDate = checkedB
+            }
+        })
+//post daysaf
+
+
+
+document.getElementById('selrenewPayMeth').addEventListener('change',function(){
+if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+    document.getElementById('bookin-nu').valueAsDate=document.getElementById('checkin-nu').valueAsDate
+}
+if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].text==document.getElementById('resPayMeth').value){
+    document.getElementById('buttonPM').innerHTML="Cancel"
+}else{
+    document.getElementById('buttonPM').innerHTML="Done"
+}
+})
+//#endregion
+
+
+//#region Tours
+
+document.getElementById('selrenewTour').addEventListener('change',function(){
+    if(document.getElementById('selrenewTour').value==document.getElementById('resTour').value){
+        document.getElementById('buttonTR').innerHTML="Cancel"
+    }else{
+        document.getElementById('buttonTR').innerHTML="Done"
+    }
+    if(document.getElementById('selrenewTour').value=="Overnight"){
+        document.getElementById('daysaf').value=1
+        document.getElementById('daysaf').readOnly=false
+        document.getElementById('checkout-nu').valueAsDate=document.getElementById('checkin-nu').valueAsDate
+        const checkedA=new Date(document.getElementById('checkin-nu').value)
+        checkedA.setDate(checkedA.getDate()+1)
+        document.getElementById('checkout-nu').valueAsDate=checkedA
+    }else if(document.getElementById('selrenewTour').value=="Day Tour"){
+        document.getElementById('daysaf').value=0
+        document.getElementById('daysaf').readOnly=true
+        document.getElementById('checkout-nu').valueAsDate=document.getElementById('checkin-nu').valueAsDate
+        const checkedA=new Date(document.getElementById('checkin-nu').value)
+        checkedA.setDate(checkedA.getDate()-1)
+        document.getElementById('bookin-nu').valueAsDate=checkedA
+    }else if(document.getElementById('selrenewTour').value=="Night Tour"){
+        document.getElementById('daysaf').value=1
+        document.getElementById('daysaf').readOnly=true
+        document.getElementById('checkout-nu').valueAsDate=document.getElementById('checkin-nu').valueAsDate
+        const checkedA=new Date(document.getElementById('checkin-nu').value)
+        const checkedB=new Date(document.getElementById('checkin-nu').value)
+        checkedA.setDate(checkedA.getDate()+1)
+        checkedB.setDate(checkedB.getDate()-1)
+        document.getElementById('checkout-nu').valueAsDate=checkedA
+        document.getElementById('bookin-nu').valueAsDate=checkedB
+    }
+    if(document.getElementById('selrenewPayMeth').options[document.getElementById('selrenewPayMeth').selectedIndex].value=="WalkIn"){
+    document.getElementById('bookin-nu').valueAsDate=document.getElementById('checkin-nu').valueAsDate
+}
+})
+
+//#endregion
+
+let sameFlag,ameS,sameDateFlag,emptyFlag,diffResFlag
+async function searchRA(){
+    if(arrayR.length>=2){
+        for(let i=0; i<arrayR.length;i++){
+            const ameI = arrayR[i];
+            const ameResd=document.getElementById('user').value
+    try {
+        const response = await fetch('/room-data');
+        const result = await response.json();
+        if (response.ok) {
+            for (const item of result) {
+                const ame = item.roomName;
+                const motoRes = await fetch(`/searchResRoom?resRoomName=${ame}`);
+                const zuttoRes = await motoRes.json();
+                if (motoRes.ok && Array.isArray(zuttoRes.data)) {
+                    for (const res of zuttoRes.data) {
+                        const ameF = res.resRoomName;
+                        const bookF = res.resBookeDate;
+                        const ameResdF=res.resmID
+                        console.log(ame + " " + ameI + " " + ameF);
+                        console.log("reserved by "+ameResdF)
+                        if (ameF == ame && ame == ameI && ameResd!=ameResdF) {
+                            sameFlag = true;
+                            ameS = ameF;
+                            diffResFlag=true
+                            const bookI = document.getElementById('checkin-nu').value;
+                            if (bookF == bookI) {
+                                sameDateFlag = true;
+                            }
+                        }
+                    }
+                }
+                if(ameI==ame && item.ameLeft==0 || item.ameLeft==0 && diffResFlag==true){
+                    emptyFlag=true
+                    ameE=ameI
+                }
+                console.log("Same Room:"+sameFlag)
+                console.log("Same Date:"+sameDateFlag)
+                console.log("None Left:"+emptyFlag)
+                console.log("Different Guy:"+diffResFlag)
+            }
+        }
+    } catch (err) {
+        console.error('Error:', err);
+    }
+        }
+    }else{
+        const ameI = document.getElementById('resRoom').value;
+        const ameResd=document.getElementById('user').value
+    try {
+        const response = await fetch('/room-data');
+        const result = await response.json();
+        if (response.ok) {
+            for (const item of result) {
+                const ame = item.roomName;
+                const motoRes = await fetch(`/searchResRoom?resRoomName=${ame}`);
+                const zuttoRes = await motoRes.json();
+                if (motoRes.ok && Array.isArray(zuttoRes.data)) {
+                    for (const res of zuttoRes.data) {
+                        const ameF = res.resRoomName;
+                        const bookF = res.resBookeDate;
+                        const ameResdF=res.resmID
+                        console.log(ame + " " + ameI + " " + ameF);
+                        console.log("reserved by "+ameResdF)
+                        if (ameF == ame && ame == ameI && ameResd!=ameResdF) {
+                            sameFlag = true;
+                            ameS = ameF;
+                            diffResFlag=true
+                            const bookI = document.getElementById('checkin-nu').value;
+                            if (bookF == bookI) {
+                                sameDateFlag = true;
+                            }
+                        }
+                    }
+                }
+                if(ameI==ame && item.ameLeft==0 || item.ameLeft==0 && diffResFlag==true){
+                    emptyFlag=true
+                    ameE=ameI
+                }
+                console.log("Same Room:"+sameFlag)
+                console.log("Same Date:"+sameDateFlag)
+                console.log("None Left:"+emptyFlag)
+                console.log("Different Guy:"+diffResFlag)
+            }
+        }
+    } catch (err) {
+        console.error('Error:', err);
+    }
+    }
+    }
+
+
+async function insertReSched(){
+    document.getElementById('inProgInd').hidden=false;
+    var today = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate());
+    const nuDate=document.getElementById('checkin-nu')
+    if(nuDate.valueAsDate>=today){
+        await searchRA()
+    if(sameDateFlag==true){
+                conflict="there being a conflict with the Schedule"
+            }else if(emptyFlag && sameFlag){
+                conflict=`no more available instances of ${ameE}`
+            }
+            if(sameFlag==true && sameDateFlag==true || sameDateFlag==true && emptyFlag==true ||sameFlag==true && emptyFlag==true){
+                alert(`Unable to proceed due to ${conflict}.`)
+                document.getElementById('inProgInd').hidden=true;
+            }else{
+        const reID=document.getElementById("ID");
+        const reresID=document.getElementById("reservID")
+        const remID=document.getElementById("user");
+        const reresRoomName=document.getElementById("resRoom");
+        const reresTour=document.getElementById('resTour')
+        const renewTour=document.getElementById('selrenewTour')
+        const reresPayMeth=document.getElementById('resPayMeth')
+        const renewPayMeth=document.getElementById('selrenewPayMeth')
+        const reresBook=document.getElementById("bookin")
+        const renewBook=document.getElementById("bookin-nu")
+        const reresCheckinDate=document.getElementById("checkin");
+        const reresCheckoutDate=document.getElementById("checkout");
+        const renewCheckinDate=document.getElementById("checkin-nu");
+        const renewCheckoutDate=document.getElementById("checkout-nu");
+        const reDatePost=document.getElementById("dateposted");
+        if(reresID.value=="" || remID.value=="" || reresRoomName.value=="" || reresCheckinDate.value=="" ||renewCheckinDate.value=="" || reresCheckoutDate.value==""||reresCheckoutDate.value==""||reresBook.value=="" || renewBook.value=="" || reresTour.value=="" || reresPayMeth.value==""){
+            alert("Please fill up the entire field");
+            document.getElementById('inProgInd').hidden=true;
+        }else{
+                const dtPost = new Date()
+                reDatePost.value=`${dtPost.getFullYear()}-${String(dtPost.getMonth() + 1).padStart(2, '0')}-${String(dtPost.getDate()).padStart(2, '0')}`
+                const dtID=renewCheckinDate.valueAsDate.toLocaleDateString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\//g, '');
+                const rng=Math.floor(Math.random()*10);
+                const rng2=Math.floor(Math.random()*10);
+                const rng3=Math.floor(Math.random()*10);
+                const rng4=Math.floor(Math.random()*10);
+                reID.value=remID.value[0]+remID.value[1]+"-"+dtID+"-"+rng+rng2+rng3+rng4
+                let renewTR,renewPM
+                if(renewTour.value==reresTour.value){
+                    renewTR="N/A"
+                }else{
+                    renewTR=renewTour.value
+                }
+                if(renewPayMeth.options[renewPayMeth.selectedIndex].text==reresPayMeth.value){
+                    renewPM="N/A"
+                }else{
+                    renewPM=renewPayMeth.options[renewPayMeth.selectedIndex].text
+                }
+        const datum={
+            reDatePost:reDatePost.value,
+            reID:reID.value,
+            reresID:reresID.value,
+            remID:remID.value,
+            reresRoomName:reresRoomName.value,
+            reresTour:reresTour.value,
+            renewTour:renewTR,
+            reresPayMeth:reresPayMeth.value,
+            renewPayMeth:renewPM,
+            reresCheckInDate:reresCheckinDate.value,
+            reresCheckOutDate:reresCheckoutDate.value,
+            reresBookeDate:reresBook.value,
+            renCheckInDate:renewCheckinDate.value,
+            renCheckOutDate:renewCheckoutDate.value,
+            renBookeDate:renewBook.value
+        }
+        try{
+            const response = await fetch('/insertResched',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                updateR()
+            }else{
+                alert(result.error);
+                document.getElementById('inProgInd').hidden=true;
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+            }
+    }else{
+        alert("Please set a date further than that.")
+        document.getElementById('inProgInd').hidden=true;
+    }
+    }
+
+    async function updateR(){
+        const resID=document.getElementById('reservID').value;
+        let resmIDf, resmNamef,resPaxf,resCaxf,resmEmailf,resmPhonof,resRoomNamef,resTourf,resPricef,resPayMethf,resPayStatf;
+        try{
+            const response=await fetch(`/searchRes?resID=${resID}`);
+            const result=await response.json();
+            if(response.ok){
+                resmIDf=result.resmID
+                resmNamef=result.resmName
+                resPaxf=result.resPax
+                resCaxf=result.resCax
+                resmEmailf=result.resmEmail
+                resmPhonof=result.resmPhono
+                resRoomNamef=result.resRoomName
+                resCheckDatef=result.resCheckDate
+                resBookDatef=result.resBookeDate
+                resTourf=result.resTour
+                resPricef=result.resPrice;
+                resPayMethf=result.resPayMeth
+                resPayStatf=result.resPayStat
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        let renewTR,renewPM
+        let renewTour=document.getElementById('selrenewTour')
+        let renewPayMeth=document.getElementById('selrenewPayMeth')
+                if(renewTour.value==resTourf || renewTour.value=="n/a"){
+                    renewTR=resTourf
+                }else{
+                    renewTR=renewTour.value
+                }
+                if(renewPayMeth.options[renewPayMeth.selectedIndex].text==resPayMethf){
+                    renewPM="N/A"
+                }else{
+                    renewPM=renewPayMeth.options[renewPayMeth.selectedIndex].value
+                }
+        const updoot={
+            resID:document.getElementById('reservID').value,
+            resmID:resmIDf,
+            resmName:resmNamef,
+            resPax:resPaxf,
+            resCax:resCaxf,
+            resmEmail:resmEmailf,
+            resmphono:resmPhonof,
+            resRoomName:resRoomNamef,
+            resCheckDate:document.getElementById("checkin-nu").value,
+            resCheckoutDate:document.getElementById('checkout-nu').value,
+            resBoookeDate:document.getElementById("bookin-nu").value,
+            resTour:renewTR,
+            resPrice:resPricef,
+            resPayMeth:renewPM,
+            resPayStat:resPayStatf
+        }
+        try{
+            const response = await fetch('/updateRes',{
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                    alert(result.message);
+                    window.location.replace("UserPage.html")
+            }else{
+                document.getElementById('inProgInd').hidden=true;
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+</script>
+
+</html>

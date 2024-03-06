@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roomnities Page - Admin </title>
+    <style>
+    
+body, h1, h2, p {
+    margin: 0;
+    padding: 0;
+}
+body {
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+            display:inline-flexbox;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+           
+            background-image: url('media/tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+        }
+        header {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: - auto;
+}
+
+     
+    .header-content {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+    }
+        header.style1 {
+        display: flex;
+        background-color: #007BFF;
+        color: #fff;
+        text-align: center;
+        padding: 5px ;
+        }
+        header.style1 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        div.style1 {
+    padding: 50px 0px 0px 155px;
+}
+
+        header.style2 {
+           background-color: #7cafc9;
+           color: #ffffff;
+          text-align: center;
+          padding: 5px ;
+        }
+        header.style2 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        
+        header.s2 nav{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+        header.style2 nav a{
+          display: inline-block;
+          padding: 10px 20px;
+          text-decoration: none;
+          color: #ff0202;
+          background-color: rgb(226, 226, 83);
+          border-radius: 35px;
+          margin: 0 10px;
+          transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+        header.style2 nav a:hover{
+          background-color: #007BFF;
+
+        }
+
+    footer {
+         text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+        }
+
+    .register-container {
+            background-color: #fff;
+            border-radius: 18px;
+            padding: 45px;
+            margin-top: 90px;
+            margin-left: 475px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .register-container h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .form-group button {
+            width: 100%;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .form-group button:hover {
+            background-color: #0056b3;
+        }
+
+       
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+
+        h2{
+margin-top: 30px;
+color: #050505;
+}
+        form {
+            border: px solid #ccc;
+            padding: 20px;
+            margin-top: 20px;
+            
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+
+        }
+        input,
+        select {
+            width: 95%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ccc;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            width: 95%;
+            height: 200px;
+            overflow-x: auto;
+            overflow-y: auto;
+            margin: 0 auto;
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+            border: 1px;
+        }
+        .main-heading{
+    font-size: 20px;
+    display: inline-block;
+    justify-content: center;
+    text-align: center;
+    margin-right: 340px;
+
+}
+.headText{
+        font-size: 15px;
+        display: inline-block;
+justify-content: center;
+text-align: center;
+margin-right: 340px;
+}
+.bost{
+            width:98%;
+            height: 50px;
+        }
+        .linkWithFunction{
+    cursor: pointer;
+}
+</style> 
+</head>
+<body> 
+    <header class="style1">
+        <img src="media/5.png" alt="logo">
+
+        <div class="style1">
+        <h1 class="main-heading"> Tubigan Garden Resort</h1>
+        <p class="headText">Tubigan Garden Resort located at Paliparan 3, Dasmariñas, Cavite | 𝙔𝙊𝙐𝙍 𝙉𝙀𝙓𝙏 𝘼𝘿𝙑𝙀𝙉𝙏𝙐𝙍𝙀 𝙎𝙋𝙊𝙏❗</p>
+        <p class="headText">Affordable Summer PlayGround</p><br><br>
+        </div>
+    </header>
+    <header class="style2">  
+ <nav>
+ <div >
+    </div>
+        <a href= "Admin.html">Home</a>
+        <a href= "AdminUser.html">Admin Accounts</a>
+        <a href= "AdminMembers.html">Member Accounts</a>
+        <a href="AdminSchedule.html">Schedule</a>
+        <a href= "AdminReshced.html">Reschedules</a>
+        <a href="AdminRunBal.html">Customer's Running Balance</a>
+        <a href="AdminPromos.html">Promos</a><br><br>
+        <a href="AdminCheckin.html">Check-In A Customer</a>
+        <a class="linkWithFunction" onclick="logout()">Log Out</a>
+    </nav>
+    </header>
+    <h2> Rooms</h2><br>
+    <div class="container">
+        <div class="table-container">
+        <table align="center" border="1">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Cost</th>
+                    <th>Reservation Status</th>
+                    <th>Left</th>
+                </tr>
+            </thead>
+            <tbody id="room-data">
+                <!-- room data will be displayed here -->
+            </tbody>
+        </table>
+    </div>
+        <form id="fomame">
+            <label>Upload an Image:</label>
+            <input type="file" id='fileRoomImg' accept="image/*">
+            <label>Write Description:</label>
+            <textarea id="txtRoomDesc" class="bost"></textarea>
+            <label for="RoomName">Room Name:</label>
+            <input type="text" id="txtRoomName" name="roomName" required>
+            <label for="size">Capacity</label>
+            <input type="number" id="numRoomSize" name="roomSize" required>
+            <label for="cost">Cost:</label>
+            <input type="number" id="numRoomCost" name="roomCost" required>
+            <label for="room">Availability</label>
+            <select id="selRoomRes" name="roomReservd" required>
+                <option value=""></option>
+                <option value="Available">Available</option>
+                <option value="Unavailable">Unavailable</option>
+            </select>
+            <label>Cottages Left</label>
+            <input type="number" id="numRoomLef" name="roomLeft" required>
+            <button type="button" id="addRoom" onclick="insertRoom()">Add Room</button>
+            <button type="button" id="updootRoom" onclick="updateRoom()">Update Room</button>
+            <button type="button" id="findRoom" onclick="searchRoom()">Search Room</button>
+            <button type="button" id="deleteRoom" onclick="deletRoom()">Remove Room</button>
+        </form>
+    </div>
+
+    <script>
+        // JavaScript code to handle button actions and update the table goes here
+ //#region Table Populators
+ fetch('/room-data')
+  .then(response => {
+    if (response.ok) {
+      return response.json(); 
+    } else {
+      throw new Error('Error fetching data');
+    }
+  })
+  .then(data => {
+    const roomData = document.getElementById('room-data');
+    roomData.innerHTML = '';
+    data.forEach(item => {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td><img src="${item.roomImg}" alt="no image" style="width:200px; height:200px;"></td>
+        <td>${item.roomDesc}</td>
+        <td>${item.roomName}</td>
+        <td>${item.roomSize}</td>
+        <td>${item.roomCost}</td>
+        <td>${item.roomReservd}</td>
+        <td>${item.roomLeft}</td>
+      `;
+     roomData.appendChild(row);
+    });
+    
+  })
+  .catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+//#endregion        
+
+//#region table functions
+
+async function insertRoom(){
+    document.getElementById('inProgInd').hidden=false;
+    const roomName=document.getElementById('txtRoomName')
+        const roomCost=document.getElementById('numRoomCost')
+        const roomSize=document.getElementById('numRoomSize')
+        const roomRes=document.getElementById('selRoomRes')
+        const roomLeft=document.getElementById('numRoomLef')
+        const roomDesc=document.getElementById('txtRoomDesc').value;
+        const fileRoomImg = document.getElementById('fileRoomImg');
+        const roomImgFile = fileRoomImg.files[0];
+        if(roomName.value=="" || roomCost.value=="" || roomSize.value=="" || roomRes.value=="" || roomLeft.value=="" || !roomImgFile){
+            alert("Please fill up the entire field");
+            document.getElementById('inProgInd').hidden=true;
+        }else{
+                const formData = new FormData();
+            formData.append('roomName', roomName.value);
+            formData.append('roomImg', roomImgFile);
+            formData.append('roomDesc', roomDesc);
+            formData.append('roomSize', roomSize.value);
+            formData.append('roomCost', roomCost.value);
+            formData.append('roomReservd', roomRes.options[roomRes.selectedIndex].text);
+            formData.append('roomLeft', roomLeft.value);
+        try{
+            const response = await fetch('/insertRoom',{
+            method:'POST',
+            body:formData,
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+                document.getElementById('fomame').reset();
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+        }
+    }
+
+async function searchRoom(){
+    const roomName=document.getElementById('txtRoomName');
+        if(roomName.value !=""){
+        const roomName=document.getElementById('txtRoomName').value;
+        try{
+            const response=await fetch(`/searchRoom?roomName=${roomName}`);
+            const result=await response.json();
+            if(response.ok){
+                document.getElementById('numRoomCost').value=result.roomCost
+                document.getElementById('numRoomSize').value=result.roomSize
+                document.getElementById('selRoomRes').value=result.roomReservd
+                document.getElementById('numRoomLef').value=result.roomLeft
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+    }else{
+            alert("Please input what to search.");
+        }    
+}
+    async function updateRoom(){
+        document.getElementById('inProgInd').hidden=false;
+        const roomName=document.getElementById('txtRoomName');
+        if(roomName.value !=""){
+            const roomCost=document.getElementById('numRoomCost')
+        const roomSize=document.getElementById('numRoomSize')
+        const roomRes=document.getElementById('selRoomRes')
+        const roomLeft=document.getElementById('numRoomLef')
+        const roomDesc=document.getElementById('txtRoomDesc').value;
+        const fileRoomImg = document.getElementById('fileRoomImg');
+        const roomImgFile = fileRoomImg.files[0];
+        console.log(roomImgFile)
+        const up=new FormData()
+        up.append('roomName',roomName.value);
+        if(roomImgFile!=undefined){
+            alert("Triggered, File")
+            up.append('roomImg', roomImgFile);
+        }
+        if(roomDesc!=""){
+            alert("Triggered, Desc")
+            up.append('roomDesc', roomDesc);
+        }
+        if(roomSize.value!=""){
+            alert("Triggered, Capacity")
+            up.append('roomSize', roomSize.value);
+        }
+        if(roomCost.value!=""){
+            alert("Triggered, Cost")
+            up.append('roomCost', roomCost.value);
+        }
+        if(roomRes.options[roomRes.selectedIndex].textContent!=""){
+            alert("Triggered, Reserved")
+            up.append('roomReservd', roomRes.options[roomRes.selectedIndex].text);
+        }if(roomLeft.value!=""){
+            alert("Triggered, Left")
+            up.append('roomLeft', roomLeft.value);
+        }
+        try{
+            const response = await fetch('/updateRoom',{
+            method:'PATCH',
+            body:up,
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            location.reload();
+            }else{
+                alert(result.error);
+                document.getElementById('inProgInd').hidden=true;
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+            document.getElementById('inProgInd').hidden=true;
+        }
+        }else{
+            alert("Please input what to update.");
+            document.getElementById('inProgInd').hidden=true;
+        }
+    }
+    
+    async function deletRoom(){
+        document.getElementById('inProgInd').hidden=false;
+        const roomName=document.getElementById('txtRoomName');
+        if(roomName.value !=""){
+        const fomdat=new FormData(document.getElementById('fomame'));
+        const datum=Object.fromEntries(fomdat.entries());
+        try{
+            const response = await fetch('/deletRoom',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert(result.message);
+            location.reload()
+            }else{
+                alert(result.error);
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While removing The Record.');
+        }
+    }
+        else{
+            alert("Please input what to remove.");
+        }
+    }
+    async function logout(){
+        const datum={
+         it:"admin"   
+        }
+        try{
+            const response=await fetch('/applyCurrentActive',{
+            method:'POST',
+            headers:{
+            'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum)
+            })
+            if(response.ok){
+                        window.location.replace("LogIn.html")
+            }
+            }catch(err){
+            console.log(err)
+            }
+    }
+//#endregion
+
+    </script>
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+</body>
+</html>
