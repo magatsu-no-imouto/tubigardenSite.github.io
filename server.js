@@ -8,31 +8,77 @@ useUnifiedTopology:true,
 const client=new MongoClient(uri);
 let rider=client.db('db-TubigardenResort-depl');
 
+const port = 8080;
+
 async function connecto(){
     try{
         await client.connect();
         console.log("Database, please!");
+        train.listen(port,()=>{
+          console.log(`Connecto, ${port}`);
+          });
     }catch(err){
         console.error("E-E-ERROR!",err);
     }
 }
 
 connecto();
-
-const exp=require('express');
+const exp = require('express');
 const cookieParser = require('cookie-parser');
-const train=exp();
-const port=8080;
-const cors=require('cors');
+const cors = require('cors');
+const path = require('path');
+const puppeteer = require('puppeteer');
+const fs = require('fs');
+const train = exp();
+const multer = require('multer');
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: 'public/media/',
+    filename: (req, file, cb) => {
+      const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+      const ext = path.extname(file.originalname);
+      cb(null, file.fieldname + '-' + uniqueSuffix + ext);
+    }
+  })
+});
+train.use(cookieParser());
 train.use(exp.json());
 train.use(cors());
+
+const isAdmin = async (req, res, next) => {
+  try {
+    if (req.url.toLowerCase().includes('/admin') && req.url.endsWith('.html')) {
+      console.log(req.url);
+      const aID = req.cookies.aUser;
+      console.log(aID)
+      if (!aID) {
+        return res.status(403).send('Forbidden: Access Denied');
+      }
+
+      const aMem = await rider.collection('admin').findOne({ aID });
+
+      if (aMem) {
+        return next();
+      } else {
+        return res.status(403).send('Forbidden: Access Denied');
+      }
+    } else {
+      return next();
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send('Internal Server Error');
+  }
+};
+
+train.use(isAdmin);
 train.use(exp.static('public'));
-train.use(cookieParser());
-const fs = require('fs');
-const puppeteer = require('puppeteer');
-const bodyParser = require('body-parser');
-train.use(bodyParser.urlencoded({ extended: true }));
-train.use(bodyParser.json());
+
+
+
+
+// Assuming you have an Express app instance called 'train'
+
 
 train.post('/generate-pdf', async (req, res) => {
   const { sectA,sectB,content} = req.body;
@@ -69,13 +115,26 @@ train.post('/generate-pdf', async (req, res) => {
       </body>
     </html>`
 console.log(combinedHTML)
+const dt=new Date()
+dt.getDate()
 await page.setContent(combinedHTML);
   const pdfBuffer = await page.pdf();
-  const filePath = `./${Date.now()}_report.pdf`;
+  const filePath = `./_report.pdf`;
   fs.writeFileSync(filePath, pdfBuffer);
   await browser.close();
 
-  res.send('PDF generation successful.');
+  res.setHeader('Content-Type', 'application/pdf');
+  res.setHeader('Content-Disposition', 'attachment; filename=report.pdf');
+
+  const absolutePath = path.resolve(filePath);
+  res.download(absolutePath, 'report.pdf', (err) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error sending the file');
+    } else {
+      fs.unlinkSync(filePath); // Delete the file after sending
+    }
+  });
 });
 
 const nodemailer = require("nodemailer");
@@ -116,17 +175,19 @@ train.post('/send-notification',async(req,res)=>{
 });
 
 train.post('/send-notificationCust',async(req,res)=>{
-  let {paymentGate, customer}=req.body;
+  const {paymentGate, customer}=req.body;
   console.log('Get Ready For: ',req.body);
   try {
     const info = await transporter.sendMail({
-        from: '"BOTT THE BOT" <notificationbot001@gmail.com>',
-        to: "kyle.ticman@gmail.com",
+        from: '"REBOTT THE TUBIGAN GARDEN BOT" <notificationbot001@gmail.com>',
+        to: `${customer}`,
         subject: "Tubigan Garden Resort Reservation Notification",
         text: paymentGate,
-        html: `<em>${paymentGate}</em>`
+        html: `
+        <h1>Tubigan Garden Resort</h1>
+        <h2>--------------------------------</h2>
+        <em>${paymentGate}</em>`
     });
-
     console.log("Message sent: %s", info.messageId);
     res.json({ message: 'Email sent successfully' });
 } catch (error) {
@@ -135,9 +196,29 @@ train.post('/send-notificationCust',async(req,res)=>{
 }
 });
 
-train.listen(port,()=>{
-    console.log(`Connecto, ${port}`);
-    });
+train.post('/verifyNotif',async(req,res)=>{
+  const {mID,mName,mEmail}=req.body;
+  const link=`http://localhost:8080/verifyMem?mID=${mID}&mEmail=${mEmail}`;
+  console.log('Get Ready For: ',req.body)
+  try{
+    const info=await transporter.sendMail({
+      from: '"REBOTT THE TUBIGAN GARDEN BOT" <notificationbot001@gmail.com>',
+        to: `${mEmail}`,
+        subject: "Tubigan Garden Resort User Notification Notification",
+        html: `
+        <h1>Tubigan Garden Resort</h1>
+        <h2>--------------------------------</h2>
+        <em>Good Day, ${mName}. Thank you for signing up for our Website! Enclosed is the link to verify your account. Please click it to activate your account so you can start reserving Rooms for Tubigan Garden Resort<br><a href="${link}">Verify account</a><br>We hope to see you soon!</em>
+        `
+    })
+    console.log("Message sent: %s", info.messageId);
+    res.json({ message: 'Email sent successfully' });
+  }
+  catch(err){
+    console.error(err)
+    res.status(500).json({message:'Email failed to send.'})
+  }
+})
 
 //#region html foundation
 train.get('/',async(req,res)=>{
@@ -146,9 +227,9 @@ train.get('/',async(req,res)=>{
 //#endregion
 
 //#region data fill-er-upper
-train.get('/amenities-data', async (req, res) => {
+train.get('/room-data', async (req, res) => {
     try {
-      const dat = await rider.collection('amenities').find({}).sort({"ameName":1}).toArray();
+      const dat = await rider.collection('rooms').find({}).sort({"roomName":1}).toArray();
       res.status(200).json(dat);
     } catch (err) {
       console.error('Something went wrong fetching the data from MongoDB', err);
@@ -169,8 +250,7 @@ train.get('/amenities-data', async (req, res) => {
   train.get('/reservation-data-r',async(req,res)=>{
     try {
       const dat = await rider.collection('reservreport').find({}).sort({"resCheckinDate":1,"resBookeDate":1}).toArray();
-      const count=await rider.collection('reservreport').countDocuments({})
-      res.json({data:dat, count:count});
+      res.json(dat);
     } catch (err) {
       console.error('Something went wrong fetching the data from MongoDB', err);
       res.status(500).send('Internal Server Error');
@@ -225,6 +305,16 @@ train.get('/amenities-data', async (req, res) => {
       res.status(500).send("Internal Server Error")
     }
   })
+
+  train.get('/trans-data',async(req,res)=>{
+    try{
+      const p=await rider.collection('transactions').find({}).toArray();
+      res.json(p)
+    }catch(err){
+      console.error("Something went wrong with MongoDB!", err)
+      res.status(500).send("Internal Server Error")
+    }
+  })
 //#endregion 
 
 //#region Database Legend
@@ -246,15 +336,14 @@ rider.collection('reservations').createIndex({ resID: 1 }, { unique: true });
 rider.collection('reservreport').createIndex({ resID: 1 }, { unique: true });
 
 train.post('/insertRes',async(req,res)=>{
-  const {resID,rescID,rescName,resPax,resCax,rescEmail,rescphono,rescPass,resAmeName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resAppStat}=req.body;
+  const {resID,resmID,resmName,resmEmail,resmPhono,resPax,resCax,resRoomName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resStat}=req.body;
   console.log('Get Ready For: ',req.body);
   try{
       if(!rider){
           console.log('Wheres the Database?');
           return res.status(500).json({error: 'Database is not ready.'});
       }
-        await rider.collection('reservations').insertOne({
-          resID,rescID,rescName,resPax,resCax,rescEmail,rescphono,rescPass,resAmeName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resAppStat
+        await rider.collection('reservations').insertOne({resID,resmID,resmName,resmEmail,resmPhono,resPax,resCax,resRoomName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resStat
         });
         console.log('Record Inserted!');
         res.status(201).json({message:'Record Inserted!'});
@@ -267,15 +356,14 @@ train.post('/insertRes',async(req,res)=>{
 });
 
 train.post('/insertRep',async(req,res)=>{
-  const {resID,rescID,rescName,resPax,resCax,rescEmail,rescphono,rescPass,resAmeName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resAppStat}=req.body;
+  const {resID,resmID,resmName,resmEmail,resmPhono,resPax,resCax,resRoomName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resStat}=req.body;
   console.log('Get Ready For: ',req.body);
   try{
     if(!rider){
       console.log('Wheres the Database?');
           return res.status(500).json({error: 'Database is not ready.'});
     }
-        await rider.collection('reservreport').insertOne({
-          resID,rescID,rescName,resPax,resCax,rescEmail,rescphono,rescPass,resAmeName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resAppStat
+        await rider.collection('reservreport').insertOne({resID,resmID,resmName,resmEmail,resmPhono,resPax,resCax,resRoomName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resStat
         });
         console.log('Record Inserted!');
         res.status(201).json({message:'Record Inserted!'});
@@ -312,119 +400,30 @@ train.get('/searchRes',async(req,res)=>{
   }
 });
 
-train.get('/checkRes',async(req,res)=>{
-  const {resID}=req.query;
-  if(resID!=undefined){
-    try{
-      if(!rider){
-          console.log('Forgetting somethign?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const reserv = await rider.collection('reservreport').findOne({resID});
-      if(reserv){
-          console.log('Found it. ',reserv);
-          res.status(200).json(reserv);
-      }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-      }
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-  }else{
-    console.log("Query does not exist")
-  }
-});
+
 
 train.get('/searchResCust', async(req,res)=>{
-  const {rescID}=req.query;
+  const {resmID}=req.query;
     try{
-      if(rescID!=undefined){
-        console.log('looking for: ', rescID);
+      if(resmID!=undefined){
+        console.log('looking for: ', resmID);
       if(!rider){
           console.log('Forgetting something?');
           return res.status(500).json({error:'Database is not ready.'});
       }
-      const count = await rider.collection('reservations').countDocuments({rescID});
-      if (count > 0) {
-        console.log(`Found ${count} reservations.`)
+      const count=await rider.collection('reservations').countDocuments({resmID})
+      if(count>0){
         if(count>1){
-          console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-        const trans = await rider.collection('reservations').find({rescID}).skip(1).toArray();
-      if(trans){
+          const reserv = await rider.collection('reservations').find({resmID}).sort({"resCheckinDate":1,"resBookeDate":1}).toArray();
+      if(reserv){
           console.log('Transfer!');
-          res.status(200).json(trans);
+          res.status(200).json(reserv);
       }else{
           console.log('Record Not Found with that ID.');
           res.status(404).json({error:'An Error occured while looking for the record.'});
       }
         }else{
-          const reserv = await rider.collection('reservations').findOne({rescID});
-          res.status(200).json(reserv);
-        }
-      } else {
-        console.log('No reservations found with that ID.');
-        res.status(404).json({ error: 'No reservations found with the provided ID.' });
-      }
-    }else{
-      console.log("Query does not exist")
-    } 
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-})
-
-train.get('/searchResCustAll', async(req,res)=>{
-  const {rescID}=req.query;
-    try{
-      if(rescID!=undefined){
-        console.log('looking for: ', rescID);
-      if(!rider){
-          console.log('Forgetting something?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const count = await rider.collection('reservations').countDocuments({rescID});
-      if (count > 0) {
-        console.log(`Found ${count} reservations.`)
-        if(count>1){
-          console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-        const trans = await rider.collection('reservations').find({rescID}).toArray();
-      if(trans){
-          console.log('Transfer!');
-          res.status(200).json(trans);
-      }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-      }
-        }else if(count=1){
-          const reserv = await rider.collection('reservations').findOne({rescID});
-          res.status(200).json(reserv);
-        }
-      } else {
-        console.log('No reservations found with that ID.');
-        res.status(404).json({ error: 'No reservations found with the provided ID.' });
-      }
-    }else{
-      console.log("Query does not exist")
-    } 
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-})
-
-train.get('/searchResCustLite', async(req,res)=>{
-  const {rescID}=req.query;
-    try{
-      if(rescID!=undefined){
-        console.log('looking for: ', rescID);
-      if(!rider){
-          console.log('Forgetting something?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const reserv = await rider.collection('reservations').findOne({rescID});
+          const reserv = await rider.collection('reservations').findOne({resmID})
       if(reserv){
           console.log('Transfer!');
           res.status(200).json(reserv);
@@ -432,6 +431,12 @@ train.get('/searchResCustLite', async(req,res)=>{
           console.log('Record Not Found with that ID.');
           res.status(404).json({error:'An Error occured while looking for the record.'});
       }
+        }
+      }else {
+        console.log('No reservations found with that ID.');
+        res.status(404).json({ error: 'No reservations found with the provided ID.' });
+      }
+      
       } else{
       console.log("Query does not exist")
     } 
@@ -439,25 +444,23 @@ train.get('/searchResCustLite', async(req,res)=>{
       console.error('Error while looking for record. ',err);
       res.status(500).json({error:'an error has occured while searching for the record.'});
   }
- 
-  
 })
 
-train.get('/searchResAme', async(req,res)=>{
-  const {resAmeName}=req.query;
+train.get('/searchResRoom', async(req,res)=>{
+  const {resRoomName}=req.query;
     try{
-      if(resAmeName!=undefined){
-        console.log('looking for: ', resAmeName);
+      if(resRoomName!=undefined){
+        console.log('looking for: ', resRoomName);
       if(!rider){
           console.log('Forgetting something?');
           return res.status(500).json({error:'Database is not ready.'});
       }
-      const count = await rider.collection('reservations').countDocuments({resAmeName});
+      const count = await rider.collection('reservations').countDocuments({resRoomName});
       if (count > 0) {
         console.log(`Found ${count} reservations.`)
         if(count>1){
           console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-        const trans = await rider.collection('reservations').find({resAmeName}).toArray();
+        const trans = await rider.collection('reservations').find({resRoomName}).toArray();
       if(trans){
           console.log('Transfer!');
           res.status(200).json({data: trans,count:count});
@@ -466,7 +469,7 @@ train.get('/searchResAme', async(req,res)=>{
           res.status(404).json({error:'An Error occured while looking for the record.'});
       }
         }else{
-          const reserv = await rider.collection('reservations').findOne({resAmeName});
+          const reserv = await rider.collection('reservations').findOne({resRoomName});
           res.status(200).json({data:reserv});
         }
       } else {
@@ -482,188 +485,8 @@ train.get('/searchResAme', async(req,res)=>{
   }
 })
 
-train.get('/searchRes-Filter', async(req,res)=>{
-  const {resHuh, resTime, resPayStat, resAppStat, resAmeName,startDate,endDate}=req.query;
-    try{
-      if(resHuh!=undefined){
-        console.log('looking for: ', req.query);
-      if(!rider){
-          console.log('Forgetting something?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      if(resAppStat){
-        const countA = await rider.collection('reservreport').countDocuments({resAppStat});
-        const countB = await rider.collection('reservations').countDocuments({resAppStat});
-      const count=countA+countB
-      if (count > 0) {
-        console.log(`Found ${count} reservations.`)
-        if(count>1){
-          console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-          const transA = await rider.collection('reservations').find({ resAppStat }).toArray();
-          const transB = await rider.collection('reservreport').find({ resAppStat }).toArray();
-          if(transA && !transB){
-            console.log('Transfer!');
-            res.status(200).json({data: transA,count:count});
-          }else if(!transA && transB){
-            console.log('Transfer!');
-            res.status(200).json({data: transB,count:count,transB:"Yes"});
-          }else if(transA && transB){
-            const trans = [...transA, ...transB];
-              if(trans){
-          console.log('Transfer!');
-          res.status(200).json({data: trans,count:count,transB:"Yes"});
-              }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-             }
-          }
-        }else{
-          if(countA>0){
-            const reserv = await rider.collection('reservreport').findOne({resAppStat});
-          res.status(200).json({data:reserv,transB:"Yes"});
-          }else if(countB>0){
-            const reserv = await rider.collection('reservations').findOne({resAppStat});
-          res.status(200).json({data:reserv});
-          }
-        }
-      } else {
-        console.log('No reservations found with that ID.');
-        res.status(404).json({ error: 'No reservations found with the provided ID.' });
-      }
-      }else if(resPayStat){
-        const countA = await rider.collection('reservreport').countDocuments({resPayStat});
-      const countB = await rider.collection('reservations').countDocuments({resPayStat});
-      const count=countA+countB
-      if (count > 0) {
-        console.log(`Found ${count} reservations.`)
-        if(count>1){
-          console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-          const transA = await rider.collection('reservations').find({ resPayStat }).toArray();
-          const transB = await rider.collection('reservreport').find({ resPayStat }).toArray();
-          if(transA && !transB){
-            console.log('Transfer!');
-            res.status(200).json({data: transA,count:count});
-          }else if(!transA && transB){
-            console.log('Transfer!');
-            res.status(200).json({data: transB,count:count,transB:"Yes"});
-          }else if(transA && transB){
-            const trans = [...transA, ...transB];
-              if(trans){
-          console.log('Transfer!');
-          res.status(200).json({data: trans,count:count,transB:"Yes"});
-              }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-             }
-          }
-        }else{
-          if(countA>0){
-            const reserv = await rider.collection('reservations').findOne({resPayStat});
-          res.status(200).json({data:reserv,transB:"Yes"});
-          }else if(countB>0){
-            const reserv = await rider.collection('reservreport').findOne({resPayStat});
-          res.status(200).json({data:reserv});
-          }
-        }
-      } else {
-        console.log('No reservations found with that ID.');
-        res.status(404).json({ error: 'No reservations found with the provided ID.' });
-      }
-      }else if(resAmeName){
-        const regexAmeName = new RegExp(resAmeName, 'i');
-        const countA = await rider.collection('reservreport').countDocuments({resAmeName:{$regex:regexAmeName}});
-        const countB = await rider.collection('reservations').countDocuments({resAmeName:{$regex:regexAmeName}});
-        const count=countA+countB
-        if (count > 0) {
-          console.log(`Found ${count} reservations.`)
-          console.log(`Count A: ${countA}`)
-          console.log(`Count B: ${countB}`)
-          if(count>=2){
-            console.log("Me2")
-            console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-            const transA = await rider.collection('reservations').find({ resAmeName:{$regex:regexAmeName} }).toArray();
-            const transB = await rider.collection('reservreport').find({ resAmeName:{$regex:regexAmeName} }).toArray();
-            if(transA && !transB){
-              console.log('Transfer!');
-              res.status(200).json({data: transA,count:count});
-            }else if(!transA && transB){
-              console.log('Transfer!');
-              res.status(200).json({data: transB,count:count,transB:"Yes"});
-            }else if(transA && transB){
-              const trans = [...transA, ...transB];
-                if(trans){
-            console.log('Transfer!');
-            res.status(200).json({data: trans,count:count,transB:"Yes"});
-                }else{
-            console.log('Record Not Found with that ID.');
-            res.status(404).json({error:'An Error occured while looking for the record.'});
-               }
-            }
-          }else if(count==1){
-            if(countA>0){
-              const reserv = await rider.collection('reservreport').findOne({resAmeName:{$regex:regexAmeName}});
-            res.status(200).json({data:reserv,transB:"Yes"});
-            }else if(countB>0){
-              console.log("It should've been me.")
-              const reserv = await rider.collection('reservations').findOne({resAmeName:{$regex:regexAmeName}});
-            res.status(200).json({data:reserv});
-            }
-          }
-        }else{
-          console.log('Record Not Found with that ID.');
-            res.status(404).json({error:'An Error occured while looking for the record.'});
-        }
-      }else if(resTime){
-        const countA = await rider.collection('reservreport').countDocuments({resCheckinDate:{$gte: startDate,$lt:endDate}});
-      const countB = await rider.collection('reservations').countDocuments({resCheckinDate:{$gte: startDate,$lt:endDate}});
-      const count=countA+countB
-      if (count > 0) {
-        console.log(`Found ${count} reservations.`)
-        if(count>1){
-          console.log(`More than 1 Record detected. Initiating transfer sequence.`);
-          const transA = await rider.collection('reservations').find({ resCheckinDate:{$gte: startDate,$lt:endDate}}).toArray();
-          const transB = await rider.collection('reservreport').find({ resCheckinDate:{$gte: startDate,$lt:endDate}}).toArray();
-          if(transA && !transB){
-            console.log('Transfer!');
-            res.status(200).json({data: transA,count:count,startDate:startDate,endDate:endDate});
-          }else if(!transA && transB){
-            console.log('Transfer!');
-            res.status(200).json({data: transB,count:count,transB:"Yes",startDate:startDate,endDate:endDate});
-          }else if(transA && transB){
-            const trans = [...transA, ...transB];
-              if(trans){
-          console.log('Transfer!');
-          res.status(200).json({data: trans,count:count,startDate:startDate,endDate:endDate});
-              }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-             }
-          }
-        }else if(count==1){
-          if(countA>0){
-            const reserv = await rider.collection('reservreport').findOne({resCheckinDate:{$gte: startDate,$lt:endDate}});
-          res.status(200).json({data:reserv,transB:"Yes",startDate:startDate,endDate:endDate});
-          }else if(countB>0){
-            const reserv = await rider.collection('reservations').findOne({resCheckinDate:{$gte: startDate,$lt:endDate}});
-          res.status(200).json({data:reserv,startDate:startDate,endDate:endDate});
-          }
-        }
-      } else {
-        console.log('No reservations found with that ID.');
-        res.status(404).json({ error: 'No reservations found with the provided ID.' });
-      }
-      }
-    }else{
-      console.log("Query does not exist")
-    }
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-})
-
-train.post('/updateRes',async(req,res)=>{
-  const {resID,rescID,rescName,resPax,resCax,rescEmail,rescphono,rescPass,resAmeName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resAppStat}=req.body;
+train.patch('/updateRes',async(req,res)=>{
+  const {resID,resmID,resmName,resmEmail,resmPhono,resPax,resCax,resRoomName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resStat}=req.body;
   console.log('Get Ready For:',req.body);
   try{
       if(!rider){
@@ -671,7 +494,24 @@ train.post('/updateRes',async(req,res)=>{
           return res.status(500).json({error:'Database is not ready.'});
       }
         const updootQ={resID};
-      const updootV={$set:{rescName,rescID,resPax,resCax,rescEmail,rescphono,rescPass,resAmeName,resCheckinDate,resCheckoutDate,resBookeDate,resTour,resPrice,resPromo,resPayMeth,resPayStat,resAppStat}}
+      const updootV={$set:{}}
+      if(resmID) updootV.$set.resmID=resmID;
+      if(resmName) updootV.$set.resmName=resmName;
+      if(resmEmail) updootV.$set.resmEmail=resmEmail;
+      if(resmPhono) updootV.$set.resmPhono=resmPhono;
+      if(resPax) updootV.$set.resPax=resPax;
+      if(resCax) updootV.$set.resCax=resCax;
+      if(resRoomName) updootV.$set.resRoomName=resRoomName;
+      if(resCheckinDate) updootV.$set.resCheckinDate=resCheckinDate;
+      if(resCheckoutDate) updootV.$set.resCheckoutDate=resCheckoutDate;
+      if(resBookeDate) updootV.$set.resBookeDate=resBookeDate;
+      if(resTour) updootV.$set.resTour=resTour;
+      if(resPrice) updootV.$set.resPrice=resPrice;
+      if(resPromo) updootV.$set.resPromo=resPromo;
+      if(resPayMeth) updootV.$set.resPayMeth=resPayMeth;
+      if(resPayStat) updootV.$set.resPayStat=resPayStat;
+      if(resStat) updootV.$set.resStat=resStat;
+
       const result=await rider.collection('reservations').updateOne(updootQ,updootV);
       if (result.matchedCount > 0) {
           console.log('Document updated successfully.');
@@ -710,26 +550,27 @@ train.post('/deletRes',async(req,res)=>{
 });
 //#endregion
 
-//#region Amenities Table
+//#region Roomnities Table
 
-rider.collection('amenities').createIndex({ameName: 1 }, { unique: true });
+rider.collection('rooms').createIndex({roomName: 1 }, { unique: true });
 
-train.post('/insertAme',async(req,res)=>{
-  const {ameName,ameSize,ameCost,ameReservd,ameLeft}=req.body;
-  console.log('Get Ready For: ',req.body);
+train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
+  const {roomName,roomDesc,roomSize,roomCost,roomReservd,roomLeft}=req.body;
+  const roomImgPath = req.file ? req.file.filename : null;
+  console.log('Get Ready For: ',req.body," ",roomImgPath);
   try{
       if(!rider){
           console.log('Wheres the Database?');
           return res.status(500).json({error: 'Database is not ready.'});
       }
-      await rider.collection('amenities').insertOne({
-        ameName,ameSize,ameCost,ameReservd,ameLeft
+      await rider.collection('rooms').insertOne({
+        roomName,roomImg:`media/${roomImgPath}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
       });
       console.log('Record Inserted!');
       res.status(201).json({message:'Record Inserted!'});
   }catch(err){
       if(err.name==='MongoError'&& err.code===11000){
-          console.log('Duplicate Entry for the provided ID: ',ameName);
+          console.log('Duplicate Entry for the provided ID: ',roomName);
           return res.status(400).json({error:'the provided reservation already exists.'});
       }
       console.error('E-E-ERROR! ',err);
@@ -737,16 +578,16 @@ train.post('/insertAme',async(req,res)=>{
   }
 });
 
-train.get('/searchAme',async(req,res)=>{
-  const {ameName}=req.query;
+train.get('/searchRoom',async(req,res)=>{
+  const {roomName}=req.query;
   try{
-    if(ameName!=undefined){
+    if(roomName!=undefined){
       console.log('looking for: ', req.query)
       if(!rider){
         console.log('Forgetting somethign?');
         return res.status(500).json({error:'Database is not ready.'});
     }
-    const ame = await rider.collection('amenities').findOne({ameName});
+    const ame = await rider.collection('rooms').findOne({roomName});
     if(ame){
         console.log('Found it. ', ame);
         res.status(200).json(ame);
@@ -764,17 +605,24 @@ train.get('/searchAme',async(req,res)=>{
   }
 });
 
-train.post('/updateAme',async(req,res)=>{
-  const {ameName,ameSize,ameCost,ameReservd,ameLeft}=req.body;
+train.patch('/updateRoom',upload.single('roomImg'),async(req,res)=>{
+  const {roomName,roomImg,roomDesc,roomSize,roomCost,roomReservd,roomLeft}=req.body;
+  const roomImgPath = req.file ? req.file.filename : null;
   console.log('Get Ready For:',req.body);
   try{
       if(!rider){
           console.log('Forgetting something?');
           return res.status(500).json({error:'Database is not ready.'});
       }
-      const updootQ={ameName};
-      const updootV={$set:{ameSize,ameCost,ameReservd,ameLeft}}
-      const result=await rider.collection('amenities').updateOne(updootQ,updootV);
+      const updootQ={roomName};
+      const updootV={$set:{}}
+      if (roomImgPath) updootV.$set.roomImg = `media/${roomImgPath}`;
+    if (roomDesc) updootV.$set.roomDesc = roomDesc;
+    if (roomSize) updootV.$set.roomSize = roomSize;
+    if (roomCost) updootV.$set.roomCost = roomCost;
+    if (roomReservd) updootV.$set.roomReservd = roomReservd;
+    if (roomLeft) updootV.$set.roomLeft = roomLeft;
+      const result=await rider.collection('rooms').updateOne(updootQ,updootV);
       if (result.matchedCount > 0) {
           console.log('Document updated successfully.');
           res.status(200).json({ message: 'Document updated successfully!' });
@@ -787,16 +635,16 @@ train.post('/updateAme',async(req,res)=>{
   res.status(500).json({ error: 'An error occurred while updating the document.' })
 }});
 
-train.post('/deletAme',async(req,res)=>{
-  const {ameName}=req.body;
-  console.log('Say Bye For: ',ameName);
+train.post('/deletRoom',async(req,res)=>{
+  const {roomName}=req.body;
+  console.log('Say Bye For: ',roomName);
   try{
       if(!rider){
           console.log('Forgetting something?');
           return res.status(500).json({error:'Database is not ready.'});
       }
-      const deletQ={ameName};
-      const result=await rider.collection('amenities').deleteOne(deletQ);
+      const deletQ={roomName};
+      const result=await rider.collection('rooms').deleteOne(deletQ);
       if (result.deletedCount>0){
           console.log('Document Deleted.');
           res.status(200).json({message:`Document deleted successfully!`});
@@ -836,6 +684,7 @@ train.post('/insertAdmin',async(req,res)=>{
       res.status(500).json({ error: 'An error occurred while inserting the record.' });
   }
 });
+
 
 train.get('/searchAdmin',async(req,res)=>{
   const {aID}=req.query;
@@ -915,7 +764,7 @@ train.post('/deletAdmin',async(req,res)=>{
 rider.collection('reschedule').createIndex({ reID: 1 }, { unique: true });
 
 train.post('/insertResched',async(req,res)=>{
-  const {reDatePost,reID,reresID,recID,reresAmeName,reresCheckinDate,reresCheckoutDate,reresBookeDate,renCheckinDate,renCheckout,renBookeDate,reschedStat}=req.body;
+  const {reDatePost,reID,reresID,remID,reresRoomName,reresTour,renewTour,reresPayMeth,renewPayMeth,reresCheckInDate,reresCheckOutDate,reresBookeDate,renCheckInDate,renCheckOutDate,renBookeDate,reschedStat}=req.body;
   console.log('Get Ready For: ',req.body);
   try{
       if(!rider){
@@ -923,7 +772,7 @@ train.post('/insertResched',async(req,res)=>{
           return res.status(500).json({error: 'Database is not ready.'});
       }
       await rider.collection('reschedule').insertOne({
-        reDatePost,reID,reresID,recID,reresAmeName,reresCheckinDate,reresCheckoutDate,reresBookeDate,renCheckinDate,renCheckout,renBookeDate,reschedStat
+        reDatePost,reID,reresID,remID,reresRoomName,reresTour,renewTour,reresPayMeth,renewPayMeth,reresCheckInDate,reresCheckOutDate,reresBookeDate,renCheckInDate,renCheckOutDate,renBookeDate,reschedStat
       });
       console.log('Record Inserted!');
       res.status(201).json({message:'Record Inserted!'});
@@ -963,31 +812,6 @@ train.get('/searchResched',async(req,res)=>{
   }
 });
 
-train.get('/searchReschedPlus',async(req,res)=>{
-  const {reID}=req.query;
-  if(reID!=undefined){
-    try{
-    console.log('looking for: ', req.query)
-      if(!rider){
-          console.log('Forgetting somethign?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const ame = await rider.collection('reschedule').find({reID}).toArray();
-      if(ame){
-          console.log('Found it. ', ame);
-          res.status(200).json(ame);
-      }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-      }
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-  }else{
-    console.log("Query does not exist")
-  }
-});
 
 train.post('/deletResched',async(req,res)=>{
   const {reID}=req.body;
@@ -1088,6 +912,30 @@ train.post('/updateMem',async(req,res)=>{
   console.error('Error updating document:', err);
   res.status(500).json({ error: 'An error occurred while updating the document.' })
 }});
+
+train.get('/verifyMem',async(req,res)=>{
+  const {mID,mEmail}=req.query;
+  console.log('Get Ready For:',req.query);
+  console.log('Get Ready For:'+mID+" "+mEmail)
+try{
+      if(!rider){
+          console.log('Forgetting something?');
+          return res.status(500).json({error:'Database is not ready.'});
+      }
+      const mAccApp="Active"
+      const updootQ={mID};
+      const updootV={$set:{mAccApp}}
+      const result=await rider.collection('members').updateOne(updootQ,updootV);
+      if (result.matchedCount > 0) {
+          console.log('Document updated successfully.');
+          res.sendFile(__dirname+'/public/verified.html')
+        } else {
+          console.log('No document found with the provided ID.');
+        }
+}catch(err){
+  console.error('Error updating document:', err);
+}
+});
 
 train.post('/deletMem',async(req,res)=>{
   const {mID}=req.body;
@@ -1206,7 +1054,7 @@ train.post('/deletPro',async(req,res)=>{
 rider.collection('running-balance').createIndex({ runresID: 1 }, { unique: true });
 
 train.post('/insertRun',async(req,res)=>{
-  const {runresID,runresPrice,runresBal,runresStat}=req.body
+  const {runID,runresID,runresPrice,runresBal,runresStat}=req.body
   console.log("Get Ready For: ",req.body)
   try{
       if(!rider){
@@ -1214,13 +1062,13 @@ train.post('/insertRun',async(req,res)=>{
           return res.status(500).json({error: 'Database is not ready.'});
       }
         await rider.collection('running-balance').insertOne({
-          runresID,runresPrice,runresBal,runresStat
+          runID,runresID,runresPrice,runresBal,runresStat
         });
         console.log('Record Inserted!');
         res.status(201).json({message:'Record Inserted!'}); 
   }catch(err){
       if(err.name==='MongoError'&& err.code===11000){
-          console.log('Duplicate Entry for the provided ID: ',aID);
+          console.log('Duplicate Entry for the provided ID: ',runID);
           return res.status(400).json({error:'the provided reservation already exists.'});
       }
       console.error('E-E-ERROR! ',err);
@@ -1228,12 +1076,40 @@ train.post('/insertRun',async(req,res)=>{
   }
 
 })
+
 train.get('/searchRun',async(req,res)=>{
+  const {runID}=req.query
+  console.log(req.query)
+  if(runID!=undefined){
+    try{
+    console.log('Looking for', req.query)
+    if(!rider){
+      console.log('Forgettting something?')
+      return res.status(500).json({error:'Database is not ready.'})
+    }
+    const runL=await rider.collection('running-balance').findOne({runID})
+    if(runL){
+      console.log('Found it')
+      return res.status(200).json(runL)
+    }else{
+      console.log('Record Not Found with that ID.');
+          res.status(404).json({error:'An Error occured while looking for the record.'});
+    }
+  }catch(err){
+    console.error('Error while looking for record. ',err);
+      res.status(500).json({error:'an error has occured while searching for the record.'});
+  }
+  }else{
+    console.log("Query does not exist")
+  }
+})
+
+train.get('/searchRunRes',async(req,res)=>{
   const {runresID}=req.query
   console.log(req.query)
   if(runresID!=undefined){
     try{
-    console.log('Looking for', req.body)
+    console.log('Looking for', req.query)
     if(!rider){
       console.log('Forgettting something?')
       return res.status(500).json({error:'Database is not ready.'})
@@ -1256,9 +1132,9 @@ train.get('/searchRun',async(req,res)=>{
 })
 
 train.post('/updateRun',async(req,res)=>{
-  const {runresID,runresPrice,runresBal,runresStat}=req.body
-  const updootQ={runresID};
-      const updootV={$set:{runresPrice,runresBal,runresStat}}
+  const {runID,runresID,runresPrice,runresBal,runresStat}=req.body
+  const updootQ={runID};
+      const updootV={$set:{runresID,runresPrice,runresBal,runresStat}}
       const result=await rider.collection('running-balance').updateOne(updootQ,updootV);
       if (result.matchedCount > 0) {
           console.log('Document updated successfully.');
@@ -1269,14 +1145,14 @@ train.post('/updateRun',async(req,res)=>{
         }
 })
 train.post('/deletRun',async(req,res)=>{
-  const {runresID}=req.body;
+  const {runID}=req.body;
   console.log('Say Bye for: ',req.body);
   try{
     if(!rider){
       console.log('Forgetting something?')
       return res.status(500).json({error:'Database is not ready.'})
     }
-    const deletQ={runresID}
+    const deletQ={runID}
     const result=await rider.collection('running-balance').deleteOne(deletQ)
     if(result.deletedCount>0){
       console.log('Document Deleted')
@@ -1293,26 +1169,81 @@ train.post('/deletRun',async(req,res)=>{
 
 //#endregion
 
-//#region Login Commands
-train.post('/login', async(req,res)=>{
-  let {rescID,rescPass}=req.body;
-  console.log("Get Ready For: ",req.body)
-  try {
-      const client = await rider.collection('reservations').findOne({
-        rescID: { $regex: new RegExp(`^${rescID}$`) },
-      });
-  
-      if (client && client.rescPass === rescPass) { 
-        res.cookie('user',rescID)
-        res.json({ success: true, client });
-      } else {
-        res.json({ success: false, message: 'Invalid ID or password' });
-      }
-    } catch (err) {
-      console.error('Error during login:', err);
-      res.status(500).json({ error: 'Internal Server Error' });
+//#region transaction Table command
+rider.collection('transactions').createIndex({ tID: 1 }, { unique: true });
+
+train.post('/insertTrans',async(req,res)=>{
+  const {tID,tresID,tresmID,tresmEmail,tresmPhono,tresParty,tresRoomName,tresBookIn,tresCheckIn,tresPayMeth,tresPrice,tPaid,tDatePost}=req.body
+  console.log("Get Ready For: ", req.body)
+  try{
+    if(!rider){
+      console.log("Where's the Database?")
+      return res.status(500).json({error:"Database is not ready"})
     }
-});
+    await rider.collection('transactions').insertOne({tID,tresID,tresmID,tresmEmail,tresmPhono,tresParty,tresRoomName,tresBookIn,tresCheckIn,tresPayMeth,tresPrice,tPaid,tDatePost})
+    console.log('Record Inserted!')
+    res.status(201).json({message:'Record Inserted!'})
+  }catch(err){
+    if(err.name==='MongoError'&& err.code===11000){
+      console.log('Duplicate Entry for the provided ID: ', reID);
+      return res.status(400).json({error:'the provided request already exists.'});
+  }
+  console.error('E-E-ERROR! ',err);
+  res.status(500).json({ error: 'An error occurred while inserting the record.' });
+  }
+})
+train.get('/searchTrans',async(req,res)=>{
+  const {tID}=req.query
+  if(tID!=undefined){
+    try{
+      console.log('looking for: ',req.query)
+      if(!rider){
+        console.log("Where's the Database?")
+        return res.status(500).json({error:'Database is not ready.'});
+      }
+      const id=await rider.collection('transaction').findOne({tID})
+      if(id){
+        console.log('Found it. ', id)
+        res.status(200).json(id)
+      }else{
+        console.log('Record Not Found with that ID.');
+          res.status(404).json({error:'An Error occured while looking for the record.'});
+      }
+    }catch(err){
+      console.error('Error while looking for record. ',err);
+      res.status(500).json({error:'an error has occured while searching for the record.'});
+    }
+  }
+})
+train.get('/deletTrans',async(req,res)=>{
+  const {tID}=req.query
+  if(tID!=undefined){
+    try{
+      console.log('say bye for: ',req.query)
+      if(!rider){
+        console.log("Where's the Database?")
+        return res.status(500).json({error:'Database is not ready.'});
+      }
+      const deletQ={tID}
+      const result=await rider.collection('transaction').deleteOne({deletQ})
+      if (result.deletedCount>0){
+        console.log('Document Deleted.');
+        res.status(200).json({message:`Document deleted successfully!`});
+    }else{
+        console.log('That record does not exist...With that ID, at least.');
+        res.status(404).json({error:'No document is found with the provided ID.'});
+    }
+    }catch(err){
+      console.error('Error while looking for record. ',err);
+      res.status(500).json({error:'an error has occured while searching for the record.'});
+    }
+  }
+})
+//#endregion
+
+//#region Login Commands
+
+
 
 train.post('/loginMem', async(req,res)=>{
   let {mID,mPass}=req.body;
@@ -1337,7 +1268,7 @@ train.post('/loginMem', async(req,res)=>{
 train.post('/loginAdmin', async (req, res) => {
   const { aID, aPass } = req.body;
   console.log('get ready for:', req.body)
-
+  res.cookie('aUser',aID)
   try {
     const client = await rider.collection('admin').findOne({aID,aPass});
 
@@ -1352,110 +1283,8 @@ train.post('/loginAdmin', async (req, res) => {
   }
 });
 
-train.post('/updateStandby',async(req,res)=>{
-  res.cookie("updateReady",req.body)
-  console.log("Updating Reservation!")
-  res.json({success:true});
-});
-
-train.get('/updateGo',async(req,res)=>{
-  try{
-    if(req.cookies.updateReady){
-      console.log("Updating Reservation With...")
-      res.json({message: "Update is go", data: "yes"});
-    }else{
-      console.log("No Update")
-      res.json({ message: "No update available", data:"no" });
-    }
-  }catch(err){
-    console.error('Error while loading session. ',err);
-    res.status(500).json({error:'an error has occured while loading the session.'});
-  }
-})
-
-train.get('/current_reservation', async(req,res)=>{
-  const rescID=req.cookies.user;
-  if(rescID!=undefined){
-    console.log('looking for: ', rescID);
-    try{
-      if(!rider){
-          console.log('Forgetting something?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const trans = await rider.collection('reservations').findOne({rescID});
-      if(trans){
-          console.log('Found it. ',trans);
-          res.status(200).json(trans);
-      }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-      }
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-  }else{
-    console.log("Session does not exist")
-  }
-  
-})
-
-train.get("/current_ResCount",async(req,res)=>{
-  const rescID=req.cookies.user;
-  if(rescID!=undefined){
-    console.log('looking for: ', rescID);
-    try{
-      if(!rider){
-          console.log('Forgetting something?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const count = await rider.collection('reservations').countDocuments({rescID});
-       if (count > 0) {
-        console.log(`Found ${count} reservations.`);
-        res.status(200).json({ count: count });
-      } else {
-        console.log('No reservations found with that ID.');
-        res.status(404).json({ error: 'No reservations found with the provided ID.' });
-      }
-    } catch (err) {
-      console.error('Error while counting reservations. ', err);
-      res.status(500).json({ error: 'An error has occurred while counting reservations.' });
-    }
-  } else {
-    console.log("Session does not exist");
-  }
-})
-
-train.get('/current_ReservationPlus', async(req,res)=>{
-  const rescID=req.cookies.user;
-  if(rescID!=undefined){
-    console.log('looking for: ', rescID);
-    try{
-      if(!rider){
-          console.log('Forgetting something?');
-          return res.status(500).json({error:'Database is not ready.'});
-      }
-      const trans = await rider.collection('reservations').find({rescID}).skip(1).toArray();
-      if(trans){
-          console.log('Found it. ',trans);
-          res.status(200).json(trans);
-      }else{
-          console.log('Record Not Found with that ID.');
-          res.status(404).json({error:'An Error occured while looking for the record.'});
-      }
-  }catch(err){
-      console.error('Error while looking for record. ',err);
-      res.status(500).json({error:'an error has occured while searching for the record.'});
-  }
-  }else{
-    console.log("Session does not exist")
-  }
-  
-})
-
 train.get('/current_Mem', async(req,res)=>{
   const mID=req.cookies.user;
-  if(mID!=undefined){
     console.log('looking for: ',mID);
     try{
         if(!rider){
@@ -1474,22 +1303,86 @@ train.get('/current_Mem', async(req,res)=>{
         console.error('Error while looking for record. ',err);
         res.status(500).json({error:'an error has occured while searching for the record.'});
     }
-  }else{
-    console.log("User is not logged in.")
-  }
- 
+  })
+
+train.post('/applyCurrentRes',async(req,res)=>{
+  const {resID}=req.body
+  console.log("Get Ready For: ", resID)
+  res.cookie('curRes',resID)
+  console.log(req.cookies.curRes)
+  res.json({success:true});
 })
 
-train.get('/logout', (req, res) => {
-  const cookies = Object.keys(req.cookies);
-
-  cookies.forEach(cookie => {
-    res.clearCookie(cookie);
-  });
-
-  res.send('All cookies cleared');
+train.get('/current_reservation',async(req,res)=>{
+  const resID=req.cookies.curRes;
+    console.log('looking for: ',resID);
+    try{
+        if(!rider){
+            console.log('Forgetting something?');
+            return res.status(500).json({error:'Database is not ready.'});
+        }
+        const mem = await rider.collection('reservations').findOne({resID});
+        if(mem){
+            console.log('Found it. ',mem);
+            res.status(200).json(mem);
+        }else{
+            console.log('Record Not Found with that ID.');
+            res.status(404).json({error:'An Error occured while looking for the record.'});
+        }
+    }catch(err){
+        console.error('Error while looking for record. ',err);
+        res.status(500).json({error:'an error has occured while searching for the record.'});
+    }
 });
 
+train.get("/current_ResCount",async(req,res)=>{
+  const resmID=req.cookies.user;
+  if(resmID!=undefined){
+    console.log('looking for: ', resmID);
+    try{
+      if(!rider){
+          console.log('Forgetting something?');
+          return res.status(500).json({error:'Database is not ready.'});
+      }
+      const count = await rider.collection('reservations').countDocuments({resmID});
+       if (count > 0) {
+        console.log(`Found ${count} reservations.`);
+        res.status(200).json({ count: count });
+      } else {
+        console.log('No reservations found with that ID.');
+        res.status(404).json({ error: 'No reservations found with the provided ID.' });
+      }
+    } catch (err) {
+      console.error('Error while counting reservations. ', err);
+      res.status(500).json({ error: 'An error has occurred while counting reservations.' });
+    }
+  } else {
+    console.log("Session does not exist");
+  }
+})
+
+
+train.post('/applyCurrentActive',async(req,res)=>{
+  const {it}=req.body
+  console.log("Get Ready For: ", it)
+  res.cookie('curAct',it)
+  console.log(req.cookies.curAct)
+  res.json({success:true});
+})
+
+train.get('/logout', async(req, res) => {
+  let prev=req.cookies.curAct
+  console.log("previous user type: "+prev)
+  if(prev=="admin"){
+    res.clearCookie('aUser')
+  }
+    res.clearCookie('user')
+    res.clearCookie('curRes')
+    res.json({message:"Cookies cleared"})
+  console.log(req.cookies.aUser)
+  console.log(req.cookies.user)
+  console.log(req.curRes)
+});
 
 
 //#endregion
