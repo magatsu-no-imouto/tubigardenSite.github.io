@@ -563,7 +563,6 @@ rider.collection('rooms').createIndex({roomName: 1 }, { unique: true });
 
 train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
   const {roomName,roomDesc,roomSize,roomCost,roomReservd,roomLeft}=req.body;
-  const roomImgPath = req.file ? req.file.filename : null;
   console.log('Get Ready For: ',req.body," ",roomImgPath);
   try{
       if(!rider){
@@ -572,12 +571,12 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
       }
       const params = {
         Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
-        Key: `media/${roomImgPath}`,
+        Key: `media/${req.file.originalname}`,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
       };
       await rider.collection('rooms').insertOne({
-        roomName,roomImg:`media/${roomImgPath}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
+        roomName,roomImg:`https://${process.env.BUCKET_NAME}.s3.amazonaws.com/media/${req.file.originalname}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
       });
       console.log('Record Inserted!');
       res.status(201).json({message:'Record Inserted!'});
