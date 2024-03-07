@@ -235,7 +235,7 @@ train.get('/',async(req,res)=>{
 train.get('/room-data', async (req, res) => {
     try {
       const dat = await rider.collection('rooms').find({}).sort({"roomName":1}).toArray();
-      const modifiedData = data.map(room => ({
+      const modifiedData = dat.map(room => ({
         ...room,
         roomImg: room.roomImg ? `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/${room.roomImg}` : null
       }));
