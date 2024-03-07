@@ -27,7 +27,6 @@ const exp = require('express');
 const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3();
-const { getSignedUrl } = require("@aws-sdk/s3-request-presigner");
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
