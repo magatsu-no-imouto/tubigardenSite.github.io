@@ -79,69 +79,59 @@ train.use(exp.static('public'));
 
 
 
-// Assuming you have an Express app instance called 'train'
-
-
 train.post('/generate-pdf', async (req, res) => {
-  const { sectA,sectB,content} = req.body;
-  const browser = await puppeteer.launch({
-      executablePath:process.env.NODE_ENV==="production" ? process.envPUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
-      args:["--no-sandbox",
-           "--disable-setuid-sandbox",
-           "--single-process",
-           "--no-zygote",],
-      headless:false});
-  const page = await browser.newPage();
-  const combinedHTML=`
-  <html>
+  const { sectA, sectB, content } = req.body;
+
+  const combinedHTML = `
+    <html>
       <head>
         <style>
-        table {
+          table {
             border-collapse: collapse;
             width: 50%;
-        }
+          }
     
-        table, th, td {
+          table, th, td {
             border: 0;
-        }
+          }
     
-        th, td {
+          th, td {
             padding: 8px;
             text-align: left;
-        }
-    </style>
+          }
+        </style>
       </head>
       <body>
-      <h1>Tubigan Garden Resort</h1>
-      <h2>Business Report</h2>
-      <p>Tubigan Garden Resort</p>
-      <p>343 Molino - Paliparan Rd.</p>
-      <p>Dasmariñas, 4114 Cavite
-      </p>
-        <div> ${sectA} ${sectB}</div>
+        <h1>Tubigan Garden Resort</h1>
+        <h2>Business Report</h2>
+        <p>Tubigan Garden Resort</p>
+        <p>343 Molino - Paliparan Rd.</p>
+        <p>Dasmariñas, 4114 Cavite</p>
+        <div>${sectA} ${sectB}</div>
         ${content}
       </body>
-    </html>`
-console.log(combinedHTML)
-const dt=new Date()
-dt.getDate()
-await page.setContent(combinedHTML);
-  const pdfBuffer = await page.pdf();
-  const filePath = `./_report.pdf`;
-  fs.writeFileSync(filePath, pdfBuffer);
-  await browser.close();
+    </html>
+  `;
 
-  res.setHeader('Content-Type', 'application/pdf');
-  res.setHeader('Content-Disposition', 'attachment; filename=report.pdf');
-
-  const absolutePath = path.resolve(filePath);
-  res.download(absolutePath, 'report.pdf', (err) => {
+  // Generate PDF
+  pdf.create(combinedHTML, { format: 'Letter' }).toFile('./_report.pdf', (err, resPdf) => {
     if (err) {
       console.error(err);
-      res.status(500).send('Error sending the file');
-    } else {
-      fs.unlinkSync(filePath); // Delete the file after sending
+      return res.status(500).send('Error generating PDF');
     }
+    
+    console.log('PDF generated successfully!');
+    
+    // Send the generated PDF as a response
+    const absolutePath = path.resolve(resPdf.filename);
+    res.download(absolutePath, 'report.pdf', (err) => {
+      if (err) {
+        console.error(err);
+        res.status(500).send('Error sending the file');
+      } else {
+        fs.unlinkSync(resPdf.filename); // Delete the file after sending
+      }
+    });
   });
 });
 
