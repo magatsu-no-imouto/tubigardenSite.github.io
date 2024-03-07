@@ -244,6 +244,7 @@ const path = url.slice(1);
           
           room.roomImg = `data:image/png;base64,${s3File.Body.toString('base64')}`;
         } catch (error) {
+            console.log(path);
           console.error('Error retrieving image from S3:', error);
         }
       }
