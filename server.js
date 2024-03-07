@@ -233,10 +233,12 @@ train.get('/room-data', async (req, res) => {
       const dat = await rider.collection('rooms').find({}).sort({"roomName":1}).toArray();
      const modifiedData = await Promise.all(dat.map(async room => {
       if (room.roomImg.startsWith('https://')) {
+          const url = room.roomImg;
+const path = url.match(/media\/([^/]+)\.png$/)[1];
         try {
           const s3File = await s3.getObject({
             Bucket: cyclic-calm-pink-glasses-ap-southeast-1,
-            Key: room.roomImg,
+            Key: `media/${path}`,
           }).promise();
           
           room.roomImg = `data:image/png;base64,${s3File.Body.toString('base64')}`;
