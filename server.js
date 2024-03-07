@@ -235,7 +235,7 @@ train.get('/room-data', async (req, res) => {
       if (!room.roomImg.startsWith('https://')) {
         try {
           const s3File = await s3.getObject({
-            Bucket: process.env.BUCKET_NAME,
+            Bucket: 'cyclic-calm-pink-glasses-ap-southeast-1',
             Key: room.roomImg,
           }).promise();
           
