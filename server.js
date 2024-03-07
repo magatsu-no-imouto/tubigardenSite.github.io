@@ -238,7 +238,7 @@ const path = url.slice(1);
         try {
           const s3File = await s3.getObject({
             Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
-            Key: `media/${path}`,
+            Key: `${path}`,
           }).promise();
           
           room.roomImg = `data:image/png;base64,${s3File.Body.toString('base64')}`;
