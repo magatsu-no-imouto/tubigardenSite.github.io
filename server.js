@@ -235,11 +235,24 @@ train.get('/',async(req,res)=>{
 train.get('/room-data', async (req, res) => {
     try {
       const dat = await rider.collection('rooms').find({}).sort({"roomName":1}).toArray();
-      const modifiedData = dat.map(room => ({
-        ...room,
-        roomImg: room.roomImg.startsWith('https://') ? room.roomImg : `https://cyclic-calm-pink-glasses-ap-southeast-1.s3.amazonaws.com/${room.roomImg}`
-      }));
+     const modifiedData = await Promise.all(dat.map(async room => {
+      if (!room.roomImg.startsWith('https://')) {
+        try {
+          const s3File = await s3.getObject({
+            Bucket: process.env.BUCKET_NAME,
+            Key: room.roomImg,
+          }).promise();
+          
+          room.roomImg = `data:image/png;base64,${s3File.Body.toString('base64')}`;
+        } catch (error) {
+          console.error('Error retrieving image from S3:', error);
+        }
+      }
       
+      return room;
+    }));
+    
+    res.status(200).json(modifiedData);
       res.status(200).json(modifiedData);
     } catch (err) {
       console.error('Something went wrong fetching the data from MongoDB', err);
