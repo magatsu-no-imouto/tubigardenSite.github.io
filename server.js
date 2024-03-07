@@ -31,6 +31,7 @@ const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
 const puppeteer = require('puppeteer');
+require("dotenv").config;
 const fs = require('fs');
 const train = exp();
 const multer = require('multer');
@@ -83,7 +84,13 @@ train.use(exp.static('public'));
 
 train.post('/generate-pdf', async (req, res) => {
   const { sectA,sectB,content} = req.body;
-  const browser = await puppeteer.launch({headless:false});
+  const browser = await puppeteer.launch({
+      executablePath:process.env.NODE_ENV==="production" ? process.envPUPPETEER_EXECUTABLE_PATH : puppeteer.executablePath(),
+      args:["--no-sandbox",
+           "--disable-setuid-sandbox",
+           "--single-process",
+           "--no-zygote",]
+      headless:false});
   const page = await browser.newPage();
   const combinedHTML=`
   <html>
