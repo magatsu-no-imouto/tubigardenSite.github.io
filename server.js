@@ -232,7 +232,7 @@ train.get('/room-data', async (req, res) => {
     try {
       const dat = await rider.collection('rooms').find({}).sort({"roomName":1}).toArray();
      const modifiedData = await Promise.all(dat.map(async room => {
-      if (!room.roomImg.startsWith('https://')) {
+      if (room.roomImg.startsWith('https://')) {
         try {
           const s3File = await s3.getObject({
             Bucket: 'cyclic-calm-pink-glasses-ap-southeast-1',
