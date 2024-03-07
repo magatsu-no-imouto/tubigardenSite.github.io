@@ -584,7 +584,7 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
           return res.status(500).json({error: 'Database is not ready.'});
       }
       const params = {
-        Bucket: cyclic-calm-pink-glasses-ap-southeast-1,
+        Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
         Key: `${req.file.originalname}`,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
