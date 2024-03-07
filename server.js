@@ -253,7 +253,6 @@ train.get('/room-data', async (req, res) => {
     }));
     
     res.status(200).json(modifiedData);
-      res.status(200).json(modifiedData);
     } catch (err) {
       console.error('Something went wrong fetching the data from MongoDB', err);
       res.status(500).send('Internal Server Error');
