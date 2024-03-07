@@ -235,7 +235,7 @@ train.get('/room-data', async (req, res) => {
      const modifiedData = await Promise.all(dat.map(async room => {
       if (room.roomImg.startsWith('https://')) {
           const url = room.roomImg;
-const path = url.slice(1);
+const path = url.split('/').pop();
         try {
           const s3File = await s3.getObject({
             Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
