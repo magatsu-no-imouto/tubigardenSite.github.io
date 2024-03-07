@@ -24,6 +24,13 @@ async function connecto(){
 
 connecto();
 const exp = require('express');
+const AWS = require("aws-sdk");
+
+const s3 = new AWS.S3({
+  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  region: process.env.AWS_REGION,
+});
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const path = require('path');
@@ -198,7 +205,7 @@ train.post('/send-notificationCust',async(req,res)=>{
 
 train.post('/verifyNotif',async(req,res)=>{
   const {mID,mName,mEmail}=req.body;
-  const link=`https://tubigangardenresort.cyclic.app/verifyMem?mID=${mID}&mEmail=${mEmail}`;
+  const link=`http://localhost:8080/verifyMem?mID=${mID}&mEmail=${mEmail}`;
   console.log('Get Ready For: ',req.body)
   try{
     const info=await transporter.sendMail({
@@ -563,6 +570,12 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
           console.log('Wheres the Database?');
           return res.status(500).json({error: 'Database is not ready.'});
       }
+      const params = {
+        Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
+        Key: `media/${roomImgPath}`,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
+      };
       await rider.collection('rooms').insertOne({
         roomName,roomImg:`media/${roomImgPath}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
       });
