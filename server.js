@@ -237,7 +237,7 @@ train.get('/room-data', async (req, res) => {
 const path = url.match(/media\/([^/]+)\.png$/)[1];
         try {
           const s3File = await s3.getObject({
-            Bucket: cyclic-calm-pink-glasses-ap-southeast-1,
+            Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
             Key: `media/${path}`,
           }).promise();
           
