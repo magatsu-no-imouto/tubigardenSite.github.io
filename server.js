@@ -561,7 +561,7 @@ rider.collection('rooms').createIndex({roomName: 1 }, { unique: true });
 
 train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
   const {roomName,roomDesc,roomSize,roomCost,roomReservd,roomLeft}=req.body;
-  console.log('Get Ready For: ',req.body," ",roomImgPath);
+  console.log('Get Ready For: ',req.body," ",req.file.originalname);
   try{
       if(!rider){
           console.log('Wheres the Database?');
