@@ -235,7 +235,12 @@ train.get('/',async(req,res)=>{
 train.get('/room-data', async (req, res) => {
     try {
       const dat = await rider.collection('rooms').find({}).sort({"roomName":1}).toArray();
-      res.status(200).json(dat);
+      const modifiedData = data.map(room => ({
+        ...room,
+        roomImg: room.roomImg ? `https://${process.env.BUCKET_NAME}.s3.amazonaws.com/${room.roomImg}` : null
+      }));
+      
+      res.status(200).json(modifiedData);
     } catch (err) {
       console.error('Something went wrong fetching the data from MongoDB', err);
       res.status(500).send('Internal Server Error');
@@ -573,6 +578,10 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
       };
+
+      await s3.upload(params).promise();
+
+      
       await rider.collection('rooms').insertOne({
         roomName,roomImg:`https://cyclic-calm-pink-glasses-ap-southeast-1.s3.amazonaws.com/media/${req.file.originalname}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
       });
