@@ -235,7 +235,7 @@ train.get('/room-data', async (req, res) => {
       if (room.roomImg.startsWith('https://')) {
         try {
           const s3File = await s3.getObject({
-            Bucket: 'cyclic-calm-pink-glasses-ap-southeast-1',
+            Bucket: process.env.BUCKET_NAME,
             Key: room.roomImg,
           }).promise();
           
@@ -581,7 +581,7 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
           return res.status(500).json({error: 'Database is not ready.'});
       }
       const params = {
-        Bucket: "cyclic-calm-pink-glasses-ap-southeast-1",
+        Bucket: process.env.BUCKET_NAME,
         Key: `media/${req.file.originalname}`,
         Body: req.file.buffer,
         ContentType: req.file.mimetype,
@@ -591,7 +591,7 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
 
       
       await rider.collection('rooms').insertOne({
-        roomName,roomImg:`https://cyclic-calm-pink-glasses-ap-southeast-1.s3.amazonaws.com/media/${req.file.originalname}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
+        roomName,roomImg:`https://${process.env.BUCKET_NAME}.s3.amazonaws.com/media/${req.file.originalname}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
       });
       console.log('Record Inserted!');
       res.status(201).json({message:'Record Inserted!'});
