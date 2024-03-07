@@ -89,7 +89,7 @@ train.post('/generate-pdf', async (req, res) => {
       args:["--no-sandbox",
            "--disable-setuid-sandbox",
            "--single-process",
-           "--no-zygote",]
+           "--no-zygote",],
       headless:false});
   const page = await browser.newPage();
   const combinedHTML=`
