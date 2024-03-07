@@ -39,7 +39,6 @@ const fs = require('fs');
 const train = exp();
 const multer = require('multer');
 const upload = multer({
-  storage: multer.diskStorage({
     destination: 'public/media/',
     filename: (req, file, cb) => {
       const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
@@ -47,7 +46,6 @@ const upload = multer({
       cb(null, file.fieldname + '-' + uniqueSuffix + ext);
     }
   })
-});
 train.use(cookieParser());
 train.use(exp.json());
 train.use(cors());
