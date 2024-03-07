@@ -574,7 +574,7 @@ train.post('/insertRoom',upload.single('roomImg'),async(req,res)=>{
         ContentType: req.file.mimetype,
       };
       await rider.collection('rooms').insertOne({
-        roomName,roomImg:`https://${process.env.BUCKET_NAME}.s3.amazonaws.com/media/${req.file.originalname}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
+        roomName,roomImg:`https://cyclic-calm-pink-glasses-ap-southeast-1.s3.amazonaws.com/media/${req.file.originalname}`,roomDesc,roomSize,roomCost,roomReservd,roomLeft
       });
       console.log('Record Inserted!');
       res.status(201).json({message:'Record Inserted!'});
