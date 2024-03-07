@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Home Page</title>
@@ -10,6 +11,21 @@
     select{
         border: none;
         outline: none;
+    }
+    /* Hide the scrollbar for the table */
+    .table-container {
+        overflow: visible !important;
+    }
+
+    /* Remove unnecessary margins and paddings */
+    table {
+        margin-bottom: 0;
+    }
+
+    /* Adjust font size or other styles if needed for better printing */
+    th, td {
+        /* Adjust the font size as needed */
+        font-size: 12px;
     }
 }
 body {
@@ -196,6 +212,15 @@ header {
     cursor: pointer;
 }
     </style>
+    <style media="screen">
+        .noPrint{ display: block; }
+        .yesPrint{ display: block !important; }
+      </style>
+      
+      <style media="print">
+        .noPrint{ display: none; }
+        .yesPrint{ display: block !important; }
+      </style>
 </head>
 <body>
     <header class="style1">
@@ -208,7 +233,7 @@ header {
         </div>
     </header>
 
-    <header class="style2">
+    <header class="style2 noPrint">
         <nav>
         <a href= "AdminUser.html">Admin Accounts</a>
         <a href= "AdminMembers.html">Member Accounts</a>
@@ -224,7 +249,7 @@ header {
 
     
     <h2>Business Report</h2>
-    <div class="container">
+    <div class="container yesPrint">
         <select id="FilterA">
             <option>NO FILTER</option>
             <option value="Payment Status">Payment Status</option>
@@ -242,7 +267,7 @@ header {
         <select id="FilterC" hidden>
             <option></option>
         </select>
-        <div class="table-container">
+        <div class="table-container yesPrint">
             <table id="datum">
                 <thead id="dataHead">
                     <th>Check In Date</th>
@@ -261,14 +286,18 @@ header {
                 </tbody>
             </table>
         </div><br>
-        <button class="btn" onclick="printo()">Print</button>
+        <button class="btn noPrint" onclick="window.print()">Print</button>
+
     </div>
     <input hidden id="startD" type="date">
     <input hidden id="endD" type="date">
     <footer>
         <p>&copy; (2014) Tubigan Garden Resort</p>
     </footer>
-    <script>
+        
+<script>
+
+
         const dt=new Date
         var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
@@ -1538,16 +1567,32 @@ document.getElementById('FilterC').addEventListener('change',function(){
     }
 })
 //#endregion
+
+const content=[]
+let cNo;
+
+function GetCellValues() {
+    var table = document.getElementById('datum');
+    for (var r = 0, n = table.rows.length; r < n; r++) {
+        for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
+            cNo=table.rows[r].cells.length
+            content.push(table.rows[r].cells[c].textContent)
+        }
+    }
+}
     function printo(){
         const sectA=document.getElementById('FilterA').value
         const sectB=document.getElementById('FilterB').value
-        const content=document.getElementById('datum').outerHTML
+        var table = document.getElementById('datum');
+        const colls=table.rows[1].cells.length;
+        console.log(colls)
+        GetCellValues()
         fetch('/generate-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ sectA,sectB, content }),
+        body: JSON.stringify({ sectA,sectB, colls, content}),
       })
       .then(response => {
       if (!response.ok) {
