@@ -82,58 +82,58 @@ train.use(exp.static('public'));
 
 train.post('/generate-pdf', async (req, res) => {
   const { sectA, sectB, content } = req.body;
-const combinedHTML = `
-  <html>
-    <head>
-      <style>
-        table {
-          border-collapse: collapse;
-          width: 50%;
-        }
-        table, th, td {
-          border: 0;
-        }
-        th, td {
-          padding: 8px;
-          text-align: left;
-        }
-      </style>
-    </head>
-    <body>
-      <h1>Tubigan Garden Resort</h1>
-      <h2>Business Report</h2>
-      <p>Tubigan Garden Resort</p>
-      <p>343 Molino - Paliparan Rd.</p>
-      <p>Dasmariñas, 4114 Cavite</p>
-      <div>${sectA} ${sectB}</div>
-      ${content}
-    </body>
-  </html>
-`;
+  const combinedHTML = `
+    <html>
+      <head>
+        <style>
+          table {
+            border-collapse: collapse;
+            width: 50%;
+          }
+          table, th, td {
+            border: 0;
+          }
+          th, td {
+            padding: 8px;
+            text-align: left;
+          }
+        </style>
+      </head>
+      <body>
+        <h1>Tubigan Garden Resort</h1>
+        <h2>Business Report</h2>
+        <p>Tubigan Garden Resort</p>
+        <p>343 Molino - Paliparan Rd.</p>
+        <p>Dasmariñas, 4114 Cavite</p>
+        <div>${sectA} ${sectB}</div>
+        ${content}
+      </body>
+    </html>
+  `;
 
-// ConvertAPI configuration
-const convertapi_secret = 'iMIyd3kdR47ssHFb';
-convertapi.api_secret = convertapi_secret;
-const tempHtmlPath = path.join(os.tmpdir(), 'temp.html');
-    await fs.promises.writeFile(tempHtmlPath, combinedHTML);
-// Converting HTML to PDF
-convertapi.convert('pdf', { File: tempHtmlPath })
-  .then(result => {
-    // Handle successful response
-    console.log('PDF conversion successful');
-    const pdfContent = result.files[0].Content;
+  const tempHtmlPath = path.join(os.tmpdir(), 'report.html');
+  await fs.promises.writeFile(tempHtmlPath, combinedHTML);
+
+  // ConvertAPI configuration
+  const convertapi_secret = 'iMIyd3kdR47ssHFb';
+  convertapi.api_secret = convertapi_secret;
+  
+  try {
+    // Converting HTML to PDF
+    const result = await convertapi.convert('pdf', { File: tempHtmlPath });  
+    const pdfContent = result.files[0].fileInfo.Url;
+    // Send the PDF file as a response
     res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', 'attachment; filename=converted_file.pdf');
-
-        // Send the PDF content in the response
-    res.send(pdfContent);
-  }).then(()=>{
-    console.log('PDF file downloaded successfully');
-  })
-  .catch(error => {
+    res.setHeader('Content-Disposition', 'attachment; filename="business_report.pdf"');
+    res.json({pdfContent});
+    console.log('PDF conversion successful');
+    fs.unlinkSync(tempHtmlPath);
+  } catch (error) {
     // Handle error
     console.error('Error converting HTML to PDF:', error);
-  });
+    res.status(500).send('Error converting HTML to PDF');
+    fs.unlinkSync(tempHtmlPath);
+  }
 });
 
 const nodemailer = require("nodemailer");
