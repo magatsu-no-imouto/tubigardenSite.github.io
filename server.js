@@ -82,57 +82,55 @@ train.use(exp.static('public'));
 
 train.post('/generate-pdf', async (req, res) => {
   const { sectA, sectB, content } = req.body;
+const combinedHTML = `
+  <html>
+    <head>
+      <style>
+        table {
+          border-collapse: collapse;
+          width: 50%;
+        }
+        table, th, td {
+          border: 0;
+        }
+        th, td {
+          padding: 8px;
+          text-align: left;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Tubigan Garden Resort</h1>
+      <h2>Business Report</h2>
+      <p>Tubigan Garden Resort</p>
+      <p>343 Molino - Paliparan Rd.</p>
+      <p>Dasmariñas, 4114 Cavite</p>
+      <div>${sectA} ${sectB}</div>
+      ${content}
+    </body>
+  </html>
+`;
 
-  const combinedHTML = `
-    <html>
-      <head>
-        <style>
-          table {
-            border-collapse: collapse;
-            width: 50%;
-          }
+// ConvertAPI configuration
+const convertapi_secret = 'iMIyd3kdR47ssHFb';
+convertapi.api_secret = convertapi_secret;
+const tempHtmlPath = path.join(os.tmpdir(), 'temp.html');
+    await fs.promises.writeFile(tempHtmlPath, combinedHTML);
+// Converting HTML to PDF
+convertapi.convert('pdf', { File: tempHtmlPath })
+  .then(result => {
+    // Handle successful response
+    console.log('PDF conversion successful');
+    const pdfContent = result.files[0].Content;
+    const downloadsPath = path.join(os.homedir(), 'Downloads', 'converted_file.pdf');
+    return result.saveFiles(downloadsPath);
     
-          table, th, td {
-            border: 0;
-          }
-    
-          th, td {
-            padding: 8px;
-            text-align: left;
-          }
-        </style>
-      </head>
-      <body>
-        <h1>Tubigan Garden Resort</h1>
-        <h2>Business Report</h2>
-        <p>Tubigan Garden Resort</p>
-        <p>343 Molino - Paliparan Rd.</p>
-        <p>Dasmariñas, 4114 Cavite</p>
-        <div>${sectA} ${sectB}</div>
-        ${content}
-      </body>
-    </html>
-  `;
-
-  // Generate PDF
-  pdf.create(combinedHTML, { format: 'Letter' }).toFile('./_report.pdf', (err, resPdf) => {
-    if (err) {
-      console.error(err);
-      return res.status(500).send('Error generating PDF');
-    }
-    
-    console.log('PDF generated successfully!');
-    
-    // Send the generated PDF as a response
-    const absolutePath = path.resolve(resPdf.filename);
-    res.download(absolutePath, 'report.pdf', (err) => {
-      if (err) {
-        console.error(err);
-        res.status(500).send('Error sending the file');
-      } else {
-        fs.unlinkSync(resPdf.filename); // Delete the file after sending
-      }
-    });
+  }).then(()=>{
+    console.log('PDF file downloaded successfully');
+  })
+  .catch(error => {
+    // Handle error
+    console.error('Error converting HTML to PDF:', error);
   });
 });
 
