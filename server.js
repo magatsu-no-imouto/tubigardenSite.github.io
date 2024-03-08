@@ -197,7 +197,7 @@ train.post('/send-notificationCust',async(req,res)=>{
 
 train.post('/verifyNotif',async(req,res)=>{
   const {mID,mName,mEmail}=req.body;
-  const link=`http://localhost:8080/verifyMem?mID=${mID}&mEmail=${mEmail}`;
+  const link=`http://tubigangardenresort.cyclic.app/verifyMem?mID=${mID}&mEmail=${mEmail}`;
   console.log('Get Ready For: ',req.body)
   try{
     const info=await transporter.sendMail({
