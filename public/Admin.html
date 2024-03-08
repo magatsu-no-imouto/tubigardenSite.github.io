@@ -286,7 +286,8 @@ header {
                 </tbody>
             </table>
         </div><br>
-        <button class="btn noPrint" onclick="window.print()">Print</button>
+        <button class="btn noPrint" onclick="printo()">Print</button>
+        <!--<button class="btn noPrint" onclick="window.print()">Print</button>-->
 
     </div>
     <input hidden id="startD" type="date">
@@ -1568,55 +1569,32 @@ document.getElementById('FilterC').addEventListener('change',function(){
 })
 //#endregion
 
-const content=[]
-let cNo;
-
-function GetCellValues() {
-    var table = document.getElementById('datum');
-    for (var r = 0, n = table.rows.length; r < n; r++) {
-        for (var c = 0, m = table.rows[r].cells.length; c < m; c++) {
-            cNo=table.rows[r].cells.length
-            content.push(table.rows[r].cells[c].textContent)
-        }
-    }
-}
-    function printo(){
+async function printo(){
         const sectA=document.getElementById('FilterA').value
         const sectB=document.getElementById('FilterB').value
-        var table = document.getElementById('datum');
-        const colls=table.rows[1].cells.length;
-        console.log(colls)
-        GetCellValues()
-        fetch('/generate-pdf', {
+        const content = document.getElementById('datum').outerHTML;
+        try{
+            const response= await fetch('/generate-pdf', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ sectA,sectB, colls, content}),
+        body: JSON.stringify({ sectA,sectB,content}),
       })
-      .then(response => {
       if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-      return response.blob();
-    })
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'report.pdf';
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-    })
-    .then(() => {
-      alert('PDF report generated successfully.');
-    })
-    .catch(error => {
-      console.error('Error generating PDF:', error);
-      alert('Error generating PDF. Please try again.');
-    });
-    }
+            throw new Error('Failed to generate PDF');
+        }
+            const result = await response.json();
+
+if (result.success) {
+    alert(result.message);
+} else {
+    alert('Error: ' + result.message);
+}
+} catch (error) {
+console.error('Error:', error);
+alert('An error occurred. Please try again later.');
+}
     
     async function logout(){
         const datum={
