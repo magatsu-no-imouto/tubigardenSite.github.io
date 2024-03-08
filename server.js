@@ -122,9 +122,11 @@ convertapi.convert('pdf', { File: tempHtmlPath })
     // Handle successful response
     console.log('PDF conversion successful');
     const pdfContent = result.files[0].Content;
-    const downloadsPath = path.join(os.homedir(), 'Downloads', 'converted_file.pdf');
-    return result.saveFiles(downloadsPath);
-    
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', 'attachment; filename=converted_file.pdf');
+
+        // Send the PDF content in the response
+    res.send(pdfContent);
   }).then(()=>{
     console.log('PDF file downloaded successfully');
   })
