@@ -250,9 +250,9 @@ async function insertMem(){
             const result=await response.json();
             if (response.ok){
                 notifierVerify(ID.value,Name.value,Email.value)
-                alert(result.message);
+                window.location.replace("LogIn.html")
             }else{
-                alert(result.error);
+                console.log(result.error);
             }
             
         }catch(err){
