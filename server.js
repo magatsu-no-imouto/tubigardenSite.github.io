@@ -32,7 +32,6 @@ const cors = require('cors');
 const os = require('os');
 const path = require('path');
 const convertapi = require('convertapi')('iMIyd3kdR47ssHFb');
-const pdf = require('html-pdf');
 const fs = require('fs');
 const train = exp();
 const multer = require('multer');
