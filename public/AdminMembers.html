@@ -289,6 +289,7 @@ margin-right: 340px;
     <table>
         <thead>
         <tr>
+            <th></th>
             <th>User ID</th>
             <th>Name</th>
             <th>Email</th>
@@ -338,6 +339,7 @@ margin-right: 340px;
     data.forEach(item => {
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td><button class="btn" onclick="searchM('${item.mID}')">Search</button>
         <td>${item.mID}</td>
         <td>${item.mName}</td>
         <td>${item.mPhoNo}</td>
@@ -372,6 +374,28 @@ margin-right: 340px;
             console.error("Error looking through the Database. ",err);
             alert('someone tripped over the wires!');
         }
+        }
+  }
+
+  async function searchM(ID){
+    const mID=ID
+    document.getElementById('username').value=mID;
+            const mIDf=document.getElementById('username').value;
+        try{
+            const response=await fetch(`/searchMem?mID=${mIDf}`);
+            const result=await response.json();
+            if(response.ok){
+               document.getElementById('fullName').value=result.mName
+               document.getElementById('email').value=result.mEmail
+               document.getElementById('phono').value=result.mPhoNo
+               document.getElementById('pass').value=result.mPass
+               document.getElementById("AccApp").value=result.mAccApp
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
         }
   }
 
