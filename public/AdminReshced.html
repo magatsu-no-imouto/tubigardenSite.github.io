@@ -293,6 +293,7 @@ margin-right: 340px;
         <table align="center" border="1">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Date Posted</th>
                     <th>Reschedule ID</th>
                     <th>Reservation ID</th>
@@ -389,6 +390,7 @@ margin-right: 340px;
     data.forEach(item => {
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td><button class="btn" onclick="searchrr('${item.reID}')">Search</button></td>
         <td>${item.reDatePost}</td>
         <td>${item.reID}</td>
         <td>${item.reresID}</td>
@@ -941,6 +943,44 @@ async function insertReSched(){
         }
     }    
 }
+
+async function searchrr(ID){
+        const reID=ID
+        document.getElementById('ID').value=reID
+        try{
+            const response=await fetch(`/searchResched?reID=${reID}`);
+            const result=await response.json();
+            if(response.ok){
+                document.getElementById("reservSelect").value=result.reresID;
+                document.getElementById("user").value=result.recID;
+                document.getElementById("resRoom").value=result.reresRoomName;
+                document.getElementById('resTour').value=result.reresTour
+                document.getElementById('selrenewTour').value=result.renewTour
+                document.getElementById('resPayMeth').value=result.reresPayMeth
+                const resF=result.renewPayMeth
+                const selQ=document.getElementById('selrenewPayMeth')
+                for(let i=0;i<selQ.options.length;i++){
+                    if(selQ.options[i].text===resF){
+                        selQ.selectedIndex=i
+                        break;
+                    }
+                }
+                document.getElementById("checkin").value=result.reresCheckInDate;
+                document.getElementById("checkin-nu").value=result.renCheckInDate;
+                document.getElementById("bookin").value=result.reresBookeDate;
+                document.getElementById("bookin-nu").value=result.renBookeDate
+                document.getElementById('checkout').value=result.reresCheckOutDate
+                document.getElementById('checkout-nu').value=result.renCheckOutDate
+                document.getElementById("dateposted").value=result.reDatePost
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+    }    
+
     async function deletResched(){
         document.getElementById('inProgInd').hidden=true;
         if(document.getElementById('ID').value==""){
