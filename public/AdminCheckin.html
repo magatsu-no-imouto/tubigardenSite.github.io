@@ -271,7 +271,8 @@ margin-right: 340px;
         <a href="AdminSchedule.html">Schedule</a>
         <a href= "AdminReshced.html">Reschedules</a>
         <a href="AdminRunBal.html">Customer's Running Balance</a>
-        <a href="AdminRooms.html">Amenities</a><br><br>
+        <a href="AdminPromos.html">Promos</a>
+        <a href="AdminRooms.html">Rooms</a><br><br>
         <a class="linkWithFunction" onclick="logout()">Log Out</a>
     </nav>
     </header>
@@ -285,8 +286,6 @@ margin-right: 340px;
                         <th>Check In Date</th>
                         <th>Check out Date</th>
                         <th>Reservation ID</th>
-                        <th>Username</th>
-                        <th>Full Name</th>
                         <th>Party Size</th>
                         <th>Reserved Amenity(ies)</th>
                         <th>Tour Package</th>
@@ -327,8 +326,6 @@ fetch('/reservation-data').then(response => {
     <td>${item.resCheckinDate}</td>
     <td>${item.resCheckoutDate}</td>
     <td>${item.resID}</td>
-    <td>${item.resmID}</td>
-    <td>${item.resmName}</td>
     <td>${item.resPax}</td>
     <td>${item.resRoomName}</td>
     <td>${item.resTour}</td>
