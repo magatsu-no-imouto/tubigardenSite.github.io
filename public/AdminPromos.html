@@ -292,6 +292,7 @@ margin-right: 340px;
     <table>
         <thead>
         <tr>
+            <th></th>
             <th>Promo ID</th>
             <th>Promo Name</th>
             <th>Promo Description</th>
@@ -348,6 +349,7 @@ margin-right: 340px;
         data.forEach(element => {
             const r=document.createElement('tr')
             r.innerHTML=`
+            <th><button class="btn" onclick="searchProm('${element.proID}')">Search</button></th>
             <th>${element.proID}</th>
             <th>${element.proName}</th>
             <th>${element.proDesc}</th>
@@ -487,7 +489,7 @@ const selProStat=document.getElementById('selProStat')
     }
 
     async function searchP(){
-        if(txtproID==""){
+        if(txtproID!=""){
             const proID=txtproID.value
             try{
                 const response=await fetch(`/searchPro?proID=${proID}`)
@@ -509,6 +511,28 @@ const selProStat=document.getElementById('selProStat')
             alert("Please input the promo to search")
         }
     }
+
+    async function searchProm(ID){
+            const proID=ID
+            txtproID.value=proID
+            try{
+                const response=await fetch(`/searchPro?proID=${proID}`)
+                const result=await response.json()
+            if(response.ok){
+                txtproName.value=result.proName
+                txtAproDesc.value=result.proDesc
+                txtproEffect.value=result.proFX
+                dtproStart.value=result.proStart
+                dtproEnd.value=result.proEnd
+                selProStat.value=result.proStat
+            }
+            }catch(err){
+                console.error("Error looking through the Database. ",err);
+                alert('someone tripped over the wires!');
+            }
+            
+        }
+
     async function deletP(){
         const proIDf=txtproID.value
         const delet={proID:proIDf}
