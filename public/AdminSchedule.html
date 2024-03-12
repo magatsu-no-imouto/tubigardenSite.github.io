@@ -293,6 +293,7 @@ color: #050505;
             <table>
                 <thead>
                     <tr>
+                        <th></th>
                         <th>Check In Date</th>
                         <th>Booked Date</th>
                         <th>Reservation ID</th>
@@ -388,7 +389,7 @@ color: #050505;
                 <span hidden id="inProgInd" hidden>Processing. Please wait. . .</span>
                 <button type="button" id="addRes" onclick="validator1()">Add Reservation</button>
                 <button type="button" id="updateRes" onclick="updateR()">Update Reservation</button>
-                <button type="button" id="searchRes" onclick="searchR()">Search Reservation</button> 
+                <button type="button" id="searchRes" onclick="searchRes()">Search Reservation</button> 
                 <button type="button" id="deleteRes" onclick="deletR()">Cancel Reservation</button>
             </form>
         </div>
@@ -410,6 +411,7 @@ color: #050505;
     data.forEach(item=>{
             const r=document.createElement('tr');
     r.innerHTML=`
+    <td><button class="btn" onclick="searchRes('${item.resID}')">Search</button></td>
     <td>${item.resCheckinDate}</td>
     <td>${item.resCheckoutDate}</td>
     <td>${item.resID}</td>
@@ -1514,6 +1516,100 @@ async function searchRA() {
         }
         }
     }
+
+    async function searchRes(resID){
+            const resIDf=resID
+            document.getElementById('resID').value=resIDf
+        try{
+            const response=await fetch(`/searchRes?resID=${resIDf}`);
+            const result=await response.json();
+            if(response.ok){
+               document.getElementById('username').value=result.resmID
+               rescIDf=result.resmID
+               document.getElementById('fullname').value=result.resmName
+               document.getElementById('email').value=result.resmEmail
+               document.getElementById('phono').value=result.resmPhono
+               document.getElementById('pax').value=result.resPax
+               document.getElementById('cax').value=result.resCax
+               if(Array.isArray(result.resRoomName)){
+                const selA=document.getElementById('selRoomR');
+                for(let e=0; e<result.resRoomName.length;e++){
+                const resA=result.resRoomName[e];
+                for(let i=0; i<selA.options.length; i++){
+                if(selA.options[i].text===resA){
+                    selA.selectedIndex=i
+                    arrayR.push(resA)
+                    arrayD.push({text:resA,index:arrayI.length})
+                    arrayI.push(arrayI.length)
+                    arrayIP.push(arrayIP.length)
+                    arrayL=arrayR.length
+                    if(arrayL>1){
+                        arrayFlag=1
+                    }else if(arrayL<=1){
+                    arrayFlag=0
+                    }
+                    var nuprice=parseFloat(document.getElementById('selRoomR').options[document.getElementById('selRoomR').selectedIndex].value)
+                    arrayPrice=parseFloat(arrayPrice)+nuprice
+                    document.getElementById('roomArray').innerHTML=arrayD.map(item => `${item.text} <button class="btn" type="button" id="index${item.index}" onclick="selectIndex(${item.index})">Select Item No. ${item.index}</button>`).join('<br>');
+                    document.getElementById('e').innerHTML=`Total Price: ${arrayPrice} <br> ArrayCount: ${arrayL}<br>${arrayR}<br>${arrayI}<br>Selected Index: ${indexSel}<br>Flag? ${arrayFlag}`
+                    document.getElementById('f').innerHTML=arrayD.map(item =>`${item.text}- ${item.index}`).join('<br>')
+                    
+                    document.getElementById('selRoomR').selectedIndex=0
+                    break;
+                     }
+                    }
+                }
+               }else{
+                const selA=document.getElementById('selRoomR');
+                const resA=result.resRoomName;
+                for(let i=0; i<selA.options.length; i++){
+                if(selA.options[i].text===resA){
+                    selA.selectedIndex=i
+                    arrayR.push(resA)
+                    arrayD.push({text:resA,index:arrayI.length})
+                    arrayI.push(arrayI.length)
+                    arrayIP.push(arrayIP.length)
+                    arrayL=arrayR.length
+                    document.getElementById('roomArray').innerHTML=arrayD.map(item => `${item.text} <button class="btn" type="button" id="index${item.index}" onclick="selectIndex(${item.index})">Select Item No. ${item.index}</button>`).join('<br>');
+                    var nuprice=parseFloat(document.getElementById('selRoomR').options[document.getElementById('selRoomR').selectedIndex].value)
+                    arrayPrice=parseFloat(arrayPrice)+nuprice
+                    document.getElementById('e').innerHTML=`Total Price: ${arrayPrice} <br> ArrayCount: ${arrayL}<br>${arrayR}<br>${arrayI}<br>Selected Index: ${indexSel}<br>Flag? ${arrayFlag}`
+                    document.getElementById('f').innerHTML=arrayD.map(item =>`${item.text}- ${item.index}`).join('<br>')
+                    document.getElementById('selRoomR').selectedIndex=0
+                                
+                    break;
+                }
+                }
+               }
+               document.getElementById('check-in').value=result.resCheckinDate
+               document.getElementById('check-out').value=result.resCheckoutDate
+               document.getElementById('book-in').value=result.resBookeDate
+               document.getElementById('selTour').value=result.resTour
+               document.getElementById('price').value=result.resPrice
+               document.getElementById('selPromo').value=result.resPromo
+               document.getElementById('selPayMeth').value=result.resPayMeth
+               document.getElementById('selPayStat').value=result.resPayStat
+               searchFlag=true;
+               const lock=document.getElementById('price')
+               lock.readOnly=false;
+               const selStat=document.getElementById('selResStat')
+               const selStatf=result.resStat
+               for(let e=0;e<selStat.options.length;e++){
+                if(selStatf==selStat.options[e].text){
+                    selStat.selectedIndex=e
+                    break
+                }
+               }
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        }
+
 
     async function updateR(){
         document.getElementById('inProgInd').hidden=false;
