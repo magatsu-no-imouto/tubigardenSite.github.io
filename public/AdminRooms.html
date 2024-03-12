@@ -293,6 +293,7 @@ margin-right: 340px;
                 <tr>
                     <th></th>
                     <th></th>
+                    <th>Description</th>
                     <th>Name</th>
                     <th>Size</th>
                     <th>Cost</th>
@@ -323,8 +324,9 @@ margin-right: 340px;
                 <option value="Unavailable">Unavailable</option>
             </select>
             <label>Cottages Left</label>
-            <input type="number" id="numRoomLef" name="roomLeft" required>
             <span hidden id="inProgInd" hidden>Processing. Please wait. . .</span>
+            <br>
+            <input type="number" id="numRoomLef" name="roomLeft" required>
             <button type="button" id="addRoom" onclick="insertRoom()">Add Room</button>
             <button type="button" id="updootRoom" onclick="updateRoom()">Update Room</button>
             <button type="button" id="findRoom" onclick="searchRoom()">Search Room</button>
@@ -349,6 +351,7 @@ margin-right: 340px;
     data.forEach(item => {
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td><button class="btn" onclick="searchRm('${item.roomName}')">Search</button></td>
         <td><img src="${item.roomImg}" alt="no image" style="width:200px; height:200px;"></td>
         <td>${item.roomDesc}</td>
         <td>${item.roomName}</td>
@@ -433,6 +436,28 @@ async function searchRoom(){
             alert("Please input what to search.");
         }    
 }
+
+async function searchRm(ID){
+    const roomName=ID
+    document.getElementById('txtRoomName').value=ID;
+        if(roomName.value !=""){
+        try{
+            const response=await fetch(`/searchRoom?roomName=${roomName}`);
+            const result=await response.json();
+            if(response.ok){
+                document.getElementById('numRoomCost').value=result.roomCost
+                document.getElementById('numRoomSize').value=result.roomSize
+                document.getElementById('selRoomRes').value=result.roomReservd
+                document.getElementById('numRoomLef').value=result.roomLeft
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+}}
+
     async function updateRoom(){
         document.getElementById('inProgInd').hidden=false;
         const roomName=document.getElementById('txtRoomName');
