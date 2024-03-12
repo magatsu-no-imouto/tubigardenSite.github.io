@@ -288,6 +288,7 @@ color: #070707;
     <table>
         <thead>
         <tr>
+            <th></th>
             <th>User ID</th>
             <th>Name</th>
             <th>Email</th>
@@ -333,6 +334,7 @@ color: #070707;
     data.forEach(item => {
       const row = document.createElement('tr');
       row.innerHTML = `
+        <td><button class="btn" onclick="searchA('${item.aID}')">Search</button></td>
         <td>${item.aID}</td>
         <td>${item.afName} ${item.alName}</td>
         <td>${item.aEmail}</td>
@@ -411,7 +413,29 @@ color: #070707;
             alert('someone tripped over the wires!');
         }
         }
-  }
+    }
+  
+
+  async function searchA(aID){
+    const aIDf=aID
+    document.getElementById('username').value=aIDf;
+        try{
+            const response=await fetch(`/searchAdmin?aID=${aIDf}`);
+            const result=await response.json();
+            if(response.ok){
+               document.getElementById('firstName').value=result.afName
+               document.getElementById('lastName').value=result.alName
+               document.getElementById('email').value=result.aEmail
+               document.getElementById('pass').value=result.aPass
+            }else{
+                alert("E-E-ERROR! ",result.error);
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+        }
+
 
   async function updateAdmin(){
     document.getElementById('inProgInd').hidden=false;
