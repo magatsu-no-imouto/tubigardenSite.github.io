@@ -829,8 +829,8 @@ const checkedA=new Date(document.getElementById('book-in').value)
 var today = new Date(dt.getFullYear(), dt.getMonth(), dt.getDate()+1);
 console.log(checkedA)
 console.log(today)
-if(checkedA>today.getDate()){
-	console.log(checkedA>today.getDate())
+if(checkedA<=today.getDate()){
+	console.log(checkedA<=today.getDate())
     checkedA.setDate(today.getDate())
     document.getElementById('book-in').valueAsDate=checkedA
 }
