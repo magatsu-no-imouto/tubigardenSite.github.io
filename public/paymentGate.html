@@ -1,0 +1,552 @@
+<html>
+    <head>
+        <style>
+        body {
+        font-family: Arial, sans-serif;
+        background-image: url('media/Tubigan.jpg'); 
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        background-size: cover; 
+        background-position: center;
+        background-repeat: no-repeat; 
+        margin: 0; 
+        padding: 0;
+        }
+            .container {
+            max-width: 50%;
+            margin: 0 auto;
+            padding: 0px;
+            border-radius: 0px;
+            backdrop-filter: blur(100%); 
+            background-color: rgba(233, 230, 230, 0.8);
+            box-shadow: 0 60px 80px rgba(0, 0, 0, 0.1);
+            opacity: 100%;
+        }
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+        input{
+            border-color:transparent;
+            background-color: transparent;
+            margin-bottom: 15px;
+            border-radius: 4px;
+        }
+        .payment{
+            border-color:black;
+            background-color:white;
+        }
+        header.style1 {
+              display: flex;
+              background-color: #007BFF;
+              color: #fff;
+              text-align: center;
+              padding: 5px ;
+            }
+             
+            div.styleRyle {
+            padding: 75px 0px 0px 355px;
+        }
+    
+            header > img {
+                height: 200px;
+                width: 250px; 
+            margin-right: 50px;}
+    
+            header.style1 a {
+             display: inline-block;
+             background-color: #fff;
+             color: #007BFF;
+             padding: 10px 20px;
+             text-decoration: none;
+             border-radius: 5px;
+             margin-top: 20px;
+             font-weight: bold;
+            }
+            header.style2 {
+               background-color: #7cafc9;
+               color: #fff;
+              text-align: center;
+              padding: 5px ;
+            }
+            header.style2 a {
+             display: inline-block;
+             background-color: #fff;
+             color: #007BFF;
+             padding: 10px 20px;
+             text-decoration: none;
+             border-radius: 5px;
+             margin-top: 20px;
+             font-weight: bold;
+            }
+            
+            header.style2 nav{
+              display: flex;
+              justify-content: center;
+              align-items: center;
+            }
+            header.style2 nav a{
+                display: inline-block;
+              padding: 10px 20px;
+              text-decoration: none;
+              color: #ff0202;
+              background-color: rgb(226, 226, 83);
+              border-radius: 35px;
+              margin: 0 10px;
+              transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+            }
+            header.style2 nav a:hover{
+              background-color: #007BFF;
+    
+            }
+            button {
+                background-color: #007bff;
+                color: #fff;
+                padding: 10px 20px;
+                border: none;
+                cursor: pointer;
+            }
+            button:hover {
+                background-color: #0056b3;
+            }
+        footer {
+             text-align: center;
+             background-color: #333;
+             color: #fff;
+             padding: 0px ;
+             margin-top: 175px;
+            }
+        </style>
+    </head>
+    <body>
+        <header class="style1">
+            <img src="media/5.png" alt="logo">
+            <div class="styleRyle">
+         </div>
+         </header>
+        <div class="container" >
+            <form id="fompay">
+                <input type="text" id="tID" readonly hidden>
+                <input type="date" id="tDatePost" readonly>
+                <label>Reservation ID</label>
+                <input id="resID" readonly>
+                <label>Username</label>
+                <input type="text" id="resmID" readonly>
+                <label>Name</label>
+                <input id="resmName" readonly>
+                <label>Email</label>
+                <input id="resmEmail" readonly>
+                <label>Phone Number</label>
+                <input id="resmPhono" readonly>
+                <label>Party Size</label>
+                <input id="resParty" type="number" value=0 min=0 readonly>
+                <label id="lBook">Book In Date</label>
+                <input id="resBookin" type="date" readonly>
+                <label>Check In Date</label>
+                <input id="resCheckin" type="date" readonly>
+                <label>Payment Method</label>
+                <input id="resPayMeth" readonly>
+                <label>Rooms</label>
+                <label id="resRoomName">*replace me with rooms and their individual price*</label>
+                <label id="ticketsA">*ticket price*</label>
+                <label id="ticketsB">*children discount</label>
+                <label id="ticketsC">*total price*</label>
+                <label id="runbal">*you ever forget a couple of quarters?*</label>
+                <select id="selRoom" hidden>
+                    <!--room-data will change contents before searchR activates to grab reservation. If it's an array, then this will serve as the means for plop reserved Rooms onto the label.-->
+                </select>
+                <label id="lPrice">Total Price</label>
+                <span>P</span><input id="price" type="number" value="5.00" readonly>
+                <label>Amount To Pay</label>
+                <span>P</span><input id="paid" class="payment" type="number" value="0" min="0">
+                <label></label>
+                <button type="button" onclick="insertT()">Pay</button>
+                <span hidden id="inProgInd" hidden>Processing. Please wait. . .</span>
+            </form>
+        </div>
+    </body>
+    <script>
+        let runBalFlag=0,runBalPayFlag=0,reqPrice
+        let runBalID
+        const arrayR=[]
+       fetch('/room-data').then(response=>{
+        if(response.ok){
+            return response.json()
+        }else{
+            throw new Error('error fetching data')
+        }
+       }).then(data=>{
+        const selR=document.getElementById('selRoom')
+        for(const item of data){
+            const op=document.createElement('option')
+            op.value=item.roomCost
+            op.textContent=item.roomName
+            selR.appendChild(op)
+            console.log(item.roomName+" Loaded")
+        }
+        return searchR()
+       }).catch(err=>{
+        console.error('Error fetching data: ',err)
+       })
+
+       async function searchR(){
+        try{
+            const response=await fetch('/current_reservation')
+            const result=await response.json()
+            if(response.ok){
+                document.getElementById('resmID').value=result.resmID
+                document.getElementById('resID').value=result.resID
+                const response2=await fetch(`/searchRunRes?runresID=${result.resID}`)
+                const result2=await response2.json()
+                document.getElementById('resmName').value=result.resmName
+                document.getElementById('resmEmail').value=result.resmEmail
+                document.getElementById('resmPhono').value=result.resmPhono
+                document.getElementById('resParty').value=result.resPax
+                const ticketPrice=300
+                if(result.resCax!=0){
+                    document.getElementById('ticketsA').innerHTML=`${result.resPax} People -- P${result.resPax*ticketPrice}`
+                    document.getElementById('ticketsB').innerHTML=`${result.resCax} Children -- P${result.resCax*ticketPrice} discount`
+                    document.getElementById('ticketsC').innerHTML=`-------------------------------------------------------------------<br>${result.resPax-result.resCax} Tickets -- P${(result.resPax-result.resCax)*ticketPrice}`
+                }else{
+                    document.getElementById('ticketsA').innerHTML=``
+                    document.getElementById('ticketsB').innerHTML=``
+                    document.getElementById('ticketsC').innerHTML=`${result.resPax} Tickets -- P${result.resPax*ticketPrice}`
+                }
+                if(Array.isArray(result.resRoomName)){
+                    const selQ=document.getElementById('selRoom')
+                    for(let e=0;e<result.resRoomName.length;e++){
+                        const selA=result.resRoomName[e]
+                        for(let i=0;i<selQ.options.length;i++){
+                        if(selQ.options[i].text==selA){
+                            selQ.selectedIndex=i
+                            arrayR.push({text:selA,price:selQ[i].value})
+                            break;
+                        }
+                    }
+                    }
+                }else{
+                    const selQ=document.getElementById('selRoom')
+                    const selA=result.resRoomName
+                    for(let i=0;i<selQ.options.length;i++){
+                        if(selQ.options[i].text==selA){
+                            selQ.selectedIndex=i
+                            arrayR.push({text:selA,price:selQ[i].value})
+                            break;
+                        }
+                    }
+                }
+                if(arrayR.length>1){
+                    document.getElementById('resRoomName').innerHTML=`${arrayR.map(item=>`${item.text} -- P${item.price}`).join('<br>')}<br>-------------------------------------------------------------------<br>Total Room Price:<br>P${result.resPrice-(ticketPrice*(result.resPax-result.resCax))}`
+                }else{
+                    document.getElementById('resRoomName').innerHTML=`${arrayR.map(item=>`${item.text} -- P${item.price}`).join('<br>')}`
+                }
+                const book=result.resBookeDate
+                const check=result.resCheckinDate
+                if(book==check){
+                    document.getElementById('lBook').hidden=true
+                    document.getElementById('resBookin').value=result.resBookeDate
+                    document.getElementById('resBookin').hidden=true
+                    document.getElementById('resCheckin').value=result.resCheckinDate
+                }else{
+                    document.getElementById('resBookin').value=result.resBookeDate
+                    document.getElementById('resCheckin').value=result.resCheckinDate
+                }
+                document.getElementById('resPayMeth').value="GCash"
+                if(response2.ok){
+                    runBalPayFlag=1
+                    runBalID=result2.runID
+                    console.log(runBalID)
+                    document.getElementById('runbal').innerHTML=`Total Price<br>P${result2.runresPrice}<br>P${result2.runresPrice-result2.runresBal} Paid`
+                    document.getElementById('lPrice').innerHTML="Current Balance"
+                    document.getElementById('price').value=result2.runresBal
+                }else{
+                    document.getElementById('runbal').innerHTML=``
+                    document.getElementById('price').value=result.resPrice
+                }
+                const dt=new Date()
+                dt.setDate(dt.getDate())
+                document.getElementById('tDatePost').valueAsDate=dt
+            }
+        }catch(err){
+            console.error("Error looking through the Database. ",err);
+            alert('someone tripped over the wires!');
+        }
+       }
+        
+        async function insertT(){
+            document.getElementById('inProgInd').hidden=false;
+            const ID=document.getElementById('tID')
+            const tresmID=document.getElementById('resmID')
+            const tresID=document.getElementById('resID')
+            const tresmEmail=document.getElementById('resmEmail')
+            const tresmPhono=document.getElementById('resmPhono')
+            const tresParty=document.getElementById('resParty')
+            const DatePost=document.getElementById('tDatePost')
+            let tresRoomName
+            if(!arrayR){
+                tresRoomName=document.getElementById('selRoom').options[document.getElementById('selRoom').selectedIndex].textContent
+            }else{
+                const arrayL=[]
+                for(i=0;i<arrayR.length;i++){
+                    arrayL.push(arrayR[i].text)
+                }
+                tresRoomName=arrayL
+            }
+            const tresBookin=document.getElementById('resBookin')
+            const tresCheckin=document.getElementById('resCheckin')
+            const tresPayMeth=document.getElementById('resPayMeth')
+            const tresPrice=document.getElementById('price')
+            if(runBalPayFlag==1){
+                reqPrice=0
+            }else{
+                reqPrice=(parseFloat(tresPrice.value)/2)
+            }
+            const tPaid=parseFloat(document.getElementById('paid').value)
+            if(0==tPaid.toFixed(2)){
+                alert("Please fill the field")
+                document.getElementById('inProgInd').hidden=true;
+            }else if(reqPrice<=tPaid.toFixed(2)){
+                await notifier()
+                const dt=DatePost.valueAsDate.toLocaleDateString('en-US', { year: '2-digit', month: '2-digit', day: '2-digit' }).replace(/\//g, '');
+                const rng=Math.floor(Math.random()*10);
+                const rng2=Math.floor(Math.random()*10);
+                const rng3=Math.floor(Math.random()*10);
+                const rng4=Math.floor(Math.random()*10);
+                ID.value=tresID.value[0]+tresID.value[1]+"-"+rng+rng2+rng3+rng4+"-"+dt
+                const datum={
+                    tID:ID.value,
+                    tresID:tresID.value,
+                    tresmID:tresmID.value,
+                    tresmEmail:tresmEmail.value,
+                    tresmPhono:tresmPhono.value,
+                    tresParty:tresParty.value,
+                    tresRoomName:tresRoomName,
+                    tresBookIn:tresBookin.value,
+                    tresCheckIn:tresCheckin.value,
+                    tresPayMeth:tresPayMeth.value,
+                    tresPrice:tresPrice.value,
+                    tPaid:tPaid,
+                    tDatePost:DatePost.value
+                }
+                try{
+                    const response = await fetch('/insertTrans',{
+                    method:'POST',
+                    headers:{
+                    'Content-Type':'application/json'
+                    },
+                    body:JSON.stringify(datum),
+                    });
+                    const result=await response.json();
+                    if(response.ok){
+                        if(tresPrice.value>tPaid){
+                            if(runBalPayFlag==1){
+                                console.log(runBalID)
+                                await updateRun()
+                            }else{
+                                runBalFlag=1
+                                await insertRun()
+                        }
+                        }else if(runBalPayFlag==1){
+                                console.log(runBalID)
+                                await updateRun()
+                            }
+                        updateR()
+                    }
+                }catch(err){
+                    console.log('ERROR ',err)
+                    alert('An Error Occured While Inserting The Record.');
+                }
+            }else if(reqPrice>tPaid.toFixed(2)){
+                alert("You don't have enough. :(")
+                document.getElementById('inProgInd').hidden=true;
+            }
+        }
+
+        async function updateR(){
+            const resID=document.getElementById('resID').value
+            
+            let resmIDf,resmNamef,resPaxf,resCaxf,resmEmailf,resmPhonof,resRoomNamef,resCheckinDatef,resCheckoutDatef,resBookeDatef,resTourf,resPricef,resPromof,resPayMethf,resPayStatf,resStatf
+            try{
+                const response=await fetch(`/searchRes?resID=${resID}`)
+                const result=await response.json();
+                if(response.ok){
+                    resmIDf=result.resmID
+                    resmNamef=result.resmName
+                    resmEmailf=result.resmEmail
+                    resmPhonof=result.resmPhono
+                    resPaxf=result.resPax
+                    resCaxf=result.resCax
+                    resRoomNamef=result.resRoomName
+                    resCheckinDatef=result.resCheckinDate
+                    resCheckoutDatef=result.resCheckoutDate
+                    resBookeDatef=result.resBookeDate
+                    resTourf=result.resTour
+                    resPricef=result.resPrice
+                    resPromof=result.resPromo
+                    resPayMethf=result.resPayMeth
+                    resPayStatf="Paid"
+                    resStatf=result.resStat
+                }
+            }catch(err){
+                console.log('ERROR ',err)
+            }
+            if(runBalFlag==1 || runBalPayFlag==1){
+                resPayStatf="Half Paid"
+            }
+            const updoot={
+                resID:resID,
+                resmID:resmIDf,
+                resmName:resmNamef,
+                resmEmail:resmEmailf,
+                resmPhono:resmPhonof,
+                resPax:resPaxf,
+                resCax:resCaxf,
+                resRoomName:resRoomNamef,
+                resCheckinDate:resCheckinDatef,
+                resCheckoutDate:resCheckoutDatef,
+                resBookeDate:resBookeDatef,
+                resTour:resTourf,
+                resPrice:resPricef,
+                resPromo:resPromof,
+                resPayMeth:resPayMethf,
+                resPayStat:resPayStatf,
+                resStat:resStatf
+            }
+            try{
+            const response = await fetch('/updateRes',{
+            method:'PATCH',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(updoot),
+            });
+            const result=await response.json();
+            if (response.ok){
+                alert("Thank you for paying in advance");
+                window.location.replace("UserPage.html")
+            }else{
+                alert(result.error);
+            }
+            }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+            }
+        }
+
+        async function insertRun(){
+        const rng=Math.floor(Math.random()*10);
+        const rng2=Math.floor(Math.random()*10);
+        const rng3=Math.floor(Math.random()*10);
+        const rng4=Math.floor(Math.random()*10);
+        const tresID=document.getElementById('resID')
+        const runID=resID.value[0]+tresID.value[1]+"-RunBal-"+rng+rng2+rng3+rng4
+        const tresPrice=document.getElementById('price')
+        const tPaid=parseFloat(document.getElementById('paid').value)
+        const datum={
+            runID:runID,
+            runresID:tresID.value,
+            runresPrice:tresPrice.value,
+            runresBal:tresPrice.value-tPaid,
+            runresStat:"Unpaid"
+        }
+        try{
+            const response = await fetch('/insertRun',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(datum),
+            });
+            const result=await response.json()
+            if(response.ok){
+                alert("The leftover payment due will be added to your running balance.")
+            }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+            alert('An Error Occured While Inserting The Record.');
+        }
+    }
+
+    let runresIDf,runresPricef,runresBalf,runresStatf,runbalPaidFlag=0
+        async function updateRun(){
+            const response=await fetch(`/searchRun?runBalID=${runBalID}`)
+            const result=await response.json()
+            if(response.ok){
+                runresIDf=result.runresID
+                runresPricef=result.runresPrice
+                runresBalf=result.runresBal
+                runresStatf=result.runresStat
+            }
+            console.log(runresBalf-tPaid)
+            if((runresBalf-tPaid)<=0){
+                runresBalf=0
+                runresStatf="Paid"
+                runbalPaidFlag=1
+            }else{
+                runresBalf=runresBalf-tPaid
+            }
+            const datum={
+                runID:runBalID,
+                runresID:runresIDf,
+                runresPrice:runresPricef,
+                runresBal:runresBalf,
+                runresStat:runresStatf
+            }
+            try{
+                const response=await fetch('/updateRun',{
+                    method:'POST',
+                    headers:{
+                'Content-Type':'application/json'
+            },
+                    body:JSON.stringify(datum),
+                })
+                const result=await response.json()
+                if(response.ok){
+                    if(runbalPaidFlag==1){
+                        try{
+                            const response = await fetch('/deletRun',{
+                            method:'POST',
+                            headers:{
+                            'Content-Type':'application/json'
+                            },
+                            body:JSON.stringify(datum),
+                            });
+                        const result=await response.json();
+                        if (response.ok){
+                console.log("nice")
+                        }else{
+                alert(result.error);
+                        }
+        }catch(err){
+            console.error('E-E-ERROR! ',err);
+        }
+                    }else{
+                        console.log("still some left")
+                    }
+                }
+            }catch(err){
+                console.log('E-E-ERROR ',err)
+            }
+        }
+
+        async function notifier(){
+            const sms=`Customer ${document.getElementById('resmName').value} with the Phone Number ${document.getElementById('resmPhono').value} has made a reservation today. Please verify their payment.`
+            try{
+                const response=await fetch('/send-notification',{
+                   method:'POST', 
+                   headers: {
+        'Content-Type': 'application/json',
+      },
+                   body:JSON.stringify({sms}),
+                });
+                const result = await response.json();
+                if(response.ok){
+                    console.log(result);
+                }
+            }catch(error){
+                console.log(error)
+            }
+        }
+    </script>
+</html>
