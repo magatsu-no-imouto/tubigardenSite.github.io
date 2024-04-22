@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tubigan Garden Resort</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <style>
+h1, h2 {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-image: url('media/tubigan.jpg'); 
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+    margin: 0; 
+    padding: 0;
+}
+header {
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+    header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: - auto;
+}
+    video {
+      width: 100%;
+      height: 17%;
+      object-fit: cover;
+      top: 0;
+      left: 0;
+    }
+
+    .header-content {
+      position: relative;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      color: #fff;
+    }
+        header.style1 {
+        display: flex;
+        background-color: #007BFF;
+        color: #fff;
+        text-align: center;
+        padding: 5px ;
+        }
+        header.style1 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        div.style1 {
+    padding: 50px 0px 0px 155px;
+}
+
+        header.style2 {
+           background-color: #7cafc9;
+           color: #ffffff;
+          text-align: center;
+          padding: 5px ;
+        }
+        header.style2 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
+        
+        header.s2 nav{
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          
+        }
+        header.style2 nav a{
+          display: inline-block;
+          padding: 10px 20px;
+          text-decoration: none;
+          color: #ff0202;
+          background-color: rgb(226, 226, 83);
+          border-radius: 35px;
+          margin: 0 10px;
+          transition: cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+        header.style2 nav a:hover{
+          background-color: #007BFF;
+
+        }
+       
+section {
+    max-width: 800px;
+    margin: 20px auto;
+    margin-right:auto;
+    margin-left: - auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 90px 90px rgba(0, 0, 0, 0.1);
+    opacity: 100%;
+}
+
+
+footer {
+    text-align: center;
+    background-color: #333;
+    color: #fff;
+    padding: 0px ;
+    text-align: center;
+         background-color: #333;
+         color: #fff;
+         padding: 0px ;
+         margin-top: 200px;
+}
+
+/* for our scroll bar */
+body::-webkit-scrollbar-track {
+    background: #99aace; 
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: #000000; 
+    border-radius: 6px; 
+}
+
+body::-webkit-scrollbar-thumb:hover {
+    background-color: #000000;
+}
+
+/*pictures sa homepage*/
+           
+.photo-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 300px);
+            gap: 20px;
+            justify-content: flex-start;
+            overflow: hidden;
+            scroll-behavior: smooth;
+            width: 100%;
+            height: auto;
+        }
+
+        .photo-container {
+            position: relative;
+            border-radius: 20px;
+            cursor: pointer;
+            overflow: hidden; 
+        }
+
+        .photo {
+            width: 100%;
+            height: auto;
+            border: 5px skyblue #6277b3;
+            border-radius: 15px;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .text-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.2s ease-in-out;
+            color: #fff;
+            text-align: center;
+            background-color: #7c93d4; 
+            z-index: 1; 
+        }
+
+        .text-overlay p {
+            margin: 0; 
+            display: flex;
+            justify-content: center;
+        }
+
+        .photo-container:hover .text-overlay,
+        .photo-container.clicked .text-overlay {
+            opacity: 1;
+        }
+
+        .photo-container.clicked .photo {
+            visibility: hidden;
+        }
+        .material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px; 
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Specific icon styling */
+.feedback-icon {
+    color: #007BFF; 
+}    
+.info {
+    color: #007BFF; 
+}    
+.view {
+    color: #007BFF; 
+}  
+
+/* Media query for smaller screens (adjust the max-width as needed) */
+@media screen and (max-width: 600px) {
+    div.style1 {
+        padding: 20px 10px; /* Adjust the padding values for mobile size */
+
+    }
+    
+  
+    }
+    section {
+            overflow-x: auto; /* Add horizontal scrollbar for small screens */
+        }
+
+        .photo-grid {
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* Adjust grid columns for responsiveness */
+        }
+
+        .photo-container {
+            width: 100%; /* Make photo container full width */
+        }
+    
+
+.hiddenSel{
+            visibility: hidden;
+            margin-bottom: 0px;
+        }
+        button {
+         display: inline-block;
+         background-color:rgb(226, 226, 83);
+         color: #000000;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         
+         font-weight: bold;
+        }
+
+        button:hover {
+            background-color:  rgb(0, 123, 255);
+        }
+        .main-heading{
+    font-size: 20px;
+        display: inline-block;
+justify-content: center;
+text-align: center;
+margin-right: 340px;
+
+}
+.headText{
+        font-size: 15px;
+        display: inline-block;
+justify-content: center;
+text-align: center;
+margin-right: 340px;
+}
+
+.linkWithFunction{
+    cursor: pointer;
+}
+
+button{
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.buttonCont{
+    margin-top: 20px;
+    text-align: center;
+}
+
+    </style>
+</head>
+<body>
+    <header class="style1">
+        <img src="media/5.png" alt="logo">
+
+        <div class="style1">
+        <h1 class="main-heading"> Tubigan Garden Resort</h1>
+        <p class="headText">Tubigan Garden Resort located at Paliparan 3, Dasmariñas, Cavite | 𝙔𝙊𝙐𝙍 𝙉𝙀𝙓𝙏 𝘼𝘿𝙑𝙀𝙉𝙏𝙐𝙍𝙀 𝙎𝙋𝙊𝙏❗</p>
+        <p class="headText">Affordable Summer PlayGround</p><br>
+        </div>
+    </header>
+
+    <header class="style2">
+        <nav>
+        <a class="hiddenSel" id="lnk1" href="UserPage.html">User</a>
+        <a id="lnk2" href= "LogIn.html">Log In</a>
+        <a class="linkWithFunction" onclick="checkU()">Reserve</a>
+        <a href= "Room.html">Rooms</a>
+        <a href= "contacts.html">Contact Us</a>
+    </nav>
+</header>
+
+<header>
+    <nav>
+    <video autoplay loop muted>
+      <source src="media/Tubigan Final BGV.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+</nav>
+</header>
+
+<div class="buttonCont">
+    <button onclick="scrollToSection('About')">About</button>
+<button onclick="scrollToSection('promoDeets')">Promos</button>
+<button onclick="scrollToSection('Room')">Rooms</button>
+<button onclick="scrollToSection('Cottages')">Cottages</button>
+<button onclick="scrollToSection('Pool')">Pools</button>
+</div>
+
+<section class="style3" id="About">
+    <section>
+        <h2>About Tubigan
+        <span class="material-icons info">
+            info_outline
+            </span>
+        </h2>
+        <p> Tubigan Garden Resort is one of the finest resort here in the city of Dasmariñas, Cavite. The resort is founded in the year 2014. The Tubigan Garden Resort is offering a refreshing escape 
+            for families and individuals alike. Tubigan Garden Resort has become a popular destination for families, friends, and even corporate events, drawing people seeking tranquility and a touch of nature.</p>
+
+    </section>
+    <section id="promoDeets">
+        <h2>Promos
+            <span class="material-icons view">
+                view_agenda
+                </span>
+        </h2>
+        <p> ( posted promos nila pwedeng updated every promos nila).......................</p>
+    </section>
+    <section id="Room">
+        <h2>Rooms
+            <span class="material-icons view">
+                view_list
+                </span>
+        </h2>
+        <div class="photo-grid">
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Room.jpg" alt="Room">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: The exterior veranda of the Hotel Room. Depending on the room, it's large and spacious inside</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮: 2 People</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱3,600</p>
+                </div>
+            </div>
+        
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Room 2.jpg" alt="Room 1">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A Dorm Type Room with a whopping 4 double decker beds and a small table</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:8 People</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱3,000</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Room 4.jpg" alt="Room 2">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:The interior of the Room with Veranda, containing a medium sized bed, a TV, and a mini table. Included in the room is a CR.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:2</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱3,600</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Room 3.jpg" alt="Room 3">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A room fitting for a family of 4. Containing a medium sized bed, a double decker, a mini table, a TV and a CR.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:4</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱5,750</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Entertainment.jpg" alt="Room 4">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A Function Hall with Air Conditioning. Fit for seminars and big events that require a large reception.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:72</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱9,000</p>
+                </div>
+            </div>
+            
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Entertainment 2.jpg" alt="Room 5">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A Function Hall with Air Conditioning. Fit for seminars and big events that require a large reception.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:72</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱9,000</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Entertainment 3.jpg" alt="Room 6">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:The exterior of a Videoke Room. It contains multiple tables and chairs lining up to watch someone sing at the Videoke Machine.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:12</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱4,500</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Entertainment 4.jpg" alt="Room 7">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:The interior of a Videoke Room. It contains multiple tables and chairs lining up to watch someone sing at the Videoke Machine.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:12</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱4,500</p>
+                </div>
+            </div>
+    </section>
+    
+
+    <section id="Cottages">
+        <h2>Cottages
+            <span class="material-icons view">
+                view_list
+                </span>
+        </h2>
+       
+        <div class="photo-grid">
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Cottage.jpg" alt="Cottage ">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:An 8x8 Gazebo with a small table.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:10</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱1,200</p>
+                </div>
+            </div>
+        
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Cottage 1.jpg" alt="Cottage 1">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:An 9x9 Gazebo outfitted with a long table.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:20</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱1,500</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Cottage 2.jpg" alt="Cottage 2">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A Bahay Kubo. It contains 2 Medium Tables and is good for 12 people.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:12</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱1,200</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Cottage3.jpg" alt="Cottage 3">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A Room with Fan. Contains a long table and some chairs. Provides a view of the pool.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:15</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱1,800</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Cottage 4.jpg" alt="Cottage 4">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A small Gazebo with a small table.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:10</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱1,000</p>
+                </div>
+            </div>
+          
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Cottage 5.jpg" alt="Cottage 5">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:An Open Kubo with 4 long chairs.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:12</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱1,200</p>
+                </div>
+            </div>
+            
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Kubo.jpg" alt="Cottage 6">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:The Exterior of a Kubo with AC.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:12</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱2,500</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/Kubo with AC.jpg" alt="Cottage 7">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:The Interior of a Kubo with AC.</p>
+                    <p>𝘾𝙖𝙥𝙖𝙘𝙞𝙩𝙮:12</p>
+                    <p>𝙋𝙧𝙞𝙘𝙚:₱2,500</p>
+                </div>
+            </div>
+
+    </section>
+
+
+    <section id="Pool">
+        
+        <h2>Pools
+            <span class="material-icons view">
+                view_list
+                </span>
+        </h2>
+        
+        <div class="photo-grid">
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/pool1.jpg" alt="Pool 1">
+                <div class="text-overlay">
+                    <p class="headText"></p>
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: A Large Pool with an even larger slide. It includes a bucket that tips over every so often that pours water down the slide and onto the pool.</p>
+                    <p>𝙋𝙤𝙤𝙡 𝙎𝙞𝙯𝙚: Big</p>
+                </div>
+            </div>
+        
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/kiddie pool.jpg" alt="Pool 2">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: A Small pool that's less than 3ft deep. It has a smaller version of the large pool's bucket splash.</p>
+                    
+                    <p>𝙋𝙤𝙤𝙡 𝙎𝙞𝙯𝙚: Small</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/kiddie pool 2.jpg" alt="Pool 3">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: A small kiddie pool that's only 3 ft deep. Perfect for those who cannot swim or is practicing swimming.</p>
+                    
+                    <p>𝙋𝙤𝙤𝙡 𝙎𝙞𝙯𝙚: Small</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/kiddie pool 3.jpg" alt="Pool 4">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A shallow pool that's connected to the large pool with the big slide. It has stairs and other fun sprinklers that children are sure to enjoy.</p>
+                    
+                    <p>𝙋𝙤𝙤𝙡 𝙎𝙞𝙯𝙚: Big</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/adult pool.jpg" alt="Pool 5">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣:A large and deep pool that's accompanied by a slide. It also has statues of famous DC and Marvel Heroes lined up to see you pull off a satisfying dive.</p>
+                    
+                    <p>𝙋𝙤𝙤𝙡 𝙎𝙞𝙯𝙚: Big</p>
+                </div>
+            </div>
+
+            <div class="photo-container" onclick="this.classList.toggle('clicked')">
+                <img class="photo" src="media/kiddie and adult pool.jpg" alt="Pool 6">
+                <div class="text-overlay">
+                    <p>𝘿𝙚𝙨𝙘𝙧𝙞𝙥𝙩𝙞𝙤𝙣: A shallow and somewhat deep pool connected by a moat under a bridge.</p>
+                    
+                    <p>𝙋𝙤𝙤𝙡 𝙎𝙞𝙯𝙚: Big</p>
+                </div>
+            </div>
+
+    </section>
+
+</section>
+
+    <footer>
+        <p>&copy; (2014) Tubigan Garden Resort</p>
+    </footer>
+<script>
+function scrollToSection(sectionId) {
+        const section = document.getElementById(sectionId);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+fetch(`/current_Mem`).then(response=>{
+    if(response.ok){
+        return response.json()
+    }else {
+    }
+  }).then(data=>{
+    console.log(data)
+    if(data==undefined){
+        console.log("No User.")
+    }else{
+        document.getElementById('lnk1').classList.remove('hiddenSel')
+        document.getElementById('lnk1').style="background-color: orange"
+        document.getElementById('lnk1').textContent=data.mID
+    document.getElementById('lnk2').textContent="Log Out"
+    }
+  })
+
+    fetch('/promo-data').then(response=>{
+        if (response.ok){
+            return response.json()
+        }else{
+            throw new Error('Error fetching data');
+        }
+    }).then(data=>{
+        const section = document.getElementById('promoDeets'); // Assuming there's only one <section> element
+        section.innerHTML = `<h2>Ongoing Promos!</h2>`;
+        data.forEach(element => {
+            const promoDetails = `
+                <p>
+                    <strong>Name:</strong> ${element.proName}<br>
+                    <strong>Description:</strong> ${element.proDesc}<br>
+                    <strong>Validity:</strong> ${element.proStart} ~ ${element.proEnd}<br>
+                    <strong>Status:</strong> ${element.proStat}
+                </p>
+            `;
+            
+            section.innerHTML += promoDetails;
+        });
+    }).catch(error => {
+    console.error('Error fetching data:', error);
+  });
+
+  async function checkU(){
+    const response=await fetch('/current_Mem')
+    const result=await response.json()
+    if(response.ok){
+        const ID=result.mID
+        if(result.mAccApp!="Active"){
+            alert("Please verify your account first.")
+        }else{
+            window.location.replace('reservation.html')
+        }
+    }else{
+        console.log("No User")
+        alert("Please create an account first")
+        window.location.replace('register.html')
+    }
+  }
+</script>
+</body>
+</html>
