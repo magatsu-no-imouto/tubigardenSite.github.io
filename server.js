@@ -120,20 +120,33 @@ train.post('/generate-pdf', async (req, res) => {
             padding: 8px;
             text-align: left;
           }
+          div.style1 {
+    padding: 50px 0px 0px 155px;
+}
+.headText{
+        font-size: 15px;
+        display: inline-block;
+justify-content: center;
+text-align: center;
+margin-right: 340px;
+}
+header.style1 .main-heading,
+    header.style1 .headText {
+        font-size: 16px; /* Adjust font size */
+        margin-bottom: 5px; /* Adjust margin */
+        color: black;
+    }
         </style>
       </head>
       <body>
       <header class="style1">
         <img src="https://tubigangardenresort.cyclic.app/media/5.png" alt="logo">
-        <h1>Tubigan Garden Resort</h1>
-        <br>
-        <h2>Business Report</h2>
-        <br>
-        <p>Tubigan Garden Resort</p>
-        <br>
-        <p>343 Molino - Paliparan Rd.</p>
-        <br>
-        <p>Dasmariñas, 4114 Cavite</p>
+        <div>
+        <h1 class="main-heading">Tubigan Garden Resort</h1>
+        <h2 class="main-heading">Business Report</h2>
+        <p class="headText">Tubigan Garden Resort located at 343 Molino - Paliparan Rd. Dasmariñas, 4114 Cavite</p>
+        <p class="headText">Affordable Summer PlayGround</p>
+        </div>
         </header>
         <div>${sectA} ${sectB}</div>
         ${content}
