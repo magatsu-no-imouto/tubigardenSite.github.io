@@ -90,7 +90,8 @@ train.post('/generate-pdf', async (req, res) => {
             width: 50%;
           }
           table, th, td {
-            border: 0;
+            border: solid black 1px;
+            border-collapse: collapse;
           }
           th, td {
             padding: 8px;
@@ -99,11 +100,14 @@ train.post('/generate-pdf', async (req, res) => {
         </style>
       </head>
       <body>
+      <header class="style1">
+        <img src="media/5.png" alt="logo">
         <h1>Tubigan Garden Resort</h1>
         <h2>Business Report</h2>
         <p>Tubigan Garden Resort</p>
         <p>343 Molino - Paliparan Rd.</p>
         <p>Dasmariñas, 4114 Cavite</p>
+        </header>
         <div>${sectA} ${sectB}</div>
         ${content}
       </body>
