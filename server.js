@@ -85,6 +85,29 @@ train.post('/generate-pdf', async (req, res) => {
     <html>
       <head>
         <style>
+        header > img {
+    height: 100px;
+    width: auto;
+    margin-right:auto;
+    margin-left: - auto;
+}
+        header.style1 {
+        display: flex;
+        background-color: #007BFF;
+        color: #fff;
+        text-align: center;
+        padding: 5px ;
+        }
+        header.style1 a {
+         display: inline-block;
+         background-color: #fff;
+         color: #007BFF;
+         padding: 10px 20px;
+         text-decoration: none;
+         border-radius: 5px;
+         margin-top: 20px;
+         font-weight: bold;
+        }
           table {
             border-collapse: collapse;
             width: 50%;
