@@ -101,7 +101,7 @@ train.post('/generate-pdf', async (req, res) => {
       </head>
       <body>
       <header class="style1">
-        <img src="/public/media/5.png" alt="logo">
+        <img src="https://tubigangardenresort.cyclic.app/media/5.png" alt="logo">
         <h1>Tubigan Garden Resort</h1>
         <h2>Business Report</h2>
         <p>Tubigan Garden Resort</p>
