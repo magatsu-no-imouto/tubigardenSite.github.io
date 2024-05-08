@@ -126,9 +126,13 @@ train.post('/generate-pdf', async (req, res) => {
       <header class="style1">
         <img src="https://tubigangardenresort.cyclic.app/media/5.png" alt="logo">
         <h1>Tubigan Garden Resort</h1>
+        <br>
         <h2>Business Report</h2>
+        <br>
         <p>Tubigan Garden Resort</p>
+        <br>
         <p>343 Molino - Paliparan Rd.</p>
+        <br>
         <p>Dasmariñas, 4114 Cavite</p>
         </header>
         <div>${sectA} ${sectB}</div>
