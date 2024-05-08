@@ -132,7 +132,6 @@ margin-right: 340px;
 }
 header.style1 .main-heading,
     header.style1 .headText {
-        font-size: 16px; /* Adjust font size */
         margin-bottom: 5px; /* Adjust margin */
         color: black;
     }
